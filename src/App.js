@@ -1,12 +1,16 @@
 import React from 'react'
-import Test from './Test'
+import CreateAccount from './pages/CreateAccount';
+import LoginPage from './pages/LoginPage';
 import './css/compox-trim.webflow.css';
 import './css/normalize.css';
 import './css/webflow.css';
 
 const App = () => {
   return (
-      <Test/>
+    <>
+      {/* <CreateAccount/> */}
+      <LoginPage />
+    </>
   )
 }
 

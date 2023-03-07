@@ -1,6 +1,7 @@
 import React from 'react'
 
-const Test = () => {
+const CreateAccountPage
+ = () => {
     return (
         <div>
             <div class="account-section-dark">
@@ -10,19 +11,19 @@ const Test = () => {
             <div>
               <div class="changelog-header-padding">
                 <div class="flighing-shape-wrapper">
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025d" style="opacity:0" class="flighing-shape _07"></div>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025e" style="opacity:0" class="flighing-shape _06"></div>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025f" style="opacity:0" class="flighing-shape _05"></div>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025d" style={{opacity:0}} class="flighing-shape _07"></div>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025e" style={{opacity:0}} class="flighing-shape _06"></div>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025f" style={{opacity:0}} class="flighing-shape _05"></div>
                   <div class="flighing-shape _04"></div>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240261" style="opacity:0" class="flighing-shape _03"></div>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240262" style="opacity:0" class="flighing-shape _02"></div>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240263" style="opacity:0" class="flighing-shape"></div>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240261" style={{opacity:0}} class="flighing-shape _03"></div>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240262" style={{opacity:0}} class="flighing-shape _02"></div>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240263" style={{opacity:0}} class="flighing-shape"></div>
                 </div>
               </div>
             </div>
             <div class="blurs">
-              <div data-w-id="d853071b-b591-b511-84ab-8026b4240265" style="-webkit-transform:translate3d(0px, 0px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0px, 0px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0px, 0px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0px, 0px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="gradient-orange"></div>
-              <div data-w-id="d853071b-b591-b511-84ab-8026b4240266" style="-webkit-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="gradient-red"></div>
+              <div data-w-id="d853071b-b591-b511-84ab-8026b4240265" ></div>
+              <div data-w-id="d853071b-b591-b511-84ab-8026b4240266" ></div>
               <div class="gradient-yellow-2"></div>
               <div class="gradient-red-2"></div>
               <div class="gradient-red-2"></div>
@@ -102,4 +103,4 @@ const Test = () => {
       )
     }
 
-export default Test
+export default CreateAccountPage
