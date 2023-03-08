@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -72,9 +73,9 @@ const LoginPage = () => {
                 <p>Please sign in to your account to continue.</p>
                 <p class='paragraph-regular text-weight-medium'>
                   Don't have an account?{' '}
-                  <a href='create-account.html' class='account-link'>
+                  <Link to='/create-account' class='account-link'>
                     Create account
-                  </a>
+                  </Link>
                 </p>
               </div>
               <div class='w-form'>
