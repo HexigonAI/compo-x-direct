@@ -8,8 +8,8 @@ import './css/webflow.css';
 const App = () => {
   return (
     <>
-      {/* <CreateAccount/> */}
-      <LoginPage />
+      <CreateAccount/>
+      {/* <LoginPage /> */}
     </>
   )
 }
