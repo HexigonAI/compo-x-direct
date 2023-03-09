@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { publicData, test } from '@/lib/directus';
+// import { useDirectus } from 'react-directus'
+
 import { Link } from 'react-router-dom';
 
 const CreateAccountPage = () => {
@@ -8,6 +11,15 @@ const CreateAccountPage = () => {
   const [password, setPassword] = useState('');
 
   console.log(email, companyName, accountName, password);
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const todos = (await directus.items('todos').readMany()).data;
+      setTodos(todos);
+    };
+
+    fetchTodos();
+  }, [directus]);
 
   return (
     <div>
@@ -77,7 +89,7 @@ const CreateAccountPage = () => {
                           value={accountName}
                           onChange={e => setAccountName(e.target.value)}
                           className='account-text-field w-input'
-                          maxlength='256'
+                          maxLength='256'
                           name='Account-Name'
                           data-name='Account Name'
                           placeholder='Enter your Name'
@@ -90,7 +102,7 @@ const CreateAccountPage = () => {
                           value={companyName}
                           onChange={e => setCompanyName(e.target.value)}
                           className='account-text-field w-input'
-                          maxlength='256'
+                          maxLength='256'
                           name='Account-Company'
                           data-name='Account Company'
                           placeholder='Enter your company'
@@ -103,7 +115,7 @@ const CreateAccountPage = () => {
                           value={email}
                           onChange={e => setEmail(e.target.value)}
                           className='account-text-field w-input'
-                          maxlength='256'
+                          maxLength='256'
                           name='Account-Email-2'
                           data-name='Account Email 2'
                           placeholder='Enter your email'
@@ -116,7 +128,7 @@ const CreateAccountPage = () => {
                           value={password}
                           onChange={e => setPassword(e.target.value)}
                           className='account-text-field w-input'
-                          maxlength='256'
+                          maxLength='256'
                           name='Account-Password'
                           data-name='Account Password'
                           placeholder='Enter your password'
@@ -128,12 +140,13 @@ const CreateAccountPage = () => {
                           value=''
                           data-wait='Please wait...'
                           className='account-submit w-button'
+                          onClick={publicData}
                         />
                         <div className='account-arrow w-embed'>
                           <svg
                             width='40'
                             height='40'
-                            viewbox='0 0 40 40'
+                            viewBox='0 0 40 40'
                             fill='none'
                             xmlns='http://www.w3.org/2000/svg'
                           >
@@ -146,9 +159,9 @@ const CreateAccountPage = () => {
                             <path
                               d='M18.0762 24.6281L22.7242 20.0001L18.0762 15.3721'
                               stroke='white'
-                              stroke-width='1.5'
-                              stroke-linecap='round'
-                              stroke-linejoin='round'
+                              strokeWidth='1.5'
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
                             ></path>
                           </svg>
                         </div>
@@ -173,7 +186,7 @@ const CreateAccountPage = () => {
                         <svg
                           width='32'
                           height='32'
-                          viewbox='0 0 32 32'
+                          viewBox='0 0 32 32'
                           fill='none'
                           xmlns='http://www.w3.org/2000/svg'
                         >
