@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const CreateAccountPage = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [accountName, setAccountName] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log(email, companyName, accountName, password);
+  const handleUserSubmit = (e) => {
+    console.log(email, password)
+  }
+
 
   return (
     <div>
@@ -27,42 +28,36 @@ const CreateAccountPage = () => {
               <div class='changelog-header-padding'>
                 <div class='flighing-shape-wrapper'>
                   <div
-                    data-w-id='d853071b-b591-b511-84ab-8026b424025d'
-                    style={{ opacity: 0 }}
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1de'
                     class='flighing-shape _07'
                   ></div>
                   <div
-                    data-w-id='d853071b-b591-b511-84ab-8026b424025e'
-                    style={{ opacity: 0 }}
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1df'
                     class='flighing-shape _06'
                   ></div>
                   <div
-                    data-w-id='d853071b-b591-b511-84ab-8026b424025f'
-                    style={{ opacity: 0 }}
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e0'
                     class='flighing-shape _05'
                   ></div>
                   <div class='flighing-shape _04'></div>
                   <div
-                    data-w-id='d853071b-b591-b511-84ab-8026b4240261'
-                    style={{ opacity: 0 }}
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e2'
                     class='flighing-shape _03'
                   ></div>
                   <div
-                    data-w-id='d853071b-b591-b511-84ab-8026b4240262'
-                    style={{ opacity: 0 }}
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e3'
                     class='flighing-shape _02'
                   ></div>
                   <div
-                    data-w-id='d853071b-b591-b511-84ab-8026b4240263'
-                    style={{ opacity: 0 }}
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e4'
                     class='flighing-shape'
                   ></div>
                 </div>
               </div>
             </div>
             <div class='blurs'>
-              <div data-w-id='d853071b-b591-b511-84ab-8026b4240265'></div>
-              <div data-w-id='d853071b-b591-b511-84ab-8026b4240266'></div>
+              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea'></div>
+              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec'></div>
               <div class='gradient-yellow-2'></div>
               <div class='gradient-red-2'></div>
               <div class='gradient-red-2'></div>
@@ -74,13 +69,13 @@ const CreateAccountPage = () => {
           <div class='account-card-dark'>
             <div>
               <div class='account-header-wrapper'>
-                <h2 class='account-heading'>Get Started</h2>
-                <p>We are excited to have you!</p>
+                <h2 class='account-heading'>Welcome Back</h2>
+                <p>Please sign in to your account to continue.</p>
                 <p class='paragraph-regular text-weight-medium'>
-                  Already have an account?{' '}
-                  <Link to="/" class='account-link'>
-                    Login
-                  </Link>
+                  Don't have an account?{' '}
+                  {/* <Link to='/create-account' class='account-link'>
+                    Create account
+                  </Link> */}
                 </p>
               </div>
               <div class='w-form'>
@@ -93,33 +88,7 @@ const CreateAccountPage = () => {
                   <div class='w-layout-grid grid-one-column'>
                     <div class='account-wrapper'>
                       <div class='account-field-label'>
-                        Enter your Name, Company, Email and Password
-                      </div>
-                      <div class='account-icon-wrapper'>
-                        <input
-                          type='text'
-                          value={accountName}
-                          onChange={e => setAccountName(e.target.value)}
-                          class='account-text-field w-input'
-                          maxlength='256'
-                          name='Account-Name'
-                          data-name='Account Name'
-                          placeholder='Enter your Name'
-                          id='Account-Name'
-                        />
-                      </div>
-                      <div class='account-icon-wrapper'>
-                        <input
-                          type='text'
-                          value={companyName}
-                          onChange={e => setCompanyName(e.target.value)}
-                          class='account-text-field w-input'
-                          maxlength='256'
-                          name='Account-Company'
-                          data-name='Account Company'
-                          placeholder='Enter your company'
-                          id='Account-Company-3'
-                        />
+                        Enter you Email and Password
                       </div>
                       <div class='account-icon-wrapper'>
                         <input
@@ -128,10 +97,10 @@ const CreateAccountPage = () => {
                           onChange={e => setEmail(e.target.value)}
                           class='account-text-field w-input'
                           maxlength='256'
-                          name='Account-Email-2'
-                          data-name='Account Email 2'
+                          name='Account-Email'
+                          data-name='Account Email'
                           placeholder='Enter your email'
-                          id='Account-Email-2'
+                          id='Account-Email'
                         />
                       </div>
                       <div class='account-icon-wrapper'>
@@ -147,9 +116,10 @@ const CreateAccountPage = () => {
                           id='Account-Password'
                           required=''
                         />
-                        <input
+                        <button
                           type='submit'
                           value=''
+                          onClick={event => handleUserSubmit()}
                           data-wait='Please wait...'
                           class='account-submit w-button'
                         />
@@ -187,7 +157,7 @@ const CreateAccountPage = () => {
                   <div class='w-layout-grid account-social-grid'>
                     <div class='account-icon-wrapper'>
                       <a
-                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-6c243ac4'
+                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-5c243ab6'
                         href='#'
                         class='account-social-button w-inline-block'
                       >
@@ -272,4 +242,4 @@ const CreateAccountPage = () => {
   );
 };
 
-export default CreateAccountPage;
+export default LoginPage;

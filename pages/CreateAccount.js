@@ -1,114 +1,121 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const LoginPage = () => {
+const CreateAccountPage = () => {
   const [email, setEmail] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [accountName, setAccountName] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleUserSubmit = (e) => {
-    console.log(email, password)
-  }
-
+  console.log(email, companyName, accountName, password);
 
   return (
     <div>
-      <div class='account-section-dark'>
-        <div class='bg-animation'>
-          <div class='preloader'>
+      <div className='account-section-dark'>
+        <div className='bg-animation'>
+          <div className='preloader'>
             <img
               src='images/Union-1.svg'
               width='50'
               height='Auto'
               alt=''
-              class='preloader-logo'
+              className='preloader-logo'
             />
           </div>
-          <div class='section-foundation-header header-gradient-01 wf-section'>
+          <div className='section-foundation-header header-gradient-01 wf-section'>
             <div>
-              <div class='changelog-header-padding'>
-                <div class='flighing-shape-wrapper'>
-                  <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1de'
-                    class='flighing-shape _07'
-                  ></div>
-                  <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1df'
-                    class='flighing-shape _06'
-                  ></div>
-                  <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e0'
-                    class='flighing-shape _05'
-                  ></div>
-                  <div class='flighing-shape _04'></div>
-                  <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e2'
-                    class='flighing-shape _03'
-                  ></div>
-                  <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e3'
-                    class='flighing-shape _02'
-                  ></div>
-                  <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e4'
-                    class='flighing-shape'
-                  ></div>
+            <div className="changelog-header-padding">
+                <div className="flighing-shape-wrapper">
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025d"  className="flighing-shape _07"/>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025e" className="flighing-shape _06"/>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025f"  className="flighing-shape _05"/>
+                  <div className="flighing-shape _04"></div>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240261"className="flighing-shape _03"/>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240262"  className="flighing-shape _02"/>
+                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240263"className="flighing-shape"/>
                 </div>
               </div>
             </div>
-            <div class='blurs'>
-              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea'></div>
-              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec'></div>
-              <div class='gradient-yellow-2'></div>
-              <div class='gradient-red-2'></div>
-              <div class='gradient-red-2'></div>
-              <div class='gradient-red-2'></div>
+              <div className="blurs">
+            <div data-w-id="d853071b-b591-b511-84ab-8026b4240265" className="gradient-orange"/>
+            <div data-w-id="d853071b-b591-b511-84ab-8026b4240266" className="gradient-red"/>
+           <div className="gradient-yellow-2"/>
+              <div className="gradient-red-2"/>
+              <div className="gradient-red-2"/>
+              <div className="gradient-red-2"/>
             </div>
           </div>
         </div>
-        <div class='account-wrapper-dark'>
-          <div class='account-card-dark'>
+        <div className='account-wrapper-dark'>
+          <div className='account-card-dark'>
             <div>
-              <div class='account-header-wrapper'>
-                <h2 class='account-heading'>Welcome Back</h2>
-                <p>Please sign in to your account to continue.</p>
-                <p class='paragraph-regular text-weight-medium'>
-                  Don't have an account?{' '}
-                  <Link to='/create-account' class='account-link'>
-                    Create account
-                  </Link>
+              <div className='account-header-wrapper'>
+                <h2 className='account-heading'>Get Started</h2>
+                <p>We are excited to have you!</p>
+                <p className='paragraph-regular text-weight-medium'>
+                  Already have an account?{' '}
+                  {/* <Link to="/" className='account-link'>
+                    Login
+                  </Link> */}
                 </p>
               </div>
-              <div class='w-form'>
+              <div className='w-form'>
                 <form
                   id='email-form'
                   name='email-form'
                   data-name='Email Form'
                   method='get'
                 >
-                  <div class='w-layout-grid grid-one-column'>
-                    <div class='account-wrapper'>
-                      <div class='account-field-label'>
-                        Enter you Email and Password
+                  <div className='w-layout-grid grid-one-column'>
+                    <div className='account-wrapper'>
+                      <div className='account-field-label'>
+                        Enter your Name, Company, Email and Password
                       </div>
-                      <div class='account-icon-wrapper'>
+                      <div className='account-icon-wrapper'>
+                        <input
+                          type='text'
+                          value={accountName}
+                          onChange={e => setAccountName(e.target.value)}
+                          className='account-text-field w-input'
+                          maxlength='256'
+                          name='Account-Name'
+                          data-name='Account Name'
+                          placeholder='Enter your Name'
+                          id='Account-Name'
+                        />
+                      </div>
+                      <div className='account-icon-wrapper'>
+                        <input
+                          type='text'
+                          value={companyName}
+                          onChange={e => setCompanyName(e.target.value)}
+                          className='account-text-field w-input'
+                          maxlength='256'
+                          name='Account-Company'
+                          data-name='Account Company'
+                          placeholder='Enter your company'
+                          id='Account-Company-3'
+                        />
+                      </div>
+                      <div className='account-icon-wrapper'>
                         <input
                           type='email'
                           value={email}
                           onChange={e => setEmail(e.target.value)}
-                          class='account-text-field w-input'
+                          className='account-text-field w-input'
                           maxlength='256'
-                          name='Account-Email'
-                          data-name='Account Email'
+                          name='Account-Email-2'
+                          data-name='Account Email 2'
                           placeholder='Enter your email'
-                          id='Account-Email'
+                          id='Account-Email-2'
                         />
                       </div>
-                      <div class='account-icon-wrapper'>
+                      <div className='account-icon-wrapper'>
                         <input
                           type='password'
                           value={password}
                           onChange={e => setPassword(e.target.value)}
-                          class='account-text-field w-input'
+                          className='account-text-field w-input'
                           maxlength='256'
                           name='Account-Password'
                           data-name='Account Password'
@@ -116,14 +123,13 @@ const LoginPage = () => {
                           id='Account-Password'
                           required=''
                         />
-                        <button
+                        <input
                           type='submit'
                           value=''
-                          onClick={event => handleUserSubmit()}
                           data-wait='Please wait...'
-                          class='account-submit w-button'
+                          className='account-submit w-button'
                         />
-                        <div class='account-arrow w-embed'>
+                        <div className='account-arrow w-embed'>
                           <svg
                             width='40'
                             height='40'
@@ -149,21 +155,21 @@ const LoginPage = () => {
                       </div>
                     </div>
                   </div>
-                  <div class='account-seperator'>
-                    <div class='account-line'></div>
-                    <div class='text-block'>OR</div>
-                    <div class='account-line'></div>
+                  <div className='account-seperator'>
+                    <div className='account-line'></div>
+                    <div className='text-block'>OR</div>
+                    <div className='account-line'></div>
                   </div>
-                  <div class='w-layout-grid account-social-grid'>
-                    <div class='account-icon-wrapper'>
+                  <div className='w-layout-grid account-social-grid'>
+                    <div className='account-icon-wrapper'>
                       <a
-                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-5c243ab6'
+                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-6c243ac4'
                         href='#'
-                        class='account-social-button w-inline-block'
+                        className='account-social-button w-inline-block'
                       >
                         <div>Continue with Google</div>
                       </a>
-                      <div class='account-logo w-embed'>
+                      <div className='account-logo w-embed'>
                         <svg
                           width='32'
                           height='32'
@@ -192,46 +198,46 @@ const LoginPage = () => {
                     </div>
                   </div>
                 </form>
-                <div class='contact-success-message w-form-done'>
+                <div className='contact-success-message w-form-done'>
                   <div>Thank you! Your submission has been received!</div>
                 </div>
-                <div class='w-form-fail'>
+                <div className='w-form-fail'>
                   <div>
                     Oops! Something went wrong while submitting the form.
                   </div>
                 </div>
               </div>
-              <div class='account-caption'>
+              <div className='account-caption'>
                 This site is protected by reCAPTCHA and the Hexigon&#x27;s{' '}
-                <a href='#' class='account-link-small'>
+                <a href='#' className='account-link-small'>
                   Privacy Policy
                 </a>{' '}
                 and Terms of Service apply as an Hexigon AI, Inc. Product.
               </div>
             </div>
           </div>
-          <div class='div-block-9'>
+          <div className='div-block-9'>
             <img
               src='images/hexigon-ai-logo.svg'
               loading='lazy'
               width='100'
               alt=''
-              class='hexigon-ai-logo'
+              className='hexigon-ai-logo'
             />
-            <div class='account-link-row'>
-              <a href='http://hexigon.ai' class='account-link-side'>
+            <div className='account-link-row'>
+              <a href='http://hexigon.ai' className='account-link-side'>
                 Go to Hexigon.ai
               </a>
-              <div class='account-dot'></div>
-              <a href='http://hexigon.ai/support' class='account-link-side'>
+              <div className='account-dot'></div>
+              <a href='http://hexigon.ai/support' className='account-link-side'>
                 Compo Support
               </a>
-              <div class='account-dot'></div>
-              <a href='http://hexigon.ai/terms' class='account-link-side'>
+              <div className='account-dot'></div>
+              <a href='http://hexigon.ai/terms' className='account-link-side'>
                 Terms
               </a>
-              <div class='account-dot'></div>
-              <a href='http://hexigon.ai/privacy' class='account-link-side'>
+              <div className='account-dot'></div>
+              <a href='http://hexigon.ai/privacy' className='account-link-side'>
                 Privacy
               </a>
             </div>
@@ -242,4 +248,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default CreateAccountPage;
