@@ -12,14 +12,14 @@ const CreateAccountPage = () => {
 
   console.log(email, companyName, accountName, password);
 
-  useEffect(() => {
-    const fetchTodos = async () => {
-      const todos = (await directus.items('todos').readMany()).data;
-      setTodos(todos);
-    };
+  // useEffect(() => {
+  //   const fetchTodos = async () => {
+  //     const todos = (await directus.items('todos').readMany()).data;
+  //     setTodos(todos);
+  //   };
 
-    fetchTodos();
-  }, [directus]);
+  //   fetchTodos();
+  // }, [directus]);
 
   return (
     <div>

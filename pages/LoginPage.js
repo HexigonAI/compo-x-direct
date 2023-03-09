@@ -56,8 +56,8 @@ const LoginPage = () => {
               </div>
             </div>
             <div class='blurs'>
-              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea'></div>
-              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec'></div>
+              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea' className="gradient-orange"></div>
+              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec' className="gradient-red"></div>
               <div class='gradient-yellow-2'></div>
               <div class='gradient-red-2'></div>
               <div class='gradient-red-2'></div>
