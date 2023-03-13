@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { publicData, test } from '@/lib/directus';
 import { useMutation } from 'react-query';
 import setData from '../helpers/setData';
+import Link from 'next/link';
 
 import {useQuery} from 'react-query';
 import { getHomepagePosts } from '@/queries/queries';
-import { Link } from 'react-router-dom';
 import { createNewUser } from '@/queries/Users';
 
 const CreateAccountPage = () => {
@@ -82,9 +82,9 @@ const CreateAccountPage = () => {
                 <p>We are excited to have you!</p>
                 <p className='paragraph-regular text-weight-medium'>
                   Already have an account?{' '}
-                  {/* <Link to="/" className='account-link'>
+                  <Link href={'/login-page'} className='account-link'>
                     Login
-                  </Link> */}
+                  </Link>
                 </p>
               </div>
               <div className='w-form'>

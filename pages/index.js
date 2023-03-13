@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import {useQuery} from 'react-query';
 import { getHomepagePosts } from '@/queries/queries';
-import { Link } from 'react-router-dom';
 
 const inter = Inter({ subsets: ['latin'] })
 
