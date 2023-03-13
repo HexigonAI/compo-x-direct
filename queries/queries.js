@@ -8,8 +8,6 @@ export const getHomepagePosts = async () => {
                 id
                 title
                 slug
-                featured_image
-                body
             }
         }
         `,
