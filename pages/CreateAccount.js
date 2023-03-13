@@ -1,25 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { publicData, test } from '@/lib/directus';
-// import { useDirectus } from 'react-directus'
+import { useMutation } from 'react-query';
+import setData from '../helpers/setData';
 
+import {useQuery} from 'react-query';
+import { getHomepagePosts } from '@/queries/queries';
 import { Link } from 'react-router-dom';
+import { createNewUser } from '@/queries/Users';
 
 const CreateAccountPage = () => {
+ 
+
   const [email, setEmail] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [accountName, setAccountName] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log(email, companyName, accountName, password);
+  const signUpMutation = useMutation((newUser) => {
+    setData(createNewUser, { data: newUser }, '/system').then((response) => {
+      console.log(response);
+    });
+  });
 
-  // useEffect(() => {
-  //   const fetchTodos = async () => {
-  //     const todos = (await directus.items('todos').readMany()).data;
-  //     setTodos(todos);
-  //   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  //   fetchTodos();
-  // }, [directus]);
+    console.log(e.target.password.value);
+
+    signUpMutation.mutate({
+      email: e.target.email.value,
+      password: e.target.password.value,
+      role: '953d6a4f-06e6-4c75-8ab6-5edf7eb01255',
+      status: 'active',
+      provider: '',
+    })
+
+  }
 
   return (
     <div>
@@ -72,11 +88,7 @@ const CreateAccountPage = () => {
                 </p>
               </div>
               <div className='w-form'>
-                <form
-                  id='email-form'
-                  name='email-form'
-                  data-name='Email Form'
-                  method='get'
+                <form noValidate onSubmit={(e) => handleSubmit(e)}
                 >
                   <div className='w-layout-grid grid-one-column'>
                     <div className='account-wrapper'>
@@ -85,62 +97,56 @@ const CreateAccountPage = () => {
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          type='text'
-                          value={accountName}
-                          onChange={e => setAccountName(e.target.value)}
+                          id="full-name"
+                          name="name"
+                          type="text"
+                          autoComplete="name"
+                          required
+                          placeholder="Full Name"
                           className='account-text-field w-input'
                           maxLength='256'
-                          name='Account-Name'
-                          data-name='Account Name'
-                          placeholder='Enter your Name'
-                          id='Account-Name'
                         />
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          type='text'
-                          value={companyName}
-                          onChange={e => setCompanyName(e.target.value)}
+                          id='company-name'
+                          name="company"
+                          type="text"
                           className='account-text-field w-input'
                           maxLength='256'
-                          name='Account-Company'
                           data-name='Account Company'
                           placeholder='Enter your company'
-                          id='Account-Company-3'
                         />
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          type='email'
-                          value={email}
-                          onChange={e => setEmail(e.target.value)}
+                          id="email-address"
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          required
+                          placeholder="Email address"
                           className='account-text-field w-input'
                           maxLength='256'
-                          name='Account-Email-2'
-                          data-name='Account Email 2'
-                          placeholder='Enter your email'
-                          id='Account-Email-2'
+                          
                         />
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          type='password'
-                          value={password}
-                          onChange={e => setPassword(e.target.value)}
                           className='account-text-field w-input'
-                          maxLength='256'
-                          name='Account-Password'
-                          data-name='Account Password'
-                          placeholder='Enter your password'
-                          id='Account-Password'
-                          required=''
+                          id="password"
+                          name="password"
+                          type="password"
+                          autoComplete="current-password"
+                          required
+                          placeholder="Password"
                         />
                         <input
                           type='submit'
                           value=''
                           data-wait='Please wait...'
                           className='account-submit w-button'
-                          onClick={publicData}
+                          // onClick={publicData}
                         />
                         <div className='account-arrow w-embed'>
                           <svg
