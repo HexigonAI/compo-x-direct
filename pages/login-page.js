@@ -15,8 +15,8 @@ const LoginPage = ({ csrfToken }) => {
 
     const res = await signIn('credentials', {
       redirect: false,
-      email: e.target.email.value,
-      password: e.target.password.value,
+      email: email,
+      password: password,
       callbackUrl: '/user-area',
     });
 
@@ -107,7 +107,7 @@ const LoginPage = ({ csrfToken }) => {
                   name='email-form'
                   data-name='Email Form'
                   method='get'
-                  onSubmit={(e) => handleSubmit(e)}
+                  onSubmit={handleSubmit}
                 >
                   <input
                     name='csrfToken'
