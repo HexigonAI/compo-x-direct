@@ -12,18 +12,17 @@ const LoginPage = ({ csrfToken }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
     const res = await signIn('credentials', {
       redirect: false,
       email: email,
       password: password,
-      callbackUrl: '/user-area',
+      callbackUrl: '/dashboard',
     });
 
     if (res?.error) {
-      setError(true);
+      setError(true)
     } else {
-      router.push('/user-area');
+      router.push('/dashboard');
     }
   };
 

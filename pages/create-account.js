@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { publicData, test } from '@/lib/directus';
 import { useMutation } from 'react-query';
 import setData from '../helpers/setData';
 import Link from 'next/link';
 
-import { useQuery } from 'react-query';
-import { getHomepagePosts } from '@/queries/queries';
 import { createNewUser } from '@/queries/Users';
 
 const CreateAccountPage = () => {

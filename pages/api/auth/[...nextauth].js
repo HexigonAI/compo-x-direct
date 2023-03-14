@@ -15,13 +15,13 @@ const options = {
           type: 'password',
         },
       },
+
       async authorize(credentials) {
         const payload = {
           email: credentials.email,
           password: credentials.password,
         };
-
-        const res = await fetch('https://compo.directus.app/admin/users', {
+        const res = await fetch('https://localhost:8055/auth/login', {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
@@ -37,19 +37,25 @@ const options = {
         }
 
         if (res.ok && user) {
+          console.log(user)
           return user;
+          
         } else {
           return null;
         }
       },
     }),
   ],
+
+
   session: {
     jwt: true,
   },
+
   jwt: {
     secret: 'SUPER_SECRET_JWT_SECRET',
   },
+
   callbacks: {
     async jwt({ token, user, account }) {
       if (account && user) {
@@ -70,9 +76,11 @@ const options = {
       return session;
     },
   },
+
   pages: {
-    signIn: '/user-area',
+    signIn: '/login-page',
   },
+
 };
 
 export default (req, res) => NextAuth(req, res, options);
