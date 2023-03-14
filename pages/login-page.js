@@ -12,7 +12,7 @@ const LoginPage = ({ csrfToken }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await signIn('credentials', {
+    const res = await signIn('Credentials', {
       redirect: false,
       email: email,
       password: password,
