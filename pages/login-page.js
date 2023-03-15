@@ -1,14 +1,30 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import { getCsrfToken, signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
-const LoginPage = () => {
+const LoginPage = ({ csrfToken }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+  const router = useRouter();
 
-  const handleUserSubmit = (e) => {
-    console.log(email, password)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    const res = await signIn('Credentials', {
+      redirect: false,
+      email: email,
+      password: password,
+      callbackUrl: '/dashboard',
+    });
+
+    if (res?.error) {
+      setError(true)
+    } else {
+      router.push('/dashboard');
+    }
+  };
 
   return (
     <div>
@@ -56,8 +72,14 @@ const LoginPage = () => {
               </div>
             </div>
             <div class='blurs'>
-              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea' className="gradient-orange"></div>
-              <div data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec' className="gradient-red"></div>
+              <div
+                data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea'
+                className='gradient-orange'
+              ></div>
+              <div
+                data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec'
+                className='gradient-red'
+              ></div>
               <div class='gradient-yellow-2'></div>
               <div class='gradient-red-2'></div>
               <div class='gradient-red-2'></div>
@@ -73,9 +95,9 @@ const LoginPage = () => {
                 <p>Please sign in to your account to continue.</p>
                 <p class='paragraph-regular text-weight-medium'>
                   Don't have an account?{' '}
-                  {/* <Link to='/create-account' class='account-link'>
+                  <Link href={'/create-account'} class='account-link'>
                     Create account
-                  </Link> */}
+                  </Link>
                 </p>
               </div>
               <div class='w-form'>
@@ -84,7 +106,13 @@ const LoginPage = () => {
                   name='email-form'
                   data-name='Email Form'
                   method='get'
+                  onSubmit={handleSubmit}
                 >
+                  <input
+                    name='csrfToken'
+                    type='hidden'
+                    defaultValue={csrfToken}
+                  />
                   <div class='w-layout-grid grid-one-column'>
                     <div class='account-wrapper'>
                       <div class='account-field-label'>
@@ -94,7 +122,7 @@ const LoginPage = () => {
                         <input
                           type='email'
                           value={email}
-                          onChange={e => setEmail(e.target.value)}
+                          onChange={(e) => setEmail(e.target.value)}
                           class='account-text-field w-input'
                           maxlength='256'
                           name='Account-Email'
@@ -107,7 +135,7 @@ const LoginPage = () => {
                         <input
                           type='password'
                           value={password}
-                          onChange={e => setPassword(e.target.value)}
+                          onChange={(e) => setPassword(e.target.value)}
                           class='account-text-field w-input'
                           maxlength='256'
                           name='Account-Password'
@@ -119,7 +147,6 @@ const LoginPage = () => {
                         <button
                           type='submit'
                           value=''
-                          onClick={event => handleUserSubmit()}
                           data-wait='Please wait...'
                           class='account-submit w-button'
                         />
@@ -149,6 +176,11 @@ const LoginPage = () => {
                       </div>
                     </div>
                   </div>
+                  {error && (
+                    <div className='bg-red-300 p-2 text-white rounded'>
+                      Wrong email or password
+                    </div>
+                  )}
                   <div class='account-seperator'>
                     <div class='account-line'></div>
                     <div class='text-block'>OR</div>
@@ -241,5 +273,15 @@ const LoginPage = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const token = await getCsrfToken(context)
+
+  return {
+    props: {
+      csrfToken: token,
+    },
+  };
+}
 
 export default LoginPage;

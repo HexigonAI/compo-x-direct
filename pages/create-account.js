@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { publicData, test } from '@/lib/directus';
+import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import setData from '../helpers/setData';
+import Link from 'next/link';
 
-import {useQuery} from 'react-query';
-import { getHomepagePosts } from '@/queries/queries';
-import { Link } from 'react-router-dom';
 import { createNewUser } from '@/queries/Users';
 
 const CreateAccountPage = () => {
- 
-
-  const [email, setEmail] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [accountName, setAccountName] = useState('');
-  const [password, setPassword] = useState('');
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
 
   const signUpMutation = useMutation((newUser) => {
     setData(createNewUser, { data: newUser }, '/system').then((response) => {
@@ -25,7 +18,19 @@ const CreateAccountPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(e.target.password.value);
+    if (!e.target.email.value || !e.target.email.value.includes('@')) {
+      setInvalidEmail(true);
+      return;
+    } else {
+      setInvalidEmail(false);
+    }
+
+    if (!e.target.password.value || e.target.password.value.trim().length < 8) {
+      setInvalidPassword(true);
+      return;
+    } else {
+      setInvalidPassword(false);
+    }
 
     signUpMutation.mutate({
       email: e.target.email.value,
@@ -33,9 +38,8 @@ const CreateAccountPage = () => {
       role: '953d6a4f-06e6-4c75-8ab6-5edf7eb01255',
       status: 'active',
       provider: '',
-    })
-
-  }
+    });
+  };
 
   return (
     <div>
@@ -52,25 +56,49 @@ const CreateAccountPage = () => {
           </div>
           <div className='section-foundation-header header-gradient-01 wf-section'>
             <div>
-            <div className="changelog-header-padding">
-                <div className="flighing-shape-wrapper">
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025d"  className="flighing-shape _07"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025e" className="flighing-shape _06"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025f"  className="flighing-shape _05"/>
-                  <div className="flighing-shape _04"></div>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240261"className="flighing-shape _03"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240262"  className="flighing-shape _02"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240263"className="flighing-shape"/>
+              <div className='changelog-header-padding'>
+                <div className='flighing-shape-wrapper'>
+                  <div
+                    data-w-id='d853071b-b591-b511-84ab-8026b424025d'
+                    className='flighing-shape _07'
+                  />
+                  <div
+                    data-w-id='d853071b-b591-b511-84ab-8026b424025e'
+                    className='flighing-shape _06'
+                  />
+                  <div
+                    data-w-id='d853071b-b591-b511-84ab-8026b424025f'
+                    className='flighing-shape _05'
+                  />
+                  <div className='flighing-shape _04'></div>
+                  <div
+                    data-w-id='d853071b-b591-b511-84ab-8026b4240261'
+                    className='flighing-shape _03'
+                  />
+                  <div
+                    data-w-id='d853071b-b591-b511-84ab-8026b4240262'
+                    className='flighing-shape _02'
+                  />
+                  <div
+                    data-w-id='d853071b-b591-b511-84ab-8026b4240263'
+                    className='flighing-shape'
+                  />
                 </div>
               </div>
             </div>
-              <div className="blurs">
-            <div data-w-id="d853071b-b591-b511-84ab-8026b4240265" className="gradient-orange"/>
-            <div data-w-id="d853071b-b591-b511-84ab-8026b4240266" className="gradient-red"/>
-           <div className="gradient-yellow-2"/>
-              <div className="gradient-red-2"/>
-              <div className="gradient-red-2"/>
-              <div className="gradient-red-2"/>
+            <div className='blurs'>
+              <div
+                data-w-id='d853071b-b591-b511-84ab-8026b4240265'
+                className='gradient-orange'
+              />
+              <div
+                data-w-id='d853071b-b591-b511-84ab-8026b4240266'
+                className='gradient-red'
+              />
+              <div className='gradient-yellow-2' />
+              <div className='gradient-red-2' />
+              <div className='gradient-red-2' />
+              <div className='gradient-red-2' />
             </div>
           </div>
         </div>
@@ -82,14 +110,13 @@ const CreateAccountPage = () => {
                 <p>We are excited to have you!</p>
                 <p className='paragraph-regular text-weight-medium'>
                   Already have an account?{' '}
-                  {/* <Link to="/" className='account-link'>
+                  <Link href={'/login-page'} className='account-link'>
                     Login
-                  </Link> */}
+                  </Link>
                 </p>
               </div>
               <div className='w-form'>
-                <form noValidate onSubmit={(e) => handleSubmit(e)}
-                >
+                <form noValidate onSubmit={(e) => handleSubmit(e)}>
                   <div className='w-layout-grid grid-one-column'>
                     <div className='account-wrapper'>
                       <div className='account-field-label'>
@@ -97,12 +124,12 @@ const CreateAccountPage = () => {
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          id="full-name"
-                          name="name"
-                          type="text"
-                          autoComplete="name"
+                          id='full-name'
+                          name='name'
+                          type='text'
+                          autoComplete='name'
                           required
-                          placeholder="Full Name"
+                          placeholder='Full Name'
                           className='account-text-field w-input'
                           maxLength='256'
                         />
@@ -110,8 +137,8 @@ const CreateAccountPage = () => {
                       <div className='account-icon-wrapper'>
                         <input
                           id='company-name'
-                          name="company"
-                          type="text"
+                          name='company'
+                          type='text'
                           className='account-text-field w-input'
                           maxLength='256'
                           data-name='Account Company'
@@ -120,26 +147,30 @@ const CreateAccountPage = () => {
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          id="email-address"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
+                          id='email-address'
+                          name='email'
+                          type='email'
+                          autoComplete='email'
                           required
-                          placeholder="Email address"
+                          placeholder='Email address'
                           className='account-text-field w-input'
                           maxLength='256'
-                          
                         />
                       </div>
+                      {invalidEmail ? (
+                        <p style={{ color: 'red' }}>
+                          Please enter a valid email
+                        </p>
+                      ) : null}
                       <div className='account-icon-wrapper'>
                         <input
                           className='account-text-field w-input'
-                          id="password"
-                          name="password"
-                          type="password"
-                          autoComplete="current-password"
+                          id='password'
+                          name='password'
+                          type='password'
+                          autoComplete='current-password'
                           required
-                          placeholder="Password"
+                          placeholder='Password'
                         />
                         <input
                           type='submit'
@@ -174,6 +205,11 @@ const CreateAccountPage = () => {
                       </div>
                     </div>
                   </div>
+                  {invalidPassword ? (
+                    <p style={{ color: 'red' }}>
+                      Password must be at least 8 characters long
+                    </p>
+                  ) : null}
                   <div className='account-seperator'>
                     <div className='account-line'></div>
                     <div className='text-block'>OR</div>
