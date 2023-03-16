@@ -1,39 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { publicData, test } from '@/lib/directus';
-import { useMutation } from 'react-query';
-import setData from '../helpers/setData';
+import { useState } from 'react';
+import Link from 'next/link';
+import { getCsrfToken, signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
-import {useQuery} from 'react-query';
-import { getHomepagePosts } from '@/queries/queries';
-import { Link } from 'react-router-dom';
-import { createNewUser } from '@/queries/Users';
-
-const CreateAccountPage = () => {
- 
-
+const LoginPage = ({ csrfToken }) => {
   const [email, setEmail] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [accountName, setAccountName] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+  const router = useRouter();
 
-  const signUpMutation = useMutation((newUser) => {
-    setData(createNewUser, { data: newUser }, '/system').then((response) => {
-      console.log(response);
-    });
-  });
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(e.target.password.value);
-
-    signUpMutation.mutate({
+    const res = await signIn('credentials', {
+      redirect: false,
       email: e.target.email.value,
       password: e.target.password.value,
-      role: '953d6a4f-06e6-4c75-8ab6-5edf7eb01255',
-      status: 'active',
-      provider: '',
-    })
+      callbackUrl: `/dashboard`,
+    });
+
+    if (res?.error) {
+      setError(true);
+    } else {
+      router.push('/dashboard');
+    }
 
   }
 
@@ -52,25 +42,49 @@ const CreateAccountPage = () => {
           </div>
           <div className='section-foundation-header header-gradient-01 wf-section'>
             <div>
-            <div className="changelog-header-padding">
-                <div className="flighing-shape-wrapper">
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025d"  className="flighing-shape _07"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025e" className="flighing-shape _06"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b424025f"  className="flighing-shape _05"/>
-                  <div className="flighing-shape _04"></div>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240261"className="flighing-shape _03"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240262"  className="flighing-shape _02"/>
-                  <div data-w-id="d853071b-b591-b511-84ab-8026b4240263"className="flighing-shape"/>
+              <div className='changelog-header-padding'>
+                <div className='flighing-shape-wrapper'>
+                  <div
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1de'
+                    className='flighing-shape _07'
+                  ></div>
+                  <div
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1df'
+                    className='flighing-shape _06'
+                  ></div>
+                  <div
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e0'
+                    className='flighing-shape _05'
+                  ></div>
+                  <div className='flighing-shape _04'></div>
+                  <div
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e2'
+                    className='flighing-shape _03'
+                  ></div>
+                  <div
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e3'
+                    className='flighing-shape _02'
+                  ></div>
+                  <div
+                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e4'
+                    className='flighing-shape'
+                  ></div>
                 </div>
               </div>
             </div>
-              <div className="blurs">
-            <div data-w-id="d853071b-b591-b511-84ab-8026b4240265" className="gradient-orange"/>
-            <div data-w-id="d853071b-b591-b511-84ab-8026b4240266" className="gradient-red"/>
-           <div className="gradient-yellow-2"/>
-              <div className="gradient-red-2"/>
-              <div className="gradient-red-2"/>
-              <div className="gradient-red-2"/>
+            <div className='blurs'>
+              <div
+                data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea'
+                className='gradient-orange'
+              ></div>
+              <div
+                data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec'
+                className='gradient-red'
+              ></div>
+              <div className='gradient-yellow-2'></div>
+              <div className='gradient-red-2'></div>
+              <div className='gradient-red-2'></div>
+              <div className='gradient-red-2'></div>
             </div>
           </div>
         </div>
@@ -78,45 +92,32 @@ const CreateAccountPage = () => {
           <div className='account-card-dark'>
             <div>
               <div className='account-header-wrapper'>
-                <h2 className='account-heading'>Get Started</h2>
-                <p>We are excited to have you!</p>
+                <h2 className='account-heading'>Welcome Back</h2>
+                <p>Please sign in to your account to continue.</p>
                 <p className='paragraph-regular text-weight-medium'>
-                  Already have an account?{' '}
-                  {/* <Link to="/" className='account-link'>
-                    Login
-                  </Link> */}
+                  Don't have an account?{' '}
+                  <Link href={'/create-account'} className='account-link'>
+                    Create account
+                  </Link>
                 </p>
               </div>
               <div className='w-form'>
-                <form noValidate onSubmit={(e) => handleSubmit(e)}
+                <form
+                  id='email-form'
+                  name='email-form'
+                  data-name='Email Form'
+                  method='get'
+                  onSubmit={handleSubmit}
                 >
+                  <input
+                    name='csrfToken'
+                    type='hidden'
+                    defaultValue={csrfToken}
+                  />
                   <div className='w-layout-grid grid-one-column'>
                     <div className='account-wrapper'>
                       <div className='account-field-label'>
-                        Enter your Name, Company, Email and Password
-                      </div>
-                      <div className='account-icon-wrapper'>
-                        <input
-                          id="full-name"
-                          name="name"
-                          type="text"
-                          autoComplete="name"
-                          required
-                          placeholder="Full Name"
-                          className='account-text-field w-input'
-                          maxLength='256'
-                        />
-                      </div>
-                      <div className='account-icon-wrapper'>
-                        <input
-                          id='company-name'
-                          name="company"
-                          type="text"
-                          className='account-text-field w-input'
-                          maxLength='256'
-                          data-name='Account Company'
-                          placeholder='Enter your company'
-                        />
+                        Enter you Email and Password
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
@@ -125,28 +126,25 @@ const CreateAccountPage = () => {
                           type="email"
                           autoComplete="email"
                           required
-                          placeholder="Email address"
                           className='account-text-field w-input'
                           maxLength='256'
-                          
+                          placeholder='Enter your email'
                         />
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          className='account-text-field w-input'
                           id="password"
                           name="password"
                           type="password"
                           autoComplete="current-password"
                           required
-                          placeholder="Password"
+                          className='account-text-field w-input'
+                          placeholder='Enter your password'
                         />
-                        <input
+                        <button
                           type='submit'
-                          value=''
                           data-wait='Please wait...'
                           className='account-submit w-button'
-                          // onClick={publicData}
                         />
                         <div className='account-arrow w-embed'>
                           <svg
@@ -174,6 +172,11 @@ const CreateAccountPage = () => {
                       </div>
                     </div>
                   </div>
+                  {error && (
+                    <div className='bg-red-300 p-2 text-white rounded'>
+                      Wrong email or password
+                    </div>
+                  )}
                   <div className='account-seperator'>
                     <div className='account-line'></div>
                     <div className='text-block'>OR</div>
@@ -182,7 +185,7 @@ const CreateAccountPage = () => {
                   <div className='w-layout-grid account-social-grid'>
                     <div className='account-icon-wrapper'>
                       <a
-                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-6c243ac4'
+                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-5c243ab6'
                         href='#'
                         className='account-social-button w-inline-block'
                       >
@@ -267,4 +270,12 @@ const CreateAccountPage = () => {
   );
 };
 
-export default CreateAccountPage;
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  };
+}
+
+export default LoginPage;
