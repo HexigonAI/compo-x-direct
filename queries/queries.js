@@ -1,13 +1,12 @@
 import fetchData from "../helpers/fetchData";
 
-export const getHomepagePosts = async () => {
+export const getPosts = async () => {
     const data = await fetchData(
         `
-        query HomepagePosts {
+        query getPosts {
             posts {
                 id
                 title
-                slug
             }
         }
         `,
@@ -15,6 +14,6 @@ export const getHomepagePosts = async () => {
             variables: {}
         }
     )
-
     return data.data.posts
 }
+
