@@ -22,14 +22,6 @@ const Dashboard = () => {
   //   return null;
   // }
 
-  // const {
-  //   status,
-  //   data: posts,
-  //   error,
-  //   isFetching,
-  //   isSuccess,
-  // } = useQuery('posts', async () => await getPosts());
-
   const {
     status,
     data: posts,
