@@ -1,31 +1,48 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useMutation } from 'react-query';
+import setData from '../helpers/setData';
 import Link from 'next/link';
-import { getCsrfToken, signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
 
-const LoginPage = ({ csrfToken }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
-  const router = useRouter();
+import { createNewUser } from '@/queries/Users';
 
-  const handleSubmit = async (e) => {
+const CreateAccountPage = () => {
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
+
+  const signUpMutation = useMutation((newUser) => {
+    setData(createNewUser, { data: newUser }, '/system').then((response) => {
+      console.log(response);
+    });
+  });
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const res = await signIn('credentials', {
-      redirect: false,
-      email: e.target.email.value,
-      password: e.target.password.value,
-      callbackUrl: `/dashboard`,
-    });
-
-    if (res?.error) {
-      setError(true);
+    if (!e.target.email.value || !e.target.email.value.includes('@')) {
+      setInvalidEmail(true);
+      return;
     } else {
-      router.push('/dashboard');
+      setInvalidEmail(false);
     }
 
-  }
+    if (!e.target.password.value || e.target.password.value.trim().length < 8) {
+      setInvalidPassword(true);
+      return;
+    } else {
+      setInvalidPassword(false);
+    }
+
+    signUpMutation.mutate({
+      first_name: e.target.name.value.split(' ').slice(0, -1).join(' '),
+      last_name: e.target.name.value.split(' ').slice(-1).join(' '),
+      company: e.target.company.value,
+      email: e.target.email.value,
+      password: e.target.password.value,
+      role: '953d6a4f-06e6-4c75-8ab6-5edf7eb01255',
+      status: 'active',
+      provider: 'default',
+    });
+  };
 
   return (
     <div>
@@ -45,46 +62,46 @@ const LoginPage = ({ csrfToken }) => {
               <div className='changelog-header-padding'>
                 <div className='flighing-shape-wrapper'>
                   <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1de'
+                    data-w-id='d853071b-b591-b511-84ab-8026b424025d'
                     className='flighing-shape _07'
-                  ></div>
+                  />
                   <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1df'
+                    data-w-id='d853071b-b591-b511-84ab-8026b424025e'
                     className='flighing-shape _06'
-                  ></div>
+                  />
                   <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e0'
+                    data-w-id='d853071b-b591-b511-84ab-8026b424025f'
                     className='flighing-shape _05'
-                  ></div>
+                  />
                   <div className='flighing-shape _04'></div>
                   <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e2'
+                    data-w-id='d853071b-b591-b511-84ab-8026b4240261'
                     className='flighing-shape _03'
-                  ></div>
+                  />
                   <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e3'
+                    data-w-id='d853071b-b591-b511-84ab-8026b4240262'
                     className='flighing-shape _02'
-                  ></div>
+                  />
                   <div
-                    data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e4'
+                    data-w-id='d853071b-b591-b511-84ab-8026b4240263'
                     className='flighing-shape'
-                  ></div>
+                  />
                 </div>
               </div>
             </div>
             <div className='blurs'>
               <div
-                data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea'
+                data-w-id='d853071b-b591-b511-84ab-8026b4240265'
                 className='gradient-orange'
-              ></div>
+              />
               <div
-                data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec'
+                data-w-id='d853071b-b591-b511-84ab-8026b4240266'
                 className='gradient-red'
-              ></div>
-              <div className='gradient-yellow-2'></div>
-              <div className='gradient-red-2'></div>
-              <div className='gradient-red-2'></div>
-              <div className='gradient-red-2'></div>
+              />
+              <div className='gradient-yellow-2' />
+              <div className='gradient-red-2' />
+              <div className='gradient-red-2' />
+              <div className='gradient-red-2' />
             </div>
           </div>
         </div>
@@ -92,57 +109,75 @@ const LoginPage = ({ csrfToken }) => {
           <div className='account-card-dark'>
             <div>
               <div className='account-header-wrapper'>
-                <h2 className='account-heading'>Welcome Back</h2>
-                <p>Please sign in to your account to continue.</p>
+                <h2 className='account-heading'>Get Started</h2>
+                <p>We are excited to have you!</p>
                 <p className='paragraph-regular text-weight-medium'>
-                  Don't have an account?{' '}
-                  <Link href={'/create-account'} className='account-link'>
-                    Create account
+                  Already have an account?{' '}
+                  <Link href={'/login-page'} className='account-link'>
+                    Login
                   </Link>
                 </p>
               </div>
               <div className='w-form'>
-                <form
-                  id='email-form'
-                  name='email-form'
-                  data-name='Email Form'
-                  method='get'
-                  onSubmit={handleSubmit}
-                >
-                  <input
-                    name='csrfToken'
-                    type='hidden'
-                    defaultValue={csrfToken}
-                  />
+                <form noValidate onSubmit={(e) => handleSubmit(e)}>
                   <div className='w-layout-grid grid-one-column'>
                     <div className='account-wrapper'>
                       <div className='account-field-label'>
-                        Enter you Email and Password
+                        Enter your Name, Company, Email and Password
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          id="email-address"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
+                          id='full-name'
+                          name='name'
+                          type='text'
+                          autoComplete='name'
                           required
+                          placeholder='Full Name'
                           className='account-text-field w-input'
                           maxLength='256'
-                          placeholder='Enter your email'
                         />
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          autoComplete="current-password"
-                          required
+                          id='company-name'
+                          name='company'
+                          type='text'
                           className='account-text-field w-input'
-                          placeholder='Enter your password'
+                          maxLength='256'
+                          data-name='Account Company'
+                          placeholder='Enter your company'
                         />
-                        <button
+                      </div>
+                      <div className='account-icon-wrapper'>
+                        <input
+                          id='email-address'
+                          name='email'
+                          type='email'
+                          autoComplete='email'
+                          required
+                          placeholder='Email address'
+                          className='account-text-field w-input'
+                          maxLength='256'
+                        />
+                      </div>
+                      {invalidEmail ? (
+                        <p style={{ color: 'red' }}>
+                          Please enter a valid email
+                        </p>
+                      ) : null}
+                      <div className='account-icon-wrapper'>
+                        <input
+                          className='account-text-field w-input'
+                          id='password'
+                          name='password'
+                          type='password'
+                          autoComplete='current-password'
+                          required
+                          placeholder='Password'
+                        />
+                        <input
                           type='submit'
+                          value=''
                           data-wait='Please wait...'
                           className='account-submit w-button'
                         />
@@ -172,11 +207,11 @@ const LoginPage = ({ csrfToken }) => {
                       </div>
                     </div>
                   </div>
-                  {error && (
-                    <div className='bg-red-300 p-2 text-white rounded'>
-                      Wrong email or password
-                    </div>
-                  )}
+                  {invalidPassword ? (
+                    <p style={{ color: 'red' }}>
+                      Password must be at least 8 characters long
+                    </p>
+                  ) : null}
                   <div className='account-seperator'>
                     <div className='account-line'></div>
                     <div className='text-block'>OR</div>
@@ -185,7 +220,7 @@ const LoginPage = ({ csrfToken }) => {
                   <div className='w-layout-grid account-social-grid'>
                     <div className='account-icon-wrapper'>
                       <a
-                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-5c243ab6'
+                        id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-6c243ac4'
                         href='#'
                         className='account-social-button w-inline-block'
                       >
@@ -270,12 +305,4 @@ const LoginPage = ({ csrfToken }) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
-  };
-}
-
-export default LoginPage;
+export default CreateAccountPage;

@@ -22,7 +22,7 @@ const options = {
           email: credentials.email,
           password: credentials.password,
         };
-        const res = await fetch('https://localhost:8055/auth/login', {
+        const res = await fetch('https://compo.directus.app/auth/login', {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
