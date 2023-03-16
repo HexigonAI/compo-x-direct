@@ -12,66 +12,67 @@ const LoginPage = ({ csrfToken }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await signIn('Credentials', {
+    const res = await signIn('credentials', {
       redirect: false,
-      email: email,
-      password: password,
-      callbackUrl: '/dashboard',
+      email: e.target.email.value,
+      password: e.target.password.value,
+      callbackUrl: `/dashboard`,
     });
 
     if (res?.error) {
-      setError(true)
+      setError(true);
     } else {
       router.push('/dashboard');
     }
-  };
+
+  }
 
   return (
     <div>
-      <div class='account-section-dark'>
-        <div class='bg-animation'>
-          <div class='preloader'>
+      <div className='account-section-dark'>
+        <div className='bg-animation'>
+          <div className='preloader'>
             <img
               src='images/Union-1.svg'
               width='50'
               height='Auto'
               alt=''
-              class='preloader-logo'
+              className='preloader-logo'
             />
           </div>
-          <div class='section-foundation-header header-gradient-01 wf-section'>
+          <div className='section-foundation-header header-gradient-01 wf-section'>
             <div>
-              <div class='changelog-header-padding'>
-                <div class='flighing-shape-wrapper'>
+              <div className='changelog-header-padding'>
+                <div className='flighing-shape-wrapper'>
                   <div
                     data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1de'
-                    class='flighing-shape _07'
+                    className='flighing-shape _07'
                   ></div>
                   <div
                     data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1df'
-                    class='flighing-shape _06'
+                    className='flighing-shape _06'
                   ></div>
                   <div
                     data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e0'
-                    class='flighing-shape _05'
+                    className='flighing-shape _05'
                   ></div>
-                  <div class='flighing-shape _04'></div>
+                  <div className='flighing-shape _04'></div>
                   <div
                     data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e2'
-                    class='flighing-shape _03'
+                    className='flighing-shape _03'
                   ></div>
                   <div
                     data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e3'
-                    class='flighing-shape _02'
+                    className='flighing-shape _02'
                   ></div>
                   <div
                     data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1e4'
-                    class='flighing-shape'
+                    className='flighing-shape'
                   ></div>
                 </div>
               </div>
             </div>
-            <div class='blurs'>
+            <div className='blurs'>
               <div
                 data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ea'
                 className='gradient-orange'
@@ -80,27 +81,27 @@ const LoginPage = ({ csrfToken }) => {
                 data-w-id='1df99637-cdda-67a4-3ff4-cd53b648b1ec'
                 className='gradient-red'
               ></div>
-              <div class='gradient-yellow-2'></div>
-              <div class='gradient-red-2'></div>
-              <div class='gradient-red-2'></div>
-              <div class='gradient-red-2'></div>
+              <div className='gradient-yellow-2'></div>
+              <div className='gradient-red-2'></div>
+              <div className='gradient-red-2'></div>
+              <div className='gradient-red-2'></div>
             </div>
           </div>
         </div>
-        <div class='account-wrapper-dark'>
-          <div class='account-card-dark'>
+        <div className='account-wrapper-dark'>
+          <div className='account-card-dark'>
             <div>
-              <div class='account-header-wrapper'>
-                <h2 class='account-heading'>Welcome Back</h2>
+              <div className='account-header-wrapper'>
+                <h2 className='account-heading'>Welcome Back</h2>
                 <p>Please sign in to your account to continue.</p>
-                <p class='paragraph-regular text-weight-medium'>
+                <p className='paragraph-regular text-weight-medium'>
                   Don't have an account?{' '}
-                  <Link href={'/create-account'} class='account-link'>
+                  <Link href={'/create-account'} className='account-link'>
                     Create account
                   </Link>
                 </p>
               </div>
-              <div class='w-form'>
+              <div className='w-form'>
                 <form
                   id='email-form'
                   name='email-form'
@@ -113,48 +114,43 @@ const LoginPage = ({ csrfToken }) => {
                     type='hidden'
                     defaultValue={csrfToken}
                   />
-                  <div class='w-layout-grid grid-one-column'>
-                    <div class='account-wrapper'>
-                      <div class='account-field-label'>
+                  <div className='w-layout-grid grid-one-column'>
+                    <div className='account-wrapper'>
+                      <div className='account-field-label'>
                         Enter you Email and Password
                       </div>
-                      <div class='account-icon-wrapper'>
+                      <div className='account-icon-wrapper'>
                         <input
-                          type='email'
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          class='account-text-field w-input'
-                          maxlength='256'
-                          name='Account-Email'
-                          data-name='Account Email'
+                          id="email-address"
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          required
+                          className='account-text-field w-input'
+                          maxLength='256'
                           placeholder='Enter your email'
-                          id='Account-Email'
                         />
                       </div>
-                      <div class='account-icon-wrapper'>
+                      <div className='account-icon-wrapper'>
                         <input
-                          type='password'
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          class='account-text-field w-input'
-                          maxlength='256'
-                          name='Account-Password'
-                          data-name='Account Password'
+                          id="password"
+                          name="password"
+                          type="password"
+                          autoComplete="current-password"
+                          required
+                          className='account-text-field w-input'
                           placeholder='Enter your password'
-                          id='Account-Password'
-                          required=''
                         />
                         <button
                           type='submit'
-                          value=''
                           data-wait='Please wait...'
-                          class='account-submit w-button'
+                          className='account-submit w-button'
                         />
-                        <div class='account-arrow w-embed'>
+                        <div className='account-arrow w-embed'>
                           <svg
                             width='40'
                             height='40'
-                            viewbox='0 0 40 40'
+                            viewBox='0 0 40 40'
                             fill='none'
                             xmlns='http://www.w3.org/2000/svg'
                           >
@@ -167,9 +163,9 @@ const LoginPage = ({ csrfToken }) => {
                             <path
                               d='M18.0762 24.6281L22.7242 20.0001L18.0762 15.3721'
                               stroke='white'
-                              stroke-width='1.5'
-                              stroke-linecap='round'
-                              stroke-linejoin='round'
+                              strokeWidth='1.5'
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
                             ></path>
                           </svg>
                         </div>
@@ -181,25 +177,25 @@ const LoginPage = ({ csrfToken }) => {
                       Wrong email or password
                     </div>
                   )}
-                  <div class='account-seperator'>
-                    <div class='account-line'></div>
-                    <div class='text-block'>OR</div>
-                    <div class='account-line'></div>
+                  <div className='account-seperator'>
+                    <div className='account-line'></div>
+                    <div className='text-block'>OR</div>
+                    <div className='account-line'></div>
                   </div>
-                  <div class='w-layout-grid account-social-grid'>
-                    <div class='account-icon-wrapper'>
+                  <div className='w-layout-grid account-social-grid'>
+                    <div className='account-icon-wrapper'>
                       <a
                         id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-5c243ab6'
                         href='#'
-                        class='account-social-button w-inline-block'
+                        className='account-social-button w-inline-block'
                       >
                         <div>Continue with Google</div>
                       </a>
-                      <div class='account-logo w-embed'>
+                      <div className='account-logo w-embed'>
                         <svg
                           width='32'
                           height='32'
-                          viewbox='0 0 32 32'
+                          viewBox='0 0 32 32'
                           fill='none'
                           xmlns='http://www.w3.org/2000/svg'
                         >
@@ -224,46 +220,46 @@ const LoginPage = ({ csrfToken }) => {
                     </div>
                   </div>
                 </form>
-                <div class='contact-success-message w-form-done'>
+                <div className='contact-success-message w-form-done'>
                   <div>Thank you! Your submission has been received!</div>
                 </div>
-                <div class='w-form-fail'>
+                <div className='w-form-fail'>
                   <div>
                     Oops! Something went wrong while submitting the form.
                   </div>
                 </div>
               </div>
-              <div class='account-caption'>
+              <div className='account-caption'>
                 This site is protected by reCAPTCHA and the Hexigon&#x27;s{' '}
-                <a href='#' class='account-link-small'>
+                <a href='#' className='account-link-small'>
                   Privacy Policy
                 </a>{' '}
                 and Terms of Service apply as an Hexigon AI, Inc. Product.
               </div>
             </div>
           </div>
-          <div class='div-block-9'>
+          <div className='div-block-9'>
             <img
               src='images/hexigon-ai-logo.svg'
               loading='lazy'
               width='100'
               alt=''
-              class='hexigon-ai-logo'
+              className='hexigon-ai-logo'
             />
-            <div class='account-link-row'>
-              <a href='http://hexigon.ai' class='account-link-side'>
+            <div className='account-link-row'>
+              <a href='http://hexigon.ai' className='account-link-side'>
                 Go to Hexigon.ai
               </a>
-              <div class='account-dot'></div>
-              <a href='http://hexigon.ai/support' class='account-link-side'>
+              <div className='account-dot'></div>
+              <a href='http://hexigon.ai/support' className='account-link-side'>
                 Compo Support
               </a>
-              <div class='account-dot'></div>
-              <a href='http://hexigon.ai/terms' class='account-link-side'>
+              <div className='account-dot'></div>
+              <a href='http://hexigon.ai/terms' className='account-link-side'>
                 Terms
               </a>
-              <div class='account-dot'></div>
-              <a href='http://hexigon.ai/privacy' class='account-link-side'>
+              <div className='account-dot'></div>
+              <a href='http://hexigon.ai/privacy' className='account-link-side'>
                 Privacy
               </a>
             </div>
@@ -275,11 +271,9 @@ const LoginPage = ({ csrfToken }) => {
 };
 
 export async function getServerSideProps(context) {
-  const token = await getCsrfToken(context)
-
   return {
     props: {
-      csrfToken: token,
+      csrfToken: await getCsrfToken(context),
     },
   };
 }
