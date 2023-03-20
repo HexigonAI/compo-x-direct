@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProjectCard = ({projectTitle, icon, route}) => {
+const ProjectCard = ({projectTitle, icon, route, owner}) => {
   return (
     <div>
     {/* TODO add a route prop for respective projectID */}
@@ -16,7 +16,7 @@ const ProjectCard = ({projectTitle, icon, route}) => {
             <h6 class='mb-0'>
               <strong>{projectTitle}</strong>
             </h6>
-            <div class='hint'>Free Server</div>
+            <div class='hint'>{owner}</div>
           </div>
           <div class='label-item'>Active</div>
         </div>

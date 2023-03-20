@@ -1,63 +1,50 @@
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 import { useQuery } from 'react-query';
-import { getPosts } from '@/queries/queries';
 
+import { getProjects } from '@/queries/queries';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import NavBar from '@/components/NavBar';
 
+// TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
+const projectCardProps = {
+  title: 'Compo X Components',
+  icon: 'images/compo-logo.svg',
+};
+
+const newProjectProps = {
+  title: 'Start a New Project',
+  remainingProjects: 2,
+  icon: 'images/Vector.svg',
+};
+
+const newServerProps = {
+  title: 'Start a New Server',
+  remainingProjects: 3,
+  icon: 'images/energy-usage-window.svg',
+};
+
+const navBarProps = {
+  avatar: 'images/tayler-profile.png',
+};
+
 const Dashboard = () => {
-  // This authenticates the page so guests cannot access these pages.
-  // const router = useRouter();
 
-  // const { data: session, status} = useSession({
-  //   required: true,
-  //   onUnauthenticated() {
-  //     router.push('/login-page');
-  //   }
-  // });
+  const { data: projects, isSuccess } = useQuery(
+    'posts',
+    async () => await getProjects()
+  );
 
-  // if (status !== 'authenticated') {
-  //   return null;
-  // }
-
-  // const {
-  //   status,
-  //   data: posts,
-  //   error,
-  //   isFetching,
-  //   isSuccess,
-  // } = useQuery('posts', async () => await getPosts());
-
-  const {
-    status,
-    data: posts,
-    error,
-    isFetching,
-    isSuccess,
-  } = useQuery('posts', async () => await getPosts());
-
-  // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
-  const projectCardProps = {
-    title: 'Compo X Components',
-    icon: 'images/compo-logo.svg',
-  };
-
-  const newProjectProps = {
-    title: 'Start a New Project',
-    remainingProjects: 2,
-    icon: 'images/Vector.svg',
-  };
-
-  const newServerProps = {
-    title: 'Start a New Server',
-    remainingProjects: 3,
-    icon: 'images/energy-usage-window.svg',
-  };
-
-  const navBarProps = {
-    avatar: 'images/tayler-profile.png',
+  const renderedProjects = () => {
+    if (isSuccess && projects) {
+      return projects.map((project) => (
+        <ProjectCard
+          key={project.id}
+          projectTitle={project.title}
+          owner={project.owner}
+        />
+      ));
+    }
   };
 
   return (
@@ -91,10 +78,9 @@ const Dashboard = () => {
                 projectTitle={projectCardProps.title}
                 icon={projectCardProps.icon}
               />
-              {isSuccess &&
-                posts.map((post) => (
-                  <ProjectCard key={post.id} projectTitle={post.title} />
-                ))}
+
+              {renderedProjects()}
+
               <RoutingCard
                 title={newProjectProps.title}
                 icon={newProjectProps.icon}
@@ -112,5 +98,21 @@ const Dashboard = () => {
     </>
   );
 };
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  console.log(context)
+    if (!session) {
+      return {
+        redirect: {
+          destination: '/login-page',
+          permanent: false,
+        }
+      }
+    }
+    return {
+      props: {session}
+    }
+}
 
 export default Dashboard;

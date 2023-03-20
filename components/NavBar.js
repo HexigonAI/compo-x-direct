@@ -1,6 +1,13 @@
 import React from 'react';
+import { signOut, useSession } from 'next-auth/react';
 
 const NavBar = ({ userAvatar }) => {
+  // const { data: session } = useSession;
+
+  const handleLogout = () => {
+    signOut();
+  };
+
   return (
     <div class='nav wf-section'>
       <div
@@ -19,11 +26,24 @@ const NavBar = ({ userAvatar }) => {
           <div class='site-nav-search'></div>
           <nav role='navigation' class='nav-menu w-nav-menu'>
             <div class='nav-mobile'>
-              {/* TODO add a link or make this a button with a dropdown. Functionality of this button is TBD */}
-                <img src={userAvatar} className='avatar'/>
+              <p
+                href='http://hexigon.ai/support'
+                className='nav-link last w-nav-link'
+                style={{ cursor: 'pointer' }}
+                onClick={handleLogout}
+              >
+                Logout
+              </p>
 
+              <img src={userAvatar} className='avatar' />
             </div>
           </nav>
+          {/* <nav role='navigation' class='nav-menu w-nav-menu'>
+            <div class='nav-mobile'>
+              TODO add a link or make this a button with a dropdown. Functionality of this button is TBD
+              <img src={userAvatar} className='avatar' />
+            </div>
+          </nav> */}
           <div class='menu-button w-nav-button'>
             <div class='w-icon-nav-menu'></div>
           </div>
