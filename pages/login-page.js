@@ -4,12 +4,10 @@ import { getCsrfToken, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 const LoginPage = ({ csrfToken }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     const res = await signIn('credentials', {
@@ -107,7 +105,7 @@ const LoginPage = ({ csrfToken }) => {
                   name='email-form'
                   data-name='Email Form'
                   method='get'
-                  onSubmit={handleSubmit}
+                  onSubmit={handleLogin}
                 >
                   <input
                     name='csrfToken'
