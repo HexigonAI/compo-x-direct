@@ -31,7 +31,7 @@ const navBarProps = {
 const Dashboard = () => {
 
   const { data: projects, isSuccess } = useQuery(
-    'posts',
+    'projects',
     async () => await getProjects()
   );
 
