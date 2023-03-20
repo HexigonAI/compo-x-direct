@@ -33,11 +33,14 @@ const CreateAccountPage = () => {
     }
 
     signUpMutation.mutate({
+      first_name: e.target.name.value.split(' ').slice(0, -1).join(' '),
+      last_name: e.target.name.value.split(' ').slice(-1).join(' '),
+      company: e.target.company.value,
       email: e.target.email.value,
       password: e.target.password.value,
       role: '953d6a4f-06e6-4c75-8ab6-5edf7eb01255',
       status: 'active',
-      provider: '',
+      provider: 'default',
     });
   };
 
@@ -177,7 +180,6 @@ const CreateAccountPage = () => {
                           value=''
                           data-wait='Please wait...'
                           className='account-submit w-button'
-                          // onClick={publicData}
                         />
                         <div className='account-arrow w-embed'>
                           <svg

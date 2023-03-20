@@ -94,7 +94,7 @@ const LoginPage = ({ csrfToken }) => {
                 <p>Please sign in to your account to continue.</p>
                 <p className='paragraph-regular text-weight-medium'>
                   Don't have an account?{' '}
-                  <Link href={'/create-account'} className='account-link'>
+                  <Link href={'/'} className='account-link'>
                     Create account
                   </Link>
                 </p>
