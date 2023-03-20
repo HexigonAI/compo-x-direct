@@ -12,7 +12,17 @@ const projectCardProps = {
   icon: 'images/compo-logo.svg',
 };
 
+const newProjectProps = {
+  title: 'Start a New Project',
+  remainingProjects: 2,
+  icon: 'images/Vector.svg',
+};
 
+const newServerProps = {
+  title: 'Start a New Server',
+  remainingProjects: 3,
+  icon: 'images/energy-usage-window.svg',
+};
 
 const navBarProps = {
   avatar: 'images/tayler-profile.png',
