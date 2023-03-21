@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProjectCard = ({projectTitle, icon, route, owner}) => {
+const ProjectCard = ({projectTitle, icon, id, owner}) => {
   return (
     <div>
     {/* TODO add a route prop for respective projectID */}

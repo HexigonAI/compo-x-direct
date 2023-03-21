@@ -1,5 +1,6 @@
 import { getSession } from 'next-auth/react';
 import { useQuery } from 'react-query';
+import Link from 'next/link';
 
 import { getProjects } from '@/queries/queries';
 import RoutingCard from '@/components/dashboard/RoutingCard';
@@ -29,23 +30,10 @@ const navBarProps = {
 };
 
 const Dashboard = () => {
-
   const { data: projects, isSuccess } = useQuery(
     'projects',
     async () => await getProjects()
   );
-
-  const renderedProjects = () => {
-    if (isSuccess && projects) {
-      return projects.map((project) => (
-        <ProjectCard
-          key={project.id}
-          projectTitle={project.title}
-          owner={project.owner}
-        />
-      ));
-    }
-  };
 
   return (
     <>
@@ -79,8 +67,23 @@ const Dashboard = () => {
                 icon={projectCardProps.icon}
               />
 
-              {renderedProjects()}
-              
+              {isSuccess &&
+                projects.map((project) => (
+                  <Link
+                    href={{
+                      pathname: '/dashboard/[projectId]',
+                      query: { projectId: project.id },
+                    }}
+                  >
+                    <ProjectCard
+                      key={project.id}
+                      projectTitle={project.title}
+                      owner={project.owner}
+                      id={project.id}
+                    />
+                  </Link>
+                ))}
+
               <RoutingCard
                 title={newProjectProps.title}
                 icon={newProjectProps.icon}
@@ -101,17 +104,17 @@ const Dashboard = () => {
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);
-    if (!session) {
-      return {
-        redirect: {
-          destination: '/login-page',
-          permanent: false,
-        }
-      }
-    }
+  if (!session) {
     return {
-      props: {session}
-    }
-}
+      redirect: {
+        destination: '/login-page',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+};
 
 export default Dashboard;
