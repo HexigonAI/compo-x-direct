@@ -30,3 +30,18 @@ export const getProjects = async () => {
   );
   return data.data.projects;
 };
+
+export const getProjectByID = async (projectId) => {
+  const data = await fetchData(
+    `query {
+      projects_by_id(id: "${projectId}" ) {
+        id
+        title
+      }
+    }`,
+    {
+      variables: {},
+    }
+  );
+  return data.data.projects_by_id;
+};
