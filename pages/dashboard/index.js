@@ -30,6 +30,7 @@ const navBarProps = {
 };
 
 const Dashboard = () => {
+  
   const { data: projects, isSuccess } = useQuery(
     'projects',
     async () => await getProjects()
@@ -105,9 +106,9 @@ const Dashboard = () => {
 export const getServerSideProps = async (context) => {
   return requireAuth(context, ({ session }) => {
     return {
-      props: { session },
-    };
-  });
+      props: { session }
+    }
+  })
 };
 
 export default Dashboard;

@@ -12,5 +12,5 @@ export const requireAuth = async (context, callback) => {
     };
   }
 
-  return callback();
+  return callback({ session });
 };
