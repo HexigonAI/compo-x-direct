@@ -1,7 +1,7 @@
-import { getSession } from 'next-auth/react';
 import { useQuery } from 'react-query';
 import Link from 'next/link';
 
+import { requireAuth } from '@/helpers/requireAuth';
 import { getProjects } from '@/queries/queries';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ProjectCard from '@/components/dashboard/ProjectCard';
@@ -103,18 +103,11 @@ const Dashboard = () => {
 };
 
 export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session) {
+  return requireAuth(context, ({ session }) => {
     return {
-      redirect: {
-        destination: '/login-page',
-        permanent: false,
-      },
+      props: { session },
     };
-  }
-  return {
-    props: { session },
-  };
+  });
 };
 
 export default Dashboard;

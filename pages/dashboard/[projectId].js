@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
+import { requireAuth } from '@/helpers/requireAuth';
 
 const ProjectDetailsPage = () => {
   const router = useRouter();
@@ -13,18 +13,11 @@ const ProjectDetailsPage = () => {
 };
 
 export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session) {
+  return requireAuth(context, ({ session }) => {
     return {
-      redirect: {
-        destination: '/login-page',
-        permanent: false,
-      },
+      props: { session },
     };
-  }
-  return {
-    props: { session },
-  };
+  });
 };
 
 export default ProjectDetailsPage;
