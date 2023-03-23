@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-//https://compo.directus.app/admin/users/roles/953d6a4f-06e6-4c75-8ab6-5edf7eb01255
 const options = {
   providers: [
     CredentialsProvider({
@@ -51,10 +50,6 @@ const options = {
 
   session: {
     jwt: true,
-  },
-
-  jwt: {
-    secret: 'SUPER_SECRET_JWT_SECRET',
   },
 
   callbacks: {

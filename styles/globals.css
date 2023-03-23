@@ -103,6 +103,33 @@ a {
   color: inherit;
   text-decoration: none;
 }
+.card-body {
+  padding: 10px 24px 24px;
+  flex: 1;
+  transition: background-color 200ms ease;
+  color: #4f5c65;
+}
+
+.card {
+  border-radius: 8px;
+  background-color: #fff;
+  text-align: left;
+}
+
+.white-link-sm {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+.style-guide-item {
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+
+.style-guide-item.narrow {
+  display: inline-block;
+  border-radius: 8px;
+}
 
 @media (prefers-color-scheme: dark) {
   html {

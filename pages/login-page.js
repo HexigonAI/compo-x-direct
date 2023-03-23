@@ -14,13 +14,13 @@ const LoginPage = ({ csrfToken }) => {
       redirect: false,
       email: e.target.email.value,
       password: e.target.password.value,
-      callbackUrl: `/dashboard`,
+      callbackUrl: `/servers`,
     });
 
     if (res?.error) {
       setError(true);
     } else {
-      router.push('/dashboard');
+      router.push('/servers');
     }
 
   }

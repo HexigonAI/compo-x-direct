@@ -1,26 +1,24 @@
 import React from 'react';
 
-const ProjectCard = ({projectTitle, icon, route, owner}) => {
+const ProjectCard = ({ projectTitle, id, status}) => {
   return (
-    <div>
-    {/* TODO add a route prop for respective projectID */}
-      <a
-        href='/site-dashboard/organization-grid'
-        class='account-item w-inline-block'
-      >
-        <div class='account'>
-          <div class='avatar-2 bg-1'>
-            <img src={icon} alt='' class='org-avatar' />
-          </div>
-          <div class='account-user-datails'>
-            <h6 class='mb-0'>
-              <strong>{projectTitle}</strong>
-            </h6>
-            <div class='hint'>{owner}</div>
-          </div>
-          <div class='label-item'>Active</div>
+    <div class='style-guide-item narrow'>
+      <div class='card'>
+        <a href='#' class='w-inline-block'>
+          <img
+            src='../images/Frame-13239.svg'
+            width='400'
+            alt=''
+            class='dashboard-image-preview'
+          />
+        </a>
+        <div class='card-body'>
+          <h5>{projectTitle}</h5>
+          <p>{id}</p>
+          {/* TODO: add in a status prop here */}
+          <div class='account-state margin-10'>Live and Published</div>
         </div>
-      </a>
+      </div>
     </div>
   );
 };

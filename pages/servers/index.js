@@ -1,21 +1,16 @@
-import { getSession } from 'next-auth/react';
 import { useQuery } from 'react-query';
+import Link from 'next/link';
 
-import { getProjects } from '@/queries/queries';
+import { requireAuth } from '@/helpers/requireAuth';
+import { getServers } from '@/queries/queries';
 import RoutingCard from '@/components/dashboard/RoutingCard';
-import ProjectCard from '@/components/dashboard/ProjectCard';
+import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
 const projectCardProps = {
   title: 'Compo X Components',
   icon: 'images/compo-logo.svg',
-};
-
-const newProjectProps = {
-  title: 'Start a New Project',
-  remainingProjects: 2,
-  icon: 'images/Vector.svg',
 };
 
 const newServerProps = {
@@ -29,23 +24,11 @@ const navBarProps = {
 };
 
 const Dashboard = () => {
-
-  const { data: projects, isSuccess } = useQuery(
-    'posts',
-    async () => await getProjects()
+  
+  const { data: servers, isSuccess } = useQuery(
+    'servers',
+    async () => await getServers()
   );
-
-  const renderedProjects = () => {
-    if (isSuccess && projects) {
-      return projects.map((project) => (
-        <ProjectCard
-          key={project.id}
-          projectTitle={project.title}
-          owner={project.owner}
-        />
-      ));
-    }
-  };
 
   return (
     <>
@@ -74,18 +57,28 @@ const Dashboard = () => {
               </div>
               <div class='label-4'>Your Servers</div>
 
-              <ProjectCard
-                projectTitle={projectCardProps.title}
+              <ServerCard
+                serverTitle={projectCardProps.title}
                 icon={projectCardProps.icon}
               />
 
-              {renderedProjects()}
-              
-              <RoutingCard
-                title={newProjectProps.title}
-                icon={newProjectProps.icon}
-                remainingProjects={newProjectProps.remainingProjects}
-              />
+              {isSuccess &&
+                servers.map((server) => (
+                  <Link
+                    href={{
+                      pathname: '/servers/[projectpage]',
+                      query: { projectpage: server.id },
+                    }}
+                  >
+                    <ServerCard
+                      key={server.id}
+                      serverTitle={server.title}
+                      description={server.description}
+                      id={server.id}
+                    />
+                  </Link>
+                ))}
+
               <RoutingCard
                 title={newServerProps.title}
                 icon={newServerProps.icon}
@@ -100,19 +93,11 @@ const Dashboard = () => {
 };
 
 export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  console.log(context)
-    if (!session) {
-      return {
-        redirect: {
-          destination: '/login-page',
-          permanent: false,
-        }
-      }
-    }
+  return requireAuth(context, ({ session }) => {
     return {
-      props: {session}
+      props: { session }
     }
-}
+  })
+};
 
 export default Dashboard;
