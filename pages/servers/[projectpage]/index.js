@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { requireAuth } from '@/helpers/requireAuth';
 import { getProjects } from '@/queries/queries';
-import ServerCard from '@/components/dashboard/ServerCard';
 import Link from 'next/link';
+
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 
@@ -20,21 +20,6 @@ const ServerProjectsPage = () => {
 
   return (
     <>
-      {/* {isSuccess &&
-        projects.map((project) => (
-          <Link
-            href={{
-              pathname: '/servers/[projectpage]/[projectId]',
-              query: { projectpage: projectpage, projectId: project.id },
-            }}
-          >
-            <ProjectCard
-              key={project.id}
-              projectTitle={project.title}
-              id={project.id}
-            />
-          </Link>
-        ))} */}
       <NavBar />
       <div class='page-header-2 page-header__sticky'>
         <div class='grid-2'>
@@ -77,8 +62,8 @@ const ServerProjectsPage = () => {
         projects.map((project) => (
           <Link
             href={{
-              pathname: '/servers/[projectpage]/[projectId]',
-              query: { projectpage: projectpage, projectId: project.id },
+              pathname: '/servers/[projectpage]/[projectid]',
+              query: { projectpage: projectpage, projectid: project.id },
             }}
           >
             <ProjectCard
