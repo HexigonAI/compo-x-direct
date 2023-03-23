@@ -1,11 +1,11 @@
 import fetchData from '../helpers/fetchData';
 
-export const getPosts = async () => {
+export const getUser = async () => {
   const data = await fetchData(
-    `query getPosts{
-      posts{
+    `query getUser{
+      users_me{
           id
-          title
+          first_name
       }
   }`,
     {
