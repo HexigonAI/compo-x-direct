@@ -8,11 +8,22 @@ import { createNewUser } from '@/queries/Users';
 const CreateAccountPage = () => {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+  const [createSuccessful, setCreateSuccessful] = useState(false)
 
   const signUpMutation = useMutation((newUser) => {
     setData(createNewUser, { data: newUser }, '/system').then((response) => {
-      console.log(response);
-    });
+      console.log(response)
+      setCreateSuccessful(false)
+      setEmailExists(false)
+      if(response.create_users_item == null){
+        setEmailExists(true)
+        setCreateSuccessful(false)
+      }
+        else{
+          setCreateSuccessful(true)
+      }
+    })
   });
 
   const handleSubmit = (e) => {
@@ -146,6 +157,7 @@ const CreateAccountPage = () => {
                           maxLength='256'
                           data-name='Account Company'
                           placeholder='Enter your company'
+                
                         />
                       </div>
                       <div className='account-icon-wrapper'>
@@ -165,6 +177,12 @@ const CreateAccountPage = () => {
                           Please enter a valid email
                         </p>
                       ) : null}
+                      {emailExists ? (
+                        <p style={{ color: 'red' }}>
+                          Email already in use
+                        </p>
+                      ) : null}
+
                       <div className='account-icon-wrapper'>
                         <input
                           className='account-text-field w-input'
@@ -212,6 +230,11 @@ const CreateAccountPage = () => {
                       Password must be at least 8 characters long
                     </p>
                   ) : null}
+                  {createSuccessful ? (
+                    <p className=" text-lg text-green-600 font-bold flex justify-center">
+                          Account Created
+                        </p>
+                      ) : null}
                   <div className='account-seperator'>
                     <div className='account-line'></div>
                     <div className='text-block'>OR</div>
@@ -254,6 +277,7 @@ const CreateAccountPage = () => {
                       </div>
                     </div>
                   </div>
+                  
                 </form>
                 <div className='contact-success-message w-form-done'>
                   <div>Thank you! Your submission has been received!</div>
