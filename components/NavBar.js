@@ -1,8 +1,9 @@
-import React from 'react';
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
-const NavBar = ({ userAvatar }) => {
+const profileImage = '../../images/tayler-profile.png';
 
+const NavBar = () => {
   const handleLogout = () => {
     signOut();
   };
@@ -20,13 +21,17 @@ const NavBar = ({ userAvatar }) => {
       >
         <div class='container-full w-container'>
           <a href='#' class='dashabord-logo w-nav-brand'>
-            <img src='images/Compo---Logo.svg' width='90' alt='' class='logo' />
+            <img
+              src='../../images/Compo---Logo.svg'
+              width='90'
+              alt=''
+              class='logo'
+            />
           </a>
           <div class='site-nav-search'></div>
           <nav role='navigation' class='nav-menu w-nav-menu'>
             <div class='nav-mobile'>
               <p
-                href='http://hexigon.ai/support'
                 className='nav-link last w-nav-link'
                 style={{ cursor: 'pointer' }}
                 onClick={handleLogout}
@@ -34,9 +39,19 @@ const NavBar = ({ userAvatar }) => {
                 Logout
               </p>
 
-              <img src={userAvatar} className='avatar' />
+              <img src={profileImage} className='avatar' />
             </div>
           </nav>
+          <Link href={'/servers'}>
+            <nav role='navigation' class='nav-menu w-nav-menu'>
+              <p
+                className='nav-link last w-nav-link'
+                style={{ cursor: 'pointer' }}
+              >
+                Servers
+              </p>
+            </nav>
+          </Link>
           <div class='menu-button w-nav-button'>
             <div class='w-icon-nav-menu'></div>
           </div>

@@ -82,15 +82,15 @@ ul {
 }
 
 .nav {
-  position: fixed;
-  z-index: 2000;
+  /* position: fixed;
+  z-index: 2000; */
   width: 100%;
   padding-right: 1%;
   padding-left: 1%;
   border-bottom: 1px solid #3b3940;
-  background-color: hsla(0, 0%, 9%, 0.9);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(13%, hsla(0, 0%, 100%, 0)), to(#13151b));
-  background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0) 13%, #13151b);
+  background-color: hsla(0, 0%, 0%, 0.9);
+  /* background-image: -webkit-gradient(linear, left top, left bottom, color-stop(13%, hsla(0, 0%, 100%, 0)), to(#13151b)); */
+  background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0) 25%, #0a1220);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }

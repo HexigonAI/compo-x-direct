@@ -19,9 +19,7 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-const navBarProps = {
-  avatar: 'images/tayler-profile.png',
-};
+
 
 const Dashboard = () => {
   
@@ -32,7 +30,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <NavBar userAvatar={navBarProps.avatar} />
+      <NavBar/>
       <div class='page-wrapper-dark'>
         <div class='global-styles w-embed'></div>
         <main>

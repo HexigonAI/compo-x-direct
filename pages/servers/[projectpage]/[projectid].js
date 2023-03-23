@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { requireAuth } from '@/helpers/requireAuth';
 import { getProjectByID } from '@/queries/queries';
+import NavBar from '@/components/NavBar';
 
 const SingleProjectPage = () => {
   const router = useRouter();
@@ -26,6 +27,7 @@ const SingleProjectPage = () => {
 
   return (
     <>
+    <NavBar />
       {renderedProject()}
     </>
   );
