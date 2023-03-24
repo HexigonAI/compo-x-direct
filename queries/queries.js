@@ -1,21 +1,23 @@
 import fetchData from '../helpers/fetchData';
 
-export const getUser = async () => {
+export const getCurrentUser = async (token) => {
   const data = await fetchData(
-    `query getUser{
-      users_me{
-          id
-          first_name
+    `query getCurrentUser{
+      users_me {
+        id
+        email
+        first_name
       }
-  }`,
+    }`,
     {
       variables: {},
-    }
+    },
+    {token: token}
   );
-  return data.data.posts;
+  return data.data.users_me;
 };
 
-export const getServers = async () => {
+export const getServers = async (token) => {
   const data = await fetchData(
     `query getServers{
       servers{
@@ -26,7 +28,8 @@ export const getServers = async () => {
   }`,
     {
       variables: {},
-    }
+    },
+    { token: token }
   );
   return data.data.servers;
 };
