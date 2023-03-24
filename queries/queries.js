@@ -12,7 +12,7 @@ export const getCurrentUser = async (token) => {
     {
       variables: {},
     },
-    {token: token}
+    { token: token }
   );
   return data.data.users_me;
 };
@@ -34,7 +34,7 @@ export const getServers = async (token) => {
   return data.data.servers;
 };
 
-export const getProjects = async () => {
+export const getProjects = async (token) => {
   const data = await fetchData(
     `query getProjects{
       projects{
@@ -45,12 +45,13 @@ export const getProjects = async () => {
   }`,
     {
       variables: {},
-    }
+    },
+    { token: token }
   );
   return data.data.projects;
 };
 
-export const getProjectByID = async (projectId) => {
+export const getProjectByID = async (projectId, token) => {
   const data = await fetchData(
     `query {
       projects_by_id(id: "${projectId}" ) {
@@ -60,7 +61,8 @@ export const getProjectByID = async (projectId) => {
     }`,
     {
       variables: {},
-    }
+    },
+    { token: token }
   );
   return data.data.projects_by_id;
 };

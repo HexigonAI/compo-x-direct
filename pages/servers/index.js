@@ -4,7 +4,7 @@ import { getCurrentUser, getServers } from '@/queries/queries';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
-import { getSession } from 'next-auth/react';
+import { requireAuth } from '@/helpers/requireAuth';
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
 const projectCardProps = {
@@ -18,8 +18,8 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-const Dashboard = ({ servers, user }) => {
-  //removed useQuery because SSR is faster in this use case 
+const Servers = ({ servers, user }) => {
+  //removed useQuery because SSR is faster in this use case
 
   return (
     <>
@@ -84,35 +84,31 @@ const Dashboard = ({ servers, user }) => {
 };
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
+  const fetchServers = async ({ session }) => {
+    const token = session.user.accessToken;
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login-page',
-        permanent: false,
-      },
-    };
-  }
+    try {
+      const servers = await getServers(token);
+      //get user here to pass as props
+      return {
+        props: {
+          servers,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        props: {
+          servers: [],
+        },
+      };
+    }
+  };
 
-  const token = session.user.accessToken;
-
-  try {
-    const servers = await getServers(token);
-    //get user here to pass as props 
-    return {
-      props: {
-        servers,
-      },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        servers: [],
-      },
-    };
-  }
+  //helper function: if user !== authorized, go to login, else evoke callback function
+  return requireAuth(context, ({ session }) => {
+    return fetchServers({ session });
+  });
 }
 
-export default Dashboard;
+export default Servers;
