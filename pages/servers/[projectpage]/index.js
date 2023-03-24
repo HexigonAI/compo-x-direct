@@ -2,8 +2,9 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { requireAuth } from '@/helpers/requireAuth';
 import { getProjects } from '@/queries/queries';
-import ServerCard from '@/components/dashboard/ServerCard';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 
@@ -11,30 +12,17 @@ import ProjectCard from '@/components/dashboard/ProjectCard';
 const ServerProjectsPage = () => {
   const router = useRouter();
   const { projectpage } = router.query;
-
-  //fetch some data from a backend with the id of route:
+  const session = useSession();
+  const token = session.data.user.accessToken;
+  
+  //TODO this fetch will still not work if you set the Public role to have all access to directus_users
   const { data: projects, isSuccess } = useQuery(
     'projects',
-    async () => await getProjects()
+    async () => await getProjects(token)
   );
 
   return (
     <>
-      {/* {isSuccess &&
-        projects.map((project) => (
-          <Link
-            href={{
-              pathname: '/servers/[projectpage]/[projectId]',
-              query: { projectpage: projectpage, projectId: project.id },
-            }}
-          >
-            <ProjectCard
-              key={project.id}
-              projectTitle={project.title}
-              id={project.id}
-            />
-          </Link>
-        ))} */}
       <NavBar />
       <div class='page-header-2 page-header__sticky'>
         <div class='grid-2'>
@@ -77,8 +65,8 @@ const ServerProjectsPage = () => {
         projects.map((project) => (
           <Link
             href={{
-              pathname: '/servers/[projectpage]/[projectId]',
-              query: { projectpage: projectpage, projectId: project.id },
+              pathname: '/servers/[projectpage]/[projectid]',
+              query: { projectpage: projectpage, projectid: project.id },
             }}
           >
             <ProjectCard

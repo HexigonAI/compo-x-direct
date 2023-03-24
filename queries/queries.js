@@ -1,21 +1,23 @@
 import fetchData from '../helpers/fetchData';
 
-export const getPosts = async () => {
+export const getCurrentUser = async (token) => {
   const data = await fetchData(
-    `query getPosts{
-      posts{
-          id
-          title
+    `query getCurrentUser{
+      users_me {
+        id
+        email
+        first_name
       }
-  }`,
+    }`,
     {
       variables: {},
-    }
+    },
+    { token: token }
   );
-  return data.data.posts;
+  return data.data.users_me;
 };
 
-export const getServers = async () => {
+export const getServers = async (token) => {
   const data = await fetchData(
     `query getServers{
       servers{
@@ -26,12 +28,13 @@ export const getServers = async () => {
   }`,
     {
       variables: {},
-    }
+    },
+    { token: token }
   );
   return data.data.servers;
 };
 
-export const getProjects = async () => {
+export const getProjects = async (token) => {
   const data = await fetchData(
     `query getProjects{
       projects{
@@ -42,12 +45,13 @@ export const getProjects = async () => {
   }`,
     {
       variables: {},
-    }
+    },
+    { token: token }
   );
   return data.data.projects;
 };
 
-export const getProjectByID = async (projectId) => {
+export const getProjectByID = async (projectId, token) => {
   const data = await fetchData(
     `query {
       projects_by_id(id: "${projectId}" ) {
@@ -57,7 +61,8 @@ export const getProjectByID = async (projectId) => {
     }`,
     {
       variables: {},
-    }
+    },
+    { token: token }
   );
   return data.data.projects_by_id;
 };

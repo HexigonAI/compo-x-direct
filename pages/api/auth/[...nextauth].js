@@ -37,7 +37,7 @@ const options = {
         }
 
         if (res.ok && user) {
-          console.log(user)
+          
           return user;
           
         } else {

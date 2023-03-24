@@ -1,11 +1,10 @@
-import { useQuery } from 'react-query';
 import Link from 'next/link';
 
-import { requireAuth } from '@/helpers/requireAuth';
-import { getServers } from '@/queries/queries';
+import { getCurrentUser, getServers } from '@/queries/queries';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
+import { requireAuth } from '@/helpers/requireAuth';
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
 const projectCardProps = {
@@ -19,20 +18,12 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-const navBarProps = {
-  avatar: 'images/tayler-profile.png',
-};
-
-const Dashboard = () => {
-  
-  const { data: servers, isSuccess } = useQuery(
-    'servers',
-    async () => await getServers()
-  );
+const Servers = ({ servers, user }) => {
+  //removed useQuery because server side rendering with getServerSideProps is faster in this use case
 
   return (
     <>
-      <NavBar userAvatar={navBarProps.avatar} />
+      <NavBar />
       <div class='page-wrapper-dark'>
         <div class='global-styles w-embed'></div>
         <main>
@@ -62,16 +53,16 @@ const Dashboard = () => {
                 icon={projectCardProps.icon}
               />
 
-              {isSuccess &&
+              {servers &&
                 servers.map((server) => (
                   <Link
                     href={{
                       pathname: '/servers/[projectpage]',
                       query: { projectpage: server.id },
                     }}
+                    key={server.id}
                   >
                     <ServerCard
-                      key={server.id}
                       serverTitle={server.title}
                       description={server.description}
                       id={server.id}
@@ -92,12 +83,31 @@ const Dashboard = () => {
   );
 };
 
-export const getServerSideProps = async (context) => {
-  return requireAuth(context, ({ session }) => {
-    return {
-      props: { session }
-    }
-  })
-};
+export async function getServerSideProps(context) {
+  const fetchServers = async ({ session }) => {
+    const token = session.user.accessToken;
 
-export default Dashboard;
+    try {
+      const servers = await getServers(token);
+      //get user here to pass as props
+      return {
+        props: {
+          servers,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        props: {
+          servers: [],
+        },
+      };
+    }
+  };
+
+  return requireAuth(context, ({ session }) => {
+    return fetchServers({ session });
+  });
+}
+
+export default Servers;
