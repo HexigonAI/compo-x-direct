@@ -19,7 +19,7 @@ const newServerProps = {
 };
 
 const Servers = ({ servers, user }) => {
-  //removed useQuery because SSR is faster in this use case
+  //removed useQuery because server side rendering with getServerSideProps is faster in this use case
 
   return (
     <>
@@ -105,7 +105,6 @@ export async function getServerSideProps(context) {
     }
   };
 
-  //helper function: if user !== authorized, go to login, else evoke callback function
   return requireAuth(context, ({ session }) => {
     return fetchServers({ session });
   });
