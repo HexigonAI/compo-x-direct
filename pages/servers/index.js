@@ -1,11 +1,10 @@
-import { useQuery } from 'react-query';
 import Link from 'next/link';
 
-import { requireAuth } from '@/helpers/requireAuth';
-import { getServers } from '@/queries/queries';
+import { getCurrentUser, getServers } from '@/queries/queries';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
+import { getSession } from 'next-auth/react';
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
 const projectCardProps = {
@@ -19,18 +18,12 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-
-
-const Dashboard = () => {
-  
-  const { data: servers, isSuccess } = useQuery(
-    'servers',
-    async () => await getServers()
-  );
+const Dashboard = ({ servers, user }) => {
+  //removed useQuery because SSR is faster in this use case 
 
   return (
     <>
-      <NavBar/>
+      <NavBar />
       <div class='page-wrapper-dark'>
         <div class='global-styles w-embed'></div>
         <main>
@@ -60,16 +53,16 @@ const Dashboard = () => {
                 icon={projectCardProps.icon}
               />
 
-              {isSuccess &&
+              {servers &&
                 servers.map((server) => (
                   <Link
                     href={{
                       pathname: '/servers/[projectpage]',
                       query: { projectpage: server.id },
                     }}
+                    key={server.id}
                   >
                     <ServerCard
-                      key={server.id}
                       serverTitle={server.title}
                       description={server.description}
                       id={server.id}
@@ -90,12 +83,36 @@ const Dashboard = () => {
   );
 };
 
-export const getServerSideProps = async (context) => {
-  return requireAuth(context, ({ session }) => {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
     return {
-      props: { session }
-    }
-  })
-};
+      redirect: {
+        destination: '/login-page',
+        permanent: false,
+      },
+    };
+  }
+
+  const token = session.user.accessToken;
+
+  try {
+    const servers = await getServers(token);
+    //get user here to pass as props 
+    return {
+      props: {
+        servers,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        servers: [],
+      },
+    };
+  }
+}
 
 export default Dashboard;
