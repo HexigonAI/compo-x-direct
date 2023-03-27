@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
 import { requireAuth } from '@/helpers/requireAuth';
 import { getProjects } from '@/queries/collections';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 import NavBar from '@/components/NavBar';
@@ -89,7 +87,7 @@ export const getServerSideProps = async (context) => {
 
     try {
       const projects = await getProjects(token);
-      //get user here to pass as props
+
       return {
         props: {
           projects,
