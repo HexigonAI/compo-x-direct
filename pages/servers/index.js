@@ -7,7 +7,10 @@ import NavBar from '@/components/NavBar';
 import { requireAuth } from '@/helpers/requireAuth';
 import { fetchData } from 'next-auth/client/_utils';
 import { useSession } from 'next-auth/react';
-import {fetchUser} from '../../helpers/fetchData'
+import {fetchUser, fetchProjects} from '../../helpers/fetchData'
+import { getProjects } from '@/queries/collections';
+import { useQuery } from 'react-query';
+
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
 const projectCardProps = {
@@ -25,9 +28,12 @@ const newServerProps = {
 
 
 
+
 const Servers = ({ servers, user }) => {
    const data = fetchUser();
-   console.log(user)
+   const projects =  fetchProjects();
+   console.log(projects)
+  //  console.log(data)
 
   //removed useQuery because server side rendering with getServerSideProps is faster in this use case
 
