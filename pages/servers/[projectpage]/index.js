@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { requireAuth } from '@/helpers/requireAuth';
-import { getProjects } from '@/queries/queries';
+import { getProjects } from '@/queries/collections';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 

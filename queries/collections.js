@@ -1,45 +1,4 @@
 import fetchData from '../helpers/fetchData';
-import { Directus } from '@directus/sdk';
-
-const directus = new Directus('https://compo.directus.app');
-
-export const getCurrentUser = async (bearerToken) => {
-  try {
-    const data = await fetchUser(
-       // #graphql
-      `query getCurrentUser{
-        users_me {
-          id
-          email
-          first_name
-        }
-      }`,
-      {
-        variables: {},
-      },
-      {token: bearerToken}
-    );
-    return data.data.users_me;
-  } catch (error) {
-    console.error(`Error fetching current user: ${error}`);
-    return `Error fetching current user: ${error}`; 
-  }
-};
-
-export const getAllUsers = async () => {
-
-  const d = await directus.users.me.read('d2c6d992-0e6b-4599-a16b-b95bbcbc81f5');
-  console.log(d)
-  console.log("test")
-  // #graphql
-  `query {
-    users {
-      first_name
-      last_name
-      email
-    }
-  }`
-}
 
 export const getServers = async (token) => {
   const data = await fetchData(

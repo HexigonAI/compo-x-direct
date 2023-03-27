@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { requireAuth } from '@/helpers/requireAuth';
-import { getProjectByID } from '@/queries/queries';
+import { getProjectByID } from '@/queries/collections';
 import NavBar from '@/components/NavBar';
 
 const SingleProjectPage = () => {

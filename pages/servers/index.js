@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getCurrentUser, getServers } from '@/queries/queries';
+import { getCurrentUser, getServers } from '@/queries/collections';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
