@@ -5,9 +5,12 @@ import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
 import { requireAuth } from '@/helpers/requireAuth';
-import {getUser} from '../../helpers/fetchData'
+import { fetchData } from 'next-auth/client/_utils';
+import { useSession } from 'next-auth/react';
+import {fetchUser, fetchProjects} from '../../helpers/fetchData'
+import { getProjects } from '@/queries/collections';
+import { useQuery } from 'react-query';
 
-const assetsUrl = process.env.NEXT_ACCOUNT_AVATAR_URL
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
 const projectCardProps = {
@@ -22,8 +25,17 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-const Servers = ({ servers, token }) => {
-   const user = getUser(token);
+
+
+
+const Servers = ({ servers, user }) => {
+   const data = fetchUser();
+   const projects =  fetchProjects();
+   console.log(projects)
+  //  console.log(data)
+
+  //removed useQuery because server side rendering with getServerSideProps is faster in this use case
+
 
   return (
     
