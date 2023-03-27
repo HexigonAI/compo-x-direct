@@ -1,6 +1,5 @@
 const graphQLAPI = process.env.NEXT_PUBLIC_GRAPHQL;
 
-import { useSession } from 'next-auth/react';
 import { getCurrentUser } from '@/queries/Users';
 import { useQuery } from 'react-query';
 
@@ -53,13 +52,9 @@ const fetchUser = async (query, token, { variables = {} }) => {
 };
 
 export function getUser(token) {
-  // const { data: session, status } = useSession({
-  //   required: true,
-  // });
 
   const { data: user, isSuccess } = useQuery('currentUser', async () => await fetchUser(getCurrentUser, token, {}) );
-  
-  // console.log(isSuccess);
+  console.log(isSuccess)
 
   return user
 }

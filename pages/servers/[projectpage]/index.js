@@ -8,17 +8,9 @@ import Link from 'next/link';
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 
-const ServerProjectsPage = ({ token }) => {
+const ServerProjectsPage = ({ projects }) => {
   const router = useRouter();
   const { projectpage } = router.query;
-  // const session = useSession();
-  // const token = session.data.user.accessToken;
-
-  //TODO this fetch will still not work if you set the Public role to have all access to directus_users
-  const { data: projects, isSuccess } = useQuery(
-    'projects',
-    async () => await getProjects(token)
-  );
 
   return (
     <>
@@ -59,9 +51,7 @@ const ServerProjectsPage = ({ token }) => {
         </div>
       </div>
       <div class='array-projects' style={{ marginTop: '2rem' }}>
-
-        {isSuccess &&
-          Array.isArray(projects) &&
+        {Array.isArray(projects) &&
           projects.map((project) => (
             <Link
               href={{
@@ -73,7 +63,6 @@ const ServerProjectsPage = ({ token }) => {
               <ProjectCard projectTitle={project.title} id={project.id} />
             </Link>
           ))}
-          
       </div>
       <div class='page-inside'>
         <div class='open-state'>
@@ -93,10 +82,33 @@ const ServerProjectsPage = ({ token }) => {
 };
 
 export const getServerSideProps = async (context) => {
+  //TODO this fetch will still not work if you set the Public role to have all access to directus_users
+
+  const fetchProjects = async ({ session }) => {
+    const token = session.user.accessToken;
+
+    try {
+      const projects = await getProjects(token);
+      //get user here to pass as props
+      return {
+        props: {
+          projects,
+          token,
+          revalidate: 10,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        props: {
+          projects: [],
+        },
+      };
+    }
+  };
+
   return requireAuth(context, ({ session }) => {
-    return {
-      props: { session },
-    };
+    return fetchProjects({ session });
   });
 };
 

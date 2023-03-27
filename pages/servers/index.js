@@ -24,9 +24,6 @@ const newServerProps = {
 
 const Servers = ({ servers, token }) => {
    const user = getUser(token);
-  //  const {avatar} = user;
-  //  console.log(avatar)
-  //  console.log(token);
 
   return (
     
