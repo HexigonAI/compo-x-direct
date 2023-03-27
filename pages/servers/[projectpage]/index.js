@@ -6,10 +6,11 @@ import Link from 'next/link';
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 
-const ServerProjectsPage = ({ projects }) => {
+const ServerProjectsPage = ({ token }) => {
   const router = useRouter();
   const { projectpage } = router.query;
-
+  const projects = getProjects(token);
+  console.log(projects)
   return (
     <>
       <NavBar />
@@ -82,31 +83,32 @@ const ServerProjectsPage = ({ projects }) => {
 export const getServerSideProps = async (context) => {
   //TODO this fetch will still not work if you set the Public role to have all access to directus_users
 
-  const fetchProjects = async ({ session }) => {
-    const token = session.user.accessToken;
+  // const fetchProjects = async ({ session }) => {
+  //   const token = session.user.accessToken;
 
-    try {
-      const projects = await getProjects(token);
+  //   try {
+  //     const projects = await getProjects(token);
 
-      return {
-        props: {
-          projects,
-          token,
-          revalidate: 10,
-        },
-      };
-    } catch (error) {
-      console.error(error);
-      return {
-        props: {
-          projects: [],
-        },
-      };
-    }
-  };
+  //     return {
+  //       props: {
+  //         projects,
+  //         token,
+  //         revalidate: 10,
+  //       },
+  //     };
+  //   } catch (error) {
+  //     console.error(error);
+  //     return {
+  //       props: {
+  //         projects: [],
+  //       },
+  //     };
+  //   }
+  // };
 
   return requireAuth(context, ({ session }) => {
-    return fetchProjects({ session });
+    // return fetchProjects({ session });
+    return { props: { token: session.user.accessToken } };
   });
 };
 
