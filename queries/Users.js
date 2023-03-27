@@ -14,3 +14,24 @@ export const loginUser = `
         }
     }
 `;
+
+export const getCurrentUser = 
+//#graphql
+`   query {
+        users_me {
+            email
+            first_name
+            last_name
+            avatar
+                {
+                    id
+                    height
+                    storage
+                    charset
+                    location
+                    width
+                    
+                }
+        }
+    }
+`;
