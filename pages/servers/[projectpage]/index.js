@@ -1,25 +1,16 @@
 import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
-import { requireAuth } from '@/helpers/requireAuth';
-import { getProjects } from '@/queries/collections';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
+import { requireAuth } from '@/helpers/requireAuth';
+import { getProjects } from '../../../helpers/fetchData';
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 
-
-const ServerProjectsPage = () => {
+const ServerProjectsPage = ({ token }) => {
   const router = useRouter();
   const { projectpage } = router.query;
-  const session = useSession();
-  const token = session.data.user.accessToken;
-  
-  //TODO this fetch will still not work if you set the Public role to have all access to directus_users
-  const { data: projects, isSuccess } = useQuery(
-    'projects',
-    async () => await getProjects(token)
-  );
+  const {projects}  = getProjects(token);
+
 
   return (
     <>
@@ -59,23 +50,20 @@ const ServerProjectsPage = () => {
           </div>
         </div>
       </div>
-      <div class="array-projects" style={{ marginTop: '2rem'}}>
+      <div class='array-projects' style={{ marginTop: '2rem' }}>
 
-      {isSuccess &&
-        projects.map((project) => (
-          <Link
-            href={{
-              pathname: '/servers/[projectpage]/[projectid]',
-              query: { projectpage: projectpage, projectid: project.id },
-            }}
-          >
-            <ProjectCard
+        {Array.isArray(projects) &&
+          projects.map((project) => (
+            <Link
+              href={{
+                pathname: '/servers/[projectpage]/[projectid]',
+                query: { projectpage: projectpage, projectid: project.id },
+              }}
               key={project.id}
-              projectTitle={project.title}
-              id={project.id}
-            />
-          </Link>
-        ))}
+            >
+              <ProjectCard projectTitle={project.title} id={project.id} />
+            </Link>
+          ))}
 
       </div>
       <div class='page-inside'>
@@ -97,9 +85,7 @@ const ServerProjectsPage = () => {
 
 export const getServerSideProps = async (context) => {
   return requireAuth(context, ({ session }) => {
-    return {
-      props: { session },
-    };
+    return { props: { token: session.user.accessToken } };
   });
 };
 

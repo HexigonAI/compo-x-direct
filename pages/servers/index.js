@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getCurrentUser, getServers } from '@/queries/collections';
+
+import { getServers } from '@/queries/collections';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
 import { requireAuth } from '@/helpers/requireAuth';
-import { fetchData } from 'next-auth/client/_utils';
-import { useSession } from 'next-auth/react';
-import {fetchUser, fetchProjects} from '../../helpers/fetchData'
-import { getProjects } from '@/queries/collections';
-import { useQuery } from 'react-query';
+import { getUser } from '../../helpers/fetchData'
+
 
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
@@ -18,8 +15,6 @@ const projectCardProps = {
   icon: 'images/compo-logo.svg',
 };
 
-const assetsUrl = process.env.NEXT_ACCOUNT_AVATAR_URL
-
 const newServerProps = {
   title: 'Start a New Server',
   remainingProjects: 3,
@@ -27,16 +22,8 @@ const newServerProps = {
 };
 
 
-
-
-const Servers = ({ servers, user }) => {
-   const data = fetchUser();
-   const projects =  fetchProjects();
-   console.log(projects)
-  //  console.log(data)
-
-  //removed useQuery because server side rendering with getServerSideProps is faster in this use case
-
+const Servers = ({ servers, token }) => {
+   const user = getUser(token);
 
   return (
     
@@ -51,7 +38,7 @@ const Servers = ({ servers, user }) => {
                 <a href='#' className='w-inline-block'>
                   {/* TODO add profileImage prop here fetched from Directus */}
                   <img
-                    src={`${assetsUrl}/be58c0a0-3315-42b2-ac49-64c477958ef7`}
+                    // src={`${assetsUrl}/asafefaefae`}
                     width='47'
                     sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
                     alt=''
@@ -59,7 +46,7 @@ const Servers = ({ servers, user }) => {
                   />
                   <h3 className='db-header'>
                     {/* TODO add in firstName prop here from Directus */}
-                    Welcome Back, <span className='user_name'>{ data ? data.first_name : ""}</span>
+                    Welcome Back, <span className='user_name'>{ user ? user.first_name : ""}</span>
                   </h3>
                 </a>
               </div>
@@ -110,6 +97,7 @@ export async function getServerSideProps(context) {
       return {
         props: {
           servers,
+          token
         },
       };
     } catch (error) {

@@ -32,7 +32,6 @@ export const getCurrentUser =
                     charset
                     location
                     width
-                    
                 }
         }
     }
