@@ -1,16 +1,17 @@
 import { useRouter } from 'next/router';
-import { requireAuth } from '@/helpers/requireAuth';
-import { getProjects } from '@/queries/collections';
 import Link from 'next/link';
 
+import { requireAuth } from '@/helpers/requireAuth';
+import { getProjects } from '../../../helpers/fetchData';
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 
 const ServerProjectsPage = ({ token }) => {
   const router = useRouter();
   const { projectpage } = router.query;
-  const projects = getProjects(token);
-  console.log(projects)
+  const {projects}  = getProjects(token);
+
+
   return (
     <>
       <NavBar />
@@ -50,6 +51,7 @@ const ServerProjectsPage = ({ token }) => {
         </div>
       </div>
       <div class='array-projects' style={{ marginTop: '2rem' }}>
+
         {Array.isArray(projects) &&
           projects.map((project) => (
             <Link
@@ -62,6 +64,7 @@ const ServerProjectsPage = ({ token }) => {
               <ProjectCard projectTitle={project.title} id={project.id} />
             </Link>
           ))}
+
       </div>
       <div class='page-inside'>
         <div class='open-state'>
@@ -81,33 +84,7 @@ const ServerProjectsPage = ({ token }) => {
 };
 
 export const getServerSideProps = async (context) => {
-  //TODO this fetch will still not work if you set the Public role to have all access to directus_users
-
-  // const fetchProjects = async ({ session }) => {
-  //   const token = session.user.accessToken;
-
-  //   try {
-  //     const projects = await getProjects(token);
-
-  //     return {
-  //       props: {
-  //         projects,
-  //         token,
-  //         revalidate: 10,
-  //       },
-  //     };
-  //   } catch (error) {
-  //     console.error(error);
-  //     return {
-  //       props: {
-  //         projects: [],
-  //       },
-  //     };
-  //   }
-  // };
-
   return requireAuth(context, ({ session }) => {
-    // return fetchProjects({ session });
     return { props: { token: session.user.accessToken } };
   });
 };

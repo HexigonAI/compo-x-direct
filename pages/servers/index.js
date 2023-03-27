@@ -5,7 +5,7 @@ import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
 import { requireAuth } from '@/helpers/requireAuth';
-import {getUser } from '../../helpers/fetchData'
+import {getUser, getProjects } from '../../helpers/fetchData'
 
 
 
@@ -24,6 +24,8 @@ const newServerProps = {
 
 const Servers = ({ servers, token }) => {
    const user = getUser(token);
+  //  const projects = getProjects(token);
+  //  console.log(token)
 
   return (
     
