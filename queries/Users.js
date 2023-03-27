@@ -38,6 +38,17 @@ export const getCurrentUser =
     }
 `;
 
+export const getUserProjects = 
+//#graphql
+`  query {
+    projects {
+        id
+        title
+    }
+}
+`;
+
+
 export const createNewUser = `
     #graphql
     mutation createNewUser($data: create_directus_users_input!) {
