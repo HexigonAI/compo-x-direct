@@ -52,11 +52,7 @@ const fetchUser = async (query, token, { variables = {} }) => {
 };
 
 
-
-
-
-
-const fetchData2 = async (query, token, { variables = {} }) => {
+const fetchUserProjects = async (query, token, { variables = {} }) => {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
@@ -80,28 +76,20 @@ const fetchData2 = async (query, token, { variables = {} }) => {
   return json.data;
 };
 
-export function fetchUser() {
-  const { data: session, status } = useSession({
-    required: true,
-  });
 
-  const { data: user, isSuccess } = useQuery('currentUser', async () => await fetchData(getCurrentUser, session.user.accessToken, {}), {
-    enabled: status === 'authenticated',
-  });
+export function getUser(token) {
 
-  // console.log(user)
-  // console.log(session);
-  // console.log(isSuccess);
+  const { data: user, isSuccess } = useQuery('currentUser', async () => await fetchUser(getCurrentUser, token, {}) );
 
   return user
 }
 
-export function fetchProjects() {
+export function getProjects() {
   const { data: session, status } = useSession({
     required: true,
   });
 
-  const { data: projects, isSuccess } = useQuery('userCollection', async () => await fetchData2(getUserProjects, session.user.accessToken, {}), {
+  const { data: projects, isSuccess } = useQuery('userCollection', async () => await fetchUserProjects(getUserProjects, session.user.accessToken, {}), {
     enabled: status === 'authenticated',
   });
 

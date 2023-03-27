@@ -5,11 +5,8 @@ import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
 import { requireAuth } from '@/helpers/requireAuth';
-import { fetchData } from 'next-auth/client/_utils';
-import { useSession } from 'next-auth/react';
-import {fetchUser, fetchProjects} from '../../helpers/fetchData'
-import { getProjects } from '@/queries/collections';
-import { useQuery } from 'react-query';
+import {getUser } from '../../helpers/fetchData'
+
 
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
@@ -18,7 +15,6 @@ const projectCardProps = {
   icon: 'images/compo-logo.svg',
 };
 
-
 const newServerProps = {
   title: 'Start a New Server',
   remainingProjects: 3,
@@ -26,16 +22,9 @@ const newServerProps = {
 };
 
 
-
-
-const Servers = ({ servers, user }) => {
-   const data = fetchUser();
-   const projects =  fetchProjects();
-   console.log(projects)
-  //  console.log(data)
-
-  //removed useQuery because server side rendering with getServerSideProps is faster in this use case
-
+const Servers = ({ servers, token }) => {
+   const user = getUser(token);
+   console.log(user)
 
   return (
     
