@@ -6,19 +6,19 @@ const ServerCard = ({serverTitle, icon, id, description}) => {
     {/* TODO add a route prop for respective projectID */}
       <a
         href='/site-dashboard/organization-grid'
-        class='account-item w-inline-block'
+        className='account-item w-inline-block'
       >
-        <div class='account'>
-          <div class='avatar-2 bg-1'>
-            <img src={icon} alt='' class='org-avatar' />
+        <div className='account'>
+          <div className='avatar-2 bg-1'>
+            <img src={icon} alt='' className='org-avatar' />
           </div>
-          <div class='account-user-datails'>
-            <h6 class='mb-0'>
+          <div className='account-user-datails'>
+            <h6 className='mb-0'>
               <strong>{serverTitle}</strong>
             </h6>
-            <div class='hint'>{description}</div>
+            <div className='hint'>{description}</div>
           </div>
-          <div class='label-item'>Active</div>
+          <div className='label-item'>Active</div>
         </div>
       </a>
     </div>

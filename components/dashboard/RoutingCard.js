@@ -9,11 +9,11 @@ const RoutingCard = ({ icon, title, route, remainingProjects }) => {
         className='button-dark resource-button w-inline-block'
         style={{ marginTop: '0.75rem' }}
       >
-        <div class='div-block-23'>
+        <div className='div-block-23'>
           <img src={icon} loading='lazy' width='18' alt='' />
           <div>{title}</div>
         </div>
-        <div class='price-2'>{remainingProjects}</div>
+        <div className='price-2'>{remainingProjects}</div>
       </a>
     </>
   );

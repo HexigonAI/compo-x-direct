@@ -9,7 +9,7 @@ const NavBar = () => {
   };
 
   return (
-    <div class='nav wf-section'>
+    <div className='nav wf-section'>
       <div
         data-collapse='medium'
         data-animation='default'
@@ -19,7 +19,7 @@ const NavBar = () => {
         role='banner'
         class='navbar w-nav'
       >
-        <div class='container-full w-container'>
+        <div className='container-full w-container'>
           <a href='#' class='dashabord-logo w-nav-brand'>
             <img
               src='../../images/Compo---Logo.svg'
@@ -28,9 +28,9 @@ const NavBar = () => {
               class='logo'
             />
           </a>
-          <div class='site-nav-search'></div>
+          <div className='site-nav-search'></div>
           <nav role='navigation' class='nav-menu w-nav-menu'>
-            <div class='nav-mobile'>
+            <div className='nav-mobile'>
               <p
                 className='nav-link last w-nav-link'
                 style={{ cursor: 'pointer' }}
@@ -43,7 +43,7 @@ const NavBar = () => {
             </div>
           </nav>
           <Link href={'/servers'}>
-            <nav role='navigation' class='nav-menu w-nav-menu'>
+            <nav role='navigation' className='nav-menu w-nav-menu'>
               <p
                 className='nav-link last w-nav-link'
                 style={{ cursor: 'pointer' }}
@@ -52,8 +52,8 @@ const NavBar = () => {
               </p>
             </nav>
           </Link>
-          <div class='menu-button w-nav-button'>
-            <div class='w-icon-nav-menu'></div>
+          <div className='menu-button w-nav-button'>
+            <div className='w-icon-nav-menu'></div>
           </div>
         </div>
       </div>
