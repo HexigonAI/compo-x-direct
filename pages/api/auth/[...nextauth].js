@@ -79,4 +79,26 @@ const options = {
 
 };
 
+async function refreshAccessToken(tokenObject) {
+  try {
+      // Get a new set of tokens with a refreshToken
+      const tokenResponse = await axios.post(YOUR_API_URL + 'auth/refreshToken', {
+          token: tokenObject.refreshToken
+      });
+
+      return {
+          ...tokenObject,
+          accessToken: tokenResponse.data.accessToken,
+          accessTokenExpiry: tokenResponse.data.accessTokenExpiry,
+          refreshToken: tokenResponse.data.refreshToken
+      }
+  } catch (error) {
+      return {
+          ...tokenObject,
+          error: "RefreshAccessTokenError",
+      }
+  }
+}
+
 export default (req, res) => NextAuth(req, res, options);
+
