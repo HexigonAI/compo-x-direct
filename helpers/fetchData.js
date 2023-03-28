@@ -86,18 +86,37 @@ export function getUser(token) {
 }
 
 
-export function getProjects(token) {
-  const { data: projects, isSuccess } = useQuery(
-    'userCollection',
-    async () => await fetchUserProjects(getUserProjects, token, {})
-  );
+// export async function getProjects(token) {
+//   const { data: projects } = useQuery(
+//     'userCollection',
+//     async () => await fetchUserProjects(getUserProjects, token, {})
+//   );
 
-  console.log(projects);
-  console.log(isSuccess);
+//   return projects;
+// }
+export async function getProjects(token) {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
 
-  return projects;
+  const response = await fetch('https://compo.directus.app/graphql/systems', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      query: getUserProjects,
+      variables: {},
+    }),
+  });
+
+  const json = await response.json();
+
+  if (json.errors) {
+    throw new Error(json.errors);
+  }
+
+  return json.data;
 }
-
 
 
 

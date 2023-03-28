@@ -1,16 +1,14 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { requireAuth } from '@/helpers/requireAuth';
 import { getProjects } from '../../../helpers/fetchData';
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
+import { getSession } from 'next-auth/react';
 
-const ServerProjectsPage = ({ token }) => {
+const ServerProjectsPage = ({ projects }) => {
   const router = useRouter();
   const { projectpage } = router.query;
-  const {projects}  = getProjects(token);
-
 
   return (
     <>
@@ -51,8 +49,8 @@ const ServerProjectsPage = ({ token }) => {
         </div>
       </div>
       <div class='array-projects' style={{ marginTop: '2rem' }}>
-
-        {Array.isArray(projects) &&
+        {typeof projects !== 'undefined' &&
+          Array.isArray(projects) &&
           projects.map((project) => (
             <Link
               href={{
@@ -64,7 +62,6 @@ const ServerProjectsPage = ({ token }) => {
               <ProjectCard projectTitle={project.title} id={project.id} />
             </Link>
           ))}
-
       </div>
       <div class='page-inside'>
         <div class='open-state'>
@@ -83,10 +80,26 @@ const ServerProjectsPage = ({ token }) => {
   );
 };
 
-export const getServerSideProps = async (context) => {
-  return requireAuth(context, ({ session }) => {
-    return { props: { token: session.user.accessToken } };
-  });
-};
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login-page',
+        permanent: false,
+      },
+    };
+  }
+
+  const token = session.user.accessToken;
+  const projects = await getProjects(token);
+
+  return {
+    props: {
+      projects: projects.projects
+    },
+  };
+}
 
 export default ServerProjectsPage;
