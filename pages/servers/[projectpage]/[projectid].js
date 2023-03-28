@@ -1,25 +1,15 @@
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
-import { requireAuth } from '@/helpers/requireAuth';
-import { getProjectByID } from '@/queries/collections';
 import NavBar from '@/components/NavBar';
+import { getSession } from 'next-auth/react';
+import { fetchProjectById } from '@/helpers/fetchProjectById';
 
-const SingleProjectPage = () => {
-  const router = useRouter();
-  const { projectid } = router.query;
+const SingleProjectPage = ({ project }) => {
 
-  // fetch some data from a backend with the id of route:
-  const { data: projects_by_id, isSuccess } = useQuery(
-    'projects',
-    async () => await getProjectByID(projectid)
-  );
-  // render the project
   const renderedProject = () => {
-    if (isSuccess && projects_by_id) {
+    if (project && project) {
       return (
         <div>
-          <h1>{projects_by_id.title}</h1>
-          <h5>{projects_by_id.id}</h5>
+          <h1>{project.title}</h1>
+          <h5>{project.id}</h5>
         </div>
       );
     }
@@ -34,11 +24,35 @@ const SingleProjectPage = () => {
 };
 
 export const getServerSideProps = async (context) => {
-  return requireAuth(context, ({ session }) => {
+  const session = await getSession(context);
+
+  if (!session) {
     return {
-      props: { session },
+      redirect: {
+        destination: '/login-page',
+        permanent: false,
+      },
     };
-  });
+  }
+
+  const token = session.user.accessToken;
+  const {params} = context;
+  const {projectid} = params;
+
+  try {
+    const project = await fetchProjectById(token, projectid);
+
+    return {
+      props: {
+        project,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {},
+    };
+  }
 };
 
 export default SingleProjectPage;

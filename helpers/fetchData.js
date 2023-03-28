@@ -23,5 +23,3 @@ export const fetchData = async (token, query) => {
 
   return json.data;
 }
-
-
