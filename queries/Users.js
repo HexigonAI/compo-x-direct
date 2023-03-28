@@ -2,24 +2,9 @@ import { Directus } from '@directus/sdk';
 
 const directus = new Directus('https://compo.directus.app');
 
-export const getAllUsers = async () => {
-
-    const d = await directus.users.me.read('d2c6d992-0e6b-4599-a16b-b95bbcbc81f5');
-    console.log(d)
-    console.log("test")
-    // #graphql
-    `query {
-      users {
-        first_name
-        last_name
-        email
-      }
-    }`
-  }
-
-export const getCurrentUser = 
-//#graphql
-`   query {
+export const getCurrentUser =
+  //#graphql
+  `   query {
         users_me {
             email
             first_name
@@ -37,16 +22,25 @@ export const getCurrentUser =
     }
 `;
 
-export const getUserProjects = 
-//#graphql
-`  query {
+export const getUserServers =
+  // #graphql
+  `query {
+      servers{
+          id
+          title
+          description
+      }
+  }`;
+
+export const getUserProjects =
+  //#graphql
+  `  query {
     projects {
         id
         title
     }
 }
 `;
-
 
 export const createNewUser = `
     #graphql
