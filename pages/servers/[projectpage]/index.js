@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { getProjects } from '../../../helpers/fetchData';
+import { fetchData } from '../../../helpers/fetchData';
 import NavBar from '@/components/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
+import { getUserProjects } from '@/queries/Users';
 
 const ServerProjectsPage = ({ projects }) => {
   const router = useRouter();
@@ -93,7 +94,8 @@ export async function getServerSideProps(context) {
   }
 
   const token = session.user.accessToken;
-  const projects = await getProjects(token);
+  const query = getUserProjects
+  const projects = await fetchData(token, query);
 
   return {
     props: {
