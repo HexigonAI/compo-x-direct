@@ -8,8 +8,6 @@ const SingleProjectPage = () => {
   const router = useRouter();
   const { projectid } = router.query;
 
-
-
   // fetch some data from a backend with the id of route:
   const { data: projects_by_id, isSuccess } = useQuery(
     'projects',

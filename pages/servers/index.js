@@ -1,19 +1,15 @@
 import Link from 'next/link';
+import { getSession } from 'next-auth/react';
 
-import { getServers } from '@/queries/collections';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/NavBar';
-import { requireAuth } from '@/helpers/requireAuth';
-import { getUser } from '../../helpers/fetchData'
-
-
+import { fetchData } from '../../helpers/fetchData';
+import { fetchUser } from '../../helpers/fetchUser';
+import { getUserServers, getCurrentUser } from '@/queries/Users';
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
-const projectCardProps = {
-  title: 'Compo X Components',
-  icon: 'images/compo-logo.svg',
-};
+
 
 const newServerProps = {
   title: 'Start a New Server',
@@ -21,12 +17,8 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-
-const Servers = ({ servers, token }) => {
-   const user = getUser(token);
-
+const Servers = ({ servers, user }) => {
   return (
-    
     <>
       <NavBar />
       <div className='page-wrapper-dark'>
@@ -46,16 +38,14 @@ const Servers = ({ servers, token }) => {
                   />
                   <h3 className='db-header'>
                     {/* TODO add in firstName prop here from Directus */}
-                    Welcome Back, <span className='user_name'>{ user ? user.first_name : ""}</span>
+                    Welcome Back,{' '}
+                    <span className='user_name'>
+                      {user ? user.first_name : ''}
+                    </span>
                   </h3>
                 </a>
               </div>
               <div className='label-4'>Your Servers</div>
-
-              <ServerCard
-                serverTitle={projectCardProps.title}
-                icon={projectCardProps.icon}
-              />
 
               {servers &&
                 servers.map((server) => (
@@ -88,31 +78,24 @@ const Servers = ({ servers, token }) => {
 };
 
 export async function getServerSideProps(context) {
-  const fetchServers = async ({ session }) => {
-    const token = session.user.accessToken;
+  const session = await getSession(context);
 
-    try {
-      const servers = await getServers(token);
-      //get user here to pass as props
-      return {
-        props: {
-          servers,
-          token
-        },
-      };
-    } catch (error) {
-      console.error(error);
-      return {
-        props: {
-          servers: [],
-        },
-      };
-    }
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login-page',
+        permanent: false,
+      },
+    };
+  }
+  const token = session.user.accessToken;
+
+  const servers = await fetchData(token, getUserServers);
+  const user = await fetchUser(getCurrentUser, token, {});
+
+  return {
+    props: { servers: servers.servers, token, user },
   };
-
-  return requireAuth(context, ({ session }) => {
-    return fetchServers({ session });
-  });
 }
 
 export default Servers;
