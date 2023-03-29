@@ -1,4 +1,4 @@
-const graphQLAPI = process.env.NEXT_PUBLIC_GRAPHQL;
+const graphQLAPI = process.env.GRAPHQL;
 
 export const fetchData = async (token, query) => {
   const headers = {
@@ -6,7 +6,7 @@ export const fetchData = async (token, query) => {
     Authorization: `Bearer ${token}`,
   };
 
-  const response = await fetch('https://compo.directus.app/graphql/systems', {
+  const response = await fetch(graphQLAPI, {
     method: 'POST',
     headers,
     body: JSON.stringify({
