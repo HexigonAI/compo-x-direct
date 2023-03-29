@@ -93,13 +93,21 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const { params } = context;
+  const { projectpage } = params;
   const token = session.user.accessToken;
-  const query = getUserProjects
-  const projects = await fetchData(token, query);
+  const query = getUserProjects;
+
+  const { servers } = await fetchData(token, query);
+  const mappedProjects = servers.map((project) => project);
+  const { projects } = mappedProjects.find(
+    (project) => project.id === projectpage
+  );
 
   return {
     props: {
-      projects: projects.projects
+      projects,
+      projectpage: projectpage,
     },
   };
 }
