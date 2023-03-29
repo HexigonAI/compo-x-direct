@@ -8,6 +8,7 @@ const InputModal = ({
   header,
   labelOne,
   labelTwo,
+  buttonText,
   closeModal,
   handleSubmit,
 }) => {
@@ -21,27 +22,28 @@ const InputModal = ({
   };
 
   const handleOnSubmit = (e) => {
-    e.preventDefault();
+    //this will be the function to excecute from the parent in our very first case it is going to be a function to create a new server using a graphql mutation.
     handleSubmit(inputOne, inputTwo);
-    console.log(inputOne, inputTwo);
+    // console.log(inputOne, inputTwo);
   };
 
   return ReactDOM.createPortal(
     <>
       <div className={styles.modal_overlay} onClick={closeModal}></div>
+
       <div className={styles.modal_wrapper}>
         <div className={styles.modal_container}>
+
           <div className={styles.modal_header}>
             <div className={styles.modal_header__label}></div>
-            <div className={styles.modal_header__heading}>
-              Enter Server Information
-            </div>
+            <div className={styles.modal_header__heading}>{header}</div>
             <a
               style={{ cursor: 'pointer' }}
               onClick={(e) => handleCloseModal()}
               className={styles.modal_close}
             ></a>
           </div>
+
           <div className={styles.modal_content}>
             <div className='w-form'>
               <form
@@ -50,9 +52,10 @@ const InputModal = ({
                 data-name='Email Form'
                 method='get'
               >
+                
                 <div className={styles.form_item}>
                   <label htmlFor='email' className='label'>
-                    Server Name
+                    {labelOne}
                   </label>
                   <div className={styles.text_input_field_wrapper}>
                     <input
@@ -67,9 +70,10 @@ const InputModal = ({
                     />
                   </div>
                 </div>
+
                 <div className={styles.form_item}>
                   <label htmlFor='email' className='label'>
-                    Server Details
+                    {labelTwo}
                   </label>
                   <div className={styles.text_input_field_wrapper}>
                     <input
@@ -89,9 +93,13 @@ const InputModal = ({
               <div className='w-form-fail'></div>
             </div>
           </div>
+
           <div className={styles.modal_footer}>
-            <a onClick={(e) => handleOnSubmit(e)} className={styles.btn_primary}>
-              Create New Server
+            <a
+              onClick={(e) => handleOnSubmit(e)}
+              className={styles.btn_primary}
+            >
+              {buttonText}
             </a>
           </div>
         </div>

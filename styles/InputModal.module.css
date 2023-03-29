@@ -1,7 +1,7 @@
 .modal_wrapper {
   position: fixed;
   top: 50%;
-  left: 35%;
+  left: 39%;
   transform: translate(-50%, -50%);
   background-color: rgb(212, 212, 245);
   z-index: 1;
@@ -96,7 +96,7 @@
   border-radius: 5px;
   display: flex;
   justify-content: flex-end;
-  width: 100%;
+  width: 100.5%;
   height: 5rem;
   margin-top: auto;
   padding: 8px;
@@ -108,13 +108,6 @@
 }
 
 .btn_primary {
-  /* height: 4rem; */
-  /* margin: 0rem; */
-  /* padding-top: 1rem; */
-  /* padding-bottom: 2rem; */
-  /* flex: 1; */
-  /* padding-right: 12px; */
-  /* flex: 0 0 auto; */
   display: flex;
   justify-content: center;
   align-items: center;
