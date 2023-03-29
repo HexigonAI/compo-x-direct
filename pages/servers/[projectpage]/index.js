@@ -14,31 +14,31 @@ const ServerProjectsPage = ({ projects }) => {
   return (
     <>
       <NavBar />
-      <div class='page-header-2 page-header__sticky'>
-        <div class='grid-2'>
-          <div class='col-12'>
-            <div class='flex oustide'>
+      <div className='page-header-2 page-header__sticky'>
+        <div className='grid-2'>
+          <div className='col-12'>
+            <div className='flex oustide'>
               <div>
-                <h2 class='page-header__title-2'>Projects</h2>
-                <div class='flex-server-top'>
-                  <div class='avatar-3'>
+                <h2 className='page-header__title-2'>Projects</h2>
+                <div className='flex-server-top'>
+                  <div className='avatar-3'>
                     <img
                       src='images/compo-logo.svg'
                       alt=''
-                      class='org-avatar'
+                      className='org-avatar'
                     />
                   </div>
                   <div>
-                    <div class='account-name'>Compo Component Server</div>
-                    <div class='account-detail'>4 Published Sites</div>
+                    <div className='account-name'>Compo Component Server</div>
+                    <div className='account-detail'>4 Published Sites</div>
                   </div>
                 </div>
               </div>
-              <div class='page-nav'>
-                <div class='side-wrapper right'>
+              <div className='page-nav'>
+                <div className='side-wrapper right'>
                   <a
                     href='#'
-                    class='button-2 add w-button'
+                    className='button-2 add w-button'
                     data-ix='open-modal'
                   >
                     New Project
@@ -49,7 +49,7 @@ const ServerProjectsPage = ({ projects }) => {
           </div>
         </div>
       </div>
-      <div class='array-projects' style={{ marginTop: '2rem' }}>
+      <div className='array-projects' style={{ marginTop: '2rem' }}>
         {typeof projects !== 'undefined' &&
           Array.isArray(projects) &&
           projects.map((project) => (
@@ -64,15 +64,15 @@ const ServerProjectsPage = ({ projects }) => {
             </Link>
           ))}
       </div>
-      <div class='page-inside'>
-        <div class='open-state'>
+      <div className='page-inside'>
+        <div className='open-state'>
           <img
             src='images/Grid.svg'
             loading='lazy'
             alt=''
-            class='open-state-image'
+            className='open-state-image'
           />
-          <a href='#' class='button-2 add w-button' data-ix='open-modal'>
+          <a href='#' className='button-2 add w-button' data-ix='open-modal'>
             Start a New Project
           </a>
         </div>
