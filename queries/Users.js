@@ -35,11 +35,15 @@ export const getUserServers =
 export const getUserProjects =
   //#graphql
   `  query {
-    projects {
-        id
-        title
+    servers{
+      id
+      title
+      projects{
+          id
+          title
+      }
     }
-}
+  }
 `;
 
 export const createNewUser = `
