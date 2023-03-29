@@ -6,7 +6,7 @@ export const fetchUser = async (query, token, { variables = {} }) => {
       Authorization: `Bearer ${token}`,
     };
   
-    const res = await fetch(graphQLAPI + '/system', {
+    const res = await fetch(graphQLAPI, {
       method: 'POST',
       headers,
       body: JSON.stringify({

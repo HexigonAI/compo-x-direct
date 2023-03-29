@@ -1,3 +1,5 @@
+const graphQLAPI = process.env.GRAPHQL;
+
 export const fetchProjectById = async (token, projectId) => {
     const headers = {
       'Content-Type': 'application/json',
@@ -13,7 +15,7 @@ export const fetchProjectById = async (token, projectId) => {
       }
     `;
   
-    const response = await fetch('https://compo.directus.app/graphql/systems', {
+    const response = await fetch(graphQLAPI, {
       method: 'POST',
       headers,
       body: JSON.stringify({
