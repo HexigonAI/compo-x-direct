@@ -1,5 +1,6 @@
-import Link from 'next/link';
+import { useState } from 'react';
 import { getSession } from 'next-auth/react';
+import Link from 'next/link';
 
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
@@ -7,9 +8,9 @@ import NavBar from '@/components/NavBar';
 import { fetchData } from '../../helpers/fetchData';
 import { fetchUser } from '../../helpers/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
+import InputModal from '@/components/InputModal';
 
 // TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
-
 
 const newServerProps = {
   title: 'Start a New Server',
@@ -18,9 +19,23 @@ const newServerProps = {
 };
 
 const Servers = ({ servers, user, token }) => {
+
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       <NavBar />
+      {showModal && (
+        <>
+          {/* <div className='modal-overlay' onClick={closeModal}></div> */}
+          <div className='modal-container'>
+            <InputModal closeModal={closeModal} isOpen={showModal} />
+          </div>
+        </>
+      )}
       <div className='page-wrapper-dark'>
         <div className='global-styles w-embed'></div>
         <main>
@@ -30,7 +45,9 @@ const Servers = ({ servers, user, token }) => {
                 <a href='#' className='w-inline-block'>
                   {/* TODO add profileImage prop here fetched from Directus */}
                   <img
-                    src={`https://compo.directus.app/assets/${user ? user.avatar.id : ''}?access_token=${token}`}
+                    src={`https://compo.directus.app/assets/${
+                      user ? user.avatar.id : ''
+                    }?access_token=${token}`}
                     width='47'
                     sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
                     alt=''
@@ -63,12 +80,13 @@ const Servers = ({ servers, user, token }) => {
                     />
                   </Link>
                 ))}
-
-              <RoutingCard
-                title={newServerProps.title}
-                icon={newServerProps.icon}
-                remainingProjects={newServerProps.remainingProjects}
-              />
+              <div onClick={(e) => setShowModal(true)}>
+                <RoutingCard
+                  title={newServerProps.title}
+                  icon={newServerProps.icon}
+                  remainingProjects={newServerProps.remainingProjects}
+                />
+              </div>
             </div>
           </div>
         </main>
