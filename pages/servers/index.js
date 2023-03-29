@@ -17,7 +17,7 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-const Servers = ({ servers, user }) => {
+const Servers = ({ servers, user, token }) => {
   return (
     <>
       <NavBar />
@@ -30,7 +30,7 @@ const Servers = ({ servers, user }) => {
                 <a href='#' className='w-inline-block'>
                   {/* TODO add profileImage prop here fetched from Directus */}
                   <img
-                    // src={`${assetsUrl}/asafefaefae`}
+                    src={`https://compo.directus.app/assets/${user ? user.avatar.id : ''}?access_token=${token}`}
                     width='47'
                     sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
                     alt=''

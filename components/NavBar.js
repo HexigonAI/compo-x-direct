@@ -17,19 +17,19 @@ const NavBar = () => {
         data-easing='ease'
         data-easing2='ease'
         role='banner'
-        class='navbar w-nav'
+        className='navbar w-nav'
       >
         <div className='container-full w-container'>
-          <a href='#' class='dashabord-logo w-nav-brand'>
+          <a href='#' className='dashabord-logo w-nav-brand'>
             <img
               src='../../images/Compo---Logo.svg'
               width='90'
               alt=''
-              class='logo'
+              className='logo'
             />
           </a>
           <div className='site-nav-search'></div>
-          <nav role='navigation' class='nav-menu w-nav-menu'>
+          <nav role='navigation' className='nav-menu w-nav-menu'>
             <div className='nav-mobile'>
               <p
                 className='nav-link last w-nav-link'
