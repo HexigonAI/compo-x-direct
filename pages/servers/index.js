@@ -9,8 +9,7 @@ import { fetchData } from '../../helpers/fetchData';
 import { fetchUser } from '../../helpers/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
 import InputModal from '@/components/InputModal';
-
-// TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
+import { setServer } from '@/helpers/setServer';
 
 const newServerProps = {
   title: 'Start a New Server',
@@ -18,11 +17,23 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
-const Servers = ({ servers, user, token }) => {
+const modalProps = {
+  header: 'Enter Server Information',
+  labelOne: 'Server Name',
+  labelTwo: 'Server Description',
+  buttonText: 'Create Server',
+};
 
+const Servers = ({ servers, user, token }) => {
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const handleCreateServer = (inputOne, inputTwo) => {
+    console.log(inputOne, inputTwo);
+    setShowModal(false);
+    setServer(token, inputOne, inputTwo);
   };
 
   return (
@@ -30,9 +41,16 @@ const Servers = ({ servers, user, token }) => {
       <NavBar />
       {showModal && (
         <>
-          {/* <div className='modal-overlay' onClick={closeModal}></div> */}
           <div className='modal-container'>
-            <InputModal closeModal={closeModal} isOpen={showModal} />
+            <InputModal
+              closeModal={closeModal}
+              handleSubmit={handleCreateServer}
+              isOpen={showModal}
+              header={modalProps.header}
+              labelOne={modalProps.labelOne}
+              labelTwo={modalProps.labelTwo}
+              buttonText={modalProps.buttonText}
+            />
           </div>
         </>
       )}
@@ -112,7 +130,7 @@ export async function getServerSideProps(context) {
   const user = await fetchUser(getCurrentUser, token, {});
 
   return {
-    props: { servers: servers.servers, token, user },
+    props: { servers: servers.servers, token, user, revalidate: 1 },
   };
 }
 

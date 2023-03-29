@@ -1,7 +1,3 @@
-import { Directus } from '@directus/sdk';
-
-const directus = new Directus('https://compo.directus.app');
-
 export const getCurrentUser =
   //#graphql
   `   query {
