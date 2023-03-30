@@ -7,8 +7,44 @@
   z-index: 1;
   max-width: 1000px;
   border-radius: 10px;
+  transition: all .25s ease;
 }
 
+@media (max-width: 1002px) {
+  .modal_wrapper {
+    top: 50%;
+    left: 36%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(212, 212, 245);
+    z-index: 1;
+    max-width: 150px;
+  }
+
+}
+
+@media (max-width: 572px) {
+  .modal_wrapper {
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(212, 212, 245);
+    z-index: 1;
+    max-width: 120px;
+  }
+  
+}
+
+@media (max-width: 454px) {
+  .modal_wrapper {
+    top: 50%;
+    left: 26%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(212, 212, 245);
+    z-index: 1;
+    max-width: 100px;
+  }
+
+}
 .modal_overlay {
   position: fixed;
   top: 0;
@@ -105,47 +141,6 @@
   grid-row-gap: 2px;
   background-color: #171717;
   text-align: center;
-}
-
-.btn_primary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  background-color: #460ee3;
-  transition: all 100ms ease;
-  font-family: 'League Spartan', sans-serif;
-  color: #fff;
-  font-weight: 500;
-}
-
-.btn_primary:hover {
-  background-color: #3c0dc0;
-}
-
-.btn_primary:active {
-  border-color: #460ee3;
-  background-color: #0530ad;
-}
-
-.btn_primary:focus {
-  box-shadow: inset 0 0 0 1px #fff;
-}
-
-.btn_primary.btn_small {
-  min-height: 2rem;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  line-height: 1rem;
-}
-
-.btn_primary.btn_form {
-  margin-left: 0rem;
-}
-
-.btn_primary.btn_upload {
-  margin: 0rem 4rem 0rem 0rem;
 }
 
 .form_item {
