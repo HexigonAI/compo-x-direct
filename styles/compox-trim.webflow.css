@@ -741,7 +741,9 @@ ul {
 
 .account-name {
   font-family: 'League Spartan', sans-serif;
-  font-weight: 700;
+  font-weight: 550;
+  font-size: 1.25rem;
+  margin-bottom: 3px;
 }
 
 .focus-item-account {
@@ -1884,7 +1886,7 @@ ul {
   padding: 64px 64px 32px;
   border: 1px solid #e6e6e6;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: #f5f3f8;
   box-shadow: inset 4px 7px 5px 0 rgba(216, 213, 237, 0.2), 9px 34px 64px -14px rgba(77, 77, 77, 0.12);
 }
 
@@ -3107,7 +3109,7 @@ ul {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 10%;
+  padding-top: 5%;
   padding-bottom: 10%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;

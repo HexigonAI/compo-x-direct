@@ -129,7 +129,9 @@ a {
 .style-guide-item.narrow {
   display: inline-block;
   border-radius: 8px;
+  margin-left: 5rem;
 }
+
 
 @media (prefers-color-scheme: dark) {
   html {

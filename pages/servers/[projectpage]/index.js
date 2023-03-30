@@ -2,14 +2,21 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchData } from '../../../helpers/fetchData';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/global/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
 import { getUserProjects } from '@/queries/Users';
+import { createProject } from '@/helpers/createProject';
 
-const ServerProjectsPage = ({ projects }) => {
+const ServerProjectsPage = ({ projects, server, token }) => {
+
   const router = useRouter();
   const { projectpage } = router.query;
+
+  const handleCreateProject = (token, projectpage) => {
+    createProject(token, projectpage);
+    alert('you created a project with an id:', + projectpage) 
+  };
 
   return (
     <>
@@ -29,20 +36,20 @@ const ServerProjectsPage = ({ projects }) => {
                     />
                   </div>
                   <div>
-                    <div className='account-name'>Compo Component Server</div>
+                    <div className='account-name'>{server.title}</div>
                     <div className='account-detail'>4 Published Sites</div>
                   </div>
                 </div>
               </div>
               <div className='page-nav'>
                 <div className='side-wrapper right'>
-                  <a
-                    href='#'
-                    className='button-2 add w-button'
+                  <button
+                    onClick={(e) => handleCreateProject(token, projectpage)}
+                    className='button'
                     data-ix='open-modal'
                   >
                     New Project
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -72,9 +79,9 @@ const ServerProjectsPage = ({ projects }) => {
             alt=''
             className='open-state-image'
           />
-          <a href='#' className='button-2 add w-button' data-ix='open-modal'>
+          <button className='button-2 add w-button' data-ix='open-modal'>
             Start a New Project
-          </a>
+          </button>
         </div>
       </div>
     </>
@@ -99,15 +106,19 @@ export async function getServerSideProps(context) {
   const query = getUserProjects;
 
   const { servers } = await fetchData(token, query);
+
   const mappedProjects = servers.map((project) => project);
   const { projects } = mappedProjects.find(
     (project) => project.id === projectpage
   );
+  const server = mappedProjects.find((server) => server.id === projectpage);
 
   return {
     props: {
       projects,
-      projectpage: projectpage,
+      server,
+      projectpage,
+      token, 
     },
   };
 }

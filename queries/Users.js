@@ -1,7 +1,3 @@
-import { Directus } from '@directus/sdk';
-
-const directus = new Directus('https://compo.directus.app');
-
 export const getCurrentUser =
   //#graphql
   `   query {
@@ -34,17 +30,16 @@ export const getUserServers =
 
 export const getUserProjects =
   //#graphql
-  `  query {
+`  query {
     servers{
-      id
-      title
-      projects{
-          id
-          title
-      }
-    }
-  }
-`;
+        id
+        title
+            projects{
+                id
+                title
+            }
+        }
+    }`;
 
 export const createNewUser = `
     #graphql

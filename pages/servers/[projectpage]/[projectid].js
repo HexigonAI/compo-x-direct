@@ -1,8 +1,8 @@
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/global/NavBar';
 import { getSession } from 'next-auth/react';
 import { fetchProjectById } from '@/helpers/fetchProjectById';
 
-const SingleProjectPage = ({ project }) => {
+const SingleProjectPage = ({ project, token }) => {
 
   const renderedProject = () => {
     if (project && project) {
@@ -17,7 +17,7 @@ const SingleProjectPage = ({ project }) => {
 
   return (
     <>
-    <NavBar />
+    <NavBar/>
       {renderedProject()}
     </>
   );
@@ -45,6 +45,7 @@ export const getServerSideProps = async (context) => {
     return {
       props: {
         project,
+        token,
       },
     };
   } catch (error) {

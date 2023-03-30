@@ -1,15 +1,15 @@
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
+import Link from 'next/link';
 
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/global/NavBar';
 import { fetchData } from '../../helpers/fetchData';
 import { fetchUser } from '../../helpers/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
-
-// TODO: replace all of these props with dynamic data coming from the respective users' Directus database.
-
+import InputModal from '@/components/global/InputModal';
+import { createServer } from '@/helpers/createServer';
 
 const newServerProps = {
   title: 'Start a New Server',
@@ -17,10 +17,53 @@ const newServerProps = {
   icon: 'images/energy-usage-window.svg',
 };
 
+const modalProps = {
+  header: 'Enter Server Information',
+  labelOne: 'Server Name',
+  labelTwo: 'Server Description',
+  buttonText: 'Create Server',
+};
+
 const Servers = ({ servers, user, token }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [server, setServer] = useState(servers);
+
+  useEffect(() => {
+    //detect for a change in the browser and update the browser accordingly
+  }, [server]);
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleCreateServer = (inputOne, inputTwo) => {
+    if (inputOne === '') {
+      alert('Please enter a server name');
+      return;
+    } else {
+      createServer(token, inputOne, inputTwo);
+      setShowModal(false);
+    }
+  };
+
   return (
     <>
-      <NavBar />
+      <NavBar token={token} user={user}/>
+      {showModal && (
+        <>
+          <div className='modal-container'>
+            <InputModal
+              closeModal={closeModal}
+              handleSubmit={handleCreateServer}
+              isOpen={showModal}
+              header={modalProps.header}
+              labelOne={modalProps.labelOne}
+              labelTwo={modalProps.labelTwo}
+              buttonText={modalProps.buttonText}
+            />
+          </div>
+        </>
+      )}
       <div className='page-wrapper-dark'>
         <div className='global-styles w-embed'></div>
         <main>
@@ -28,16 +71,16 @@ const Servers = ({ servers, user, token }) => {
             <div className='server-inside'>
               <div className='top-admin'>
                 <a href='#' className='w-inline-block'>
-                  {/* TODO add profileImage prop here fetched from Directus */}
                   <img
-                    src={`https://compo.directus.app/assets/${user ? user.avatar.id : ''}?access_token=${token}`}
+                    src={`https://compo.directus.app/assets/${
+                      user ? user.avatar.id : ''
+                    }?access_token=${token}`}
                     width='47'
                     sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
                     alt=''
                     className='avatar'
                   />
                   <h3 className='db-header'>
-                    {/* TODO add in firstName prop here from Directus */}
                     Welcome Back,{' '}
                     <span className='user_name'>
                       {user ? user.first_name : ''}
@@ -63,12 +106,13 @@ const Servers = ({ servers, user, token }) => {
                     />
                   </Link>
                 ))}
-
-              <RoutingCard
-                title={newServerProps.title}
-                icon={newServerProps.icon}
-                remainingProjects={newServerProps.remainingProjects}
-              />
+              <div onClick={(e) => setShowModal(true)}>
+                <RoutingCard
+                  title={newServerProps.title}
+                  icon={newServerProps.icon}
+                  remainingProjects={newServerProps.remainingProjects}
+                />
+              </div>
             </div>
           </div>
         </main>
@@ -94,7 +138,7 @@ export async function getServerSideProps(context) {
   const user = await fetchUser(getCurrentUser, token, {});
 
   return {
-    props: { servers: servers.servers, token, user },
+    props: { servers: servers.servers, token, user, revalidate: 1 },
   };
 }
 

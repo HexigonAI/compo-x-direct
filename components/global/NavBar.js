@@ -1,9 +1,10 @@
 import { signOut } from 'next-auth/react';
+
 import Link from 'next/link';
 
 const profileImage = '../../images/tayler-profile.png';
 
-const NavBar = () => {
+const NavBar = ({ token, user }) => {
   const handleLogout = () => {
     signOut();
   };
@@ -20,14 +21,27 @@ const NavBar = () => {
         className='navbar w-nav'
       >
         <div className='container-full w-container'>
-          <a href='#' className='dashabord-logo w-nav-brand'>
+          <a href='#' class='dashabord-logo w-nav-brand'>
             <img
               src='../../images/Compo---Logo.svg'
               width='90'
               alt=''
-              className='logo'
+              class='logo'
             />
           </a>
+          {/* TODO: if user is logged in, take them to '/servers', else take them to '/' */}
+          {/* {token && (
+            <Link href={'/servers'}>
+              <div className='dashabord-logo w-nav-brand'>
+                <img
+                  src='../../images/Compo---Logo.svg'
+                  width='90'
+                  alt=''
+                  className='logo'
+                />
+              </div>
+            </Link>
+          )} */}
           <div className='site-nav-search'></div>
           <nav role='navigation' className='nav-menu w-nav-menu'>
             <div className='nav-mobile'>
@@ -40,6 +54,17 @@ const NavBar = () => {
               </p>
 
               <img src={profileImage} className='avatar' />
+
+              {/* TODO load in the user avatar on login */}
+              {/* <img
+                src={`https://compo.directus.app/assets/${
+                  user ? user.avatar.id : ''
+                }?access_token=${token}`}
+                width='47'
+                sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
+                alt=''
+                className='avatar'
+              /> */}
             </div>
           </nav>
           <Link href={'/servers'}>
@@ -60,5 +85,4 @@ const NavBar = () => {
     </div>
   );
 };
-
 export default NavBar;
