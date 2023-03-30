@@ -4,14 +4,14 @@ const ProjectCard = ({ projectTitle, id, status}) => {
   return (
     <div className='style-guide-item narrow'>
       <div className='card'>
-        <a href='#' className='w-inline-block'>
+        <div className='w-inline-block'>
           <img
             src='../images/Frame-13239.svg'
             width='400'
             alt=''
             className='dashboard-image-preview'
           />
-        </a>
+        </div>
         <div className='card-body'>
           <h5>{projectTitle}</h5>
           <p>{id}</p>

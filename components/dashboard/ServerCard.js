@@ -4,8 +4,7 @@ const ServerCard = ({serverTitle, icon, id, description}) => {
   return (
     <div>
     {/* TODO add a route prop for respective projectID */}
-      <a
-        href='/site-dashboard/organization-grid'
+      <div
         className='account-item w-inline-block'
       >
         <div className='account'>
@@ -20,7 +19,7 @@ const ServerCard = ({serverTitle, icon, id, description}) => {
           </div>
           <div className='label-item'>Active</div>
         </div>
-      </a>
+      </div>
     </div>
   );
 };
