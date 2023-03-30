@@ -71,7 +71,6 @@ const Servers = ({ servers, user, token }) => {
             <div className='server-inside'>
               <div className='top-admin'>
                 <a href='#' className='w-inline-block'>
-                  {/* TODO add profileImage prop here fetched from Directus */}
                   <img
                     src={`https://compo.directus.app/assets/${
                       user ? user.avatar.id : ''
@@ -82,7 +81,6 @@ const Servers = ({ servers, user, token }) => {
                     className='avatar'
                   />
                   <h3 className='db-header'>
-                    {/* TODO add in firstName prop here from Directus */}
                     Welcome Back,{' '}
                     <span className='user_name'>
                       {user ? user.first_name : ''}
