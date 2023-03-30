@@ -1,6 +1,6 @@
 const graphQLAPI = process.env.GRAPHQL;
 
-export const setServer = async (token, title, description) => {
+export const createServer = async (token, title, description) => {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,

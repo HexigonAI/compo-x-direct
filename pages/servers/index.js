@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -9,7 +9,7 @@ import { fetchData } from '../../helpers/fetchData';
 import { fetchUser } from '../../helpers/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
 import InputModal from '@/components/InputModal';
-import { setServer } from '@/helpers/setServer';
+import { createServer } from '@/helpers/createServer';
 
 const newServerProps = {
   title: 'Start a New Server',
@@ -26,6 +26,14 @@ const modalProps = {
 
 const Servers = ({ servers, user, token }) => {
   const [showModal, setShowModal] = useState(false);
+  const [server, setServer] = useState(servers);
+
+  useEffect(() => {
+    //detect for a change in the browser and update the browser accordingly
+    
+
+  }, [server]);
+
   const closeModal = () => {
     setShowModal(false);
   };
@@ -33,7 +41,7 @@ const Servers = ({ servers, user, token }) => {
   const handleCreateServer = (inputOne, inputTwo) => {
     console.log(inputOne, inputTwo);
     setShowModal(false);
-    setServer(token, inputOne, inputTwo);
+    createServer(token, inputOne, inputTwo);
   };
 
   return (
