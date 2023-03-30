@@ -36,13 +36,12 @@ const ServerProjectsPage = ({ projects, server }) => {
               </div>
               <div className='page-nav'>
                 <div className='side-wrapper right'>
-                  <a
-                    href='#'
-                    className='button-2 add w-button'
+                  <button
+                    className='button'
                     data-ix='open-modal'
                   >
                     New Project
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -72,9 +71,9 @@ const ServerProjectsPage = ({ projects, server }) => {
             alt=''
             className='open-state-image'
           />
-          <a href='#' className='button-2 add w-button' data-ix='open-modal'>
+          <button className='button-2 add w-button' data-ix='open-modal'>
             Start a New Project
-          </a>
+          </button>
         </div>
       </div>
     </>

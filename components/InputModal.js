@@ -22,9 +22,7 @@ const InputModal = ({
   };
 
   const handleOnSubmit = (e) => {
-    //this will be the function to excecute from the parent in our very first case it is going to be a function to create a new server using a graphql mutation.
     handleSubmit(inputOne, inputTwo);
-    // console.log(inputOne, inputTwo);
   };
 
   return ReactDOM.createPortal(
@@ -95,12 +93,12 @@ const InputModal = ({
           </div>
 
           <div className={styles.modal_footer}>
-            <a
+            <button
               onClick={(e) => handleOnSubmit(e)}
-              className={styles.btn_primary}
+              className='button-2 add w-button'
             >
               {buttonText}
-            </a>
+            </button>
           </div>
         </div>
       </div>

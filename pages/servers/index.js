@@ -30,8 +30,6 @@ const Servers = ({ servers, user, token }) => {
 
   useEffect(() => {
     //detect for a change in the browser and update the browser accordingly
-    
-
   }, [server]);
 
   const closeModal = () => {
@@ -39,9 +37,13 @@ const Servers = ({ servers, user, token }) => {
   };
 
   const handleCreateServer = (inputOne, inputTwo) => {
-    console.log(inputOne, inputTwo);
-    setShowModal(false);
-    createServer(token, inputOne, inputTwo);
+    if (inputOne === '') {
+      alert('Please enter a server name');
+      return;
+    } else {
+      createServer(token, inputOne, inputTwo);
+      setShowModal(false);
+    }
   };
 
   return (
