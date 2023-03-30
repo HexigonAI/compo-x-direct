@@ -5,7 +5,7 @@ import Link from 'next/link';
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/global/NavBar';
-import { fetchData } from '../../helpers/fetchData';
+import { fetchData } from '../../helpers/fetchData/fetchData';
 import { fetchUser } from '../../helpers/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
 import InputModal from '@/components/global/InputModal';

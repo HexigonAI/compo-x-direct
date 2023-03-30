@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { fetchData } from '../../../helpers/fetchData';
+import { fetchData } from '../../../helpers/fetchData/fetchData';
 import NavBar from '@/components/global/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
 import { getUserProjects } from '@/queries/Users';
-import { createProject } from '@/helpers/createProject';
+import { createProject } from '@/helpers/setData/createProject';
 
 const ServerProjectsPage = ({ projects, server, token }) => {
 

@@ -1,4 +1,4 @@
-import fetchData from '../helpers/fetchData';
+import fetchData from '../helpers/fetchData/fetchData';
 
 export const getServers = async (token) => {
   const data = await fetchData(
