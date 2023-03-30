@@ -21,7 +21,16 @@ const NavBar = ({ token, user }) => {
         className='navbar w-nav'
       >
         <div className='container-full w-container'>
-          {token && (
+          <a href='#' class='dashabord-logo w-nav-brand'>
+            <img
+              src='../../images/Compo---Logo.svg'
+              width='90'
+              alt=''
+              class='logo'
+            />
+          </a>
+          {/* TODO: if user is logged in, take them to '/servers', else take them to '/' */}
+          {/* {token && (
             <Link href={'/servers'}>
               <div className='dashabord-logo w-nav-brand'>
                 <img
@@ -32,7 +41,7 @@ const NavBar = ({ token, user }) => {
                 />
               </div>
             </Link>
-          )}
+          )} */}
           <div className='site-nav-search'></div>
           <nav role='navigation' className='nav-menu w-nav-menu'>
             <div className='nav-mobile'>
@@ -44,15 +53,18 @@ const NavBar = ({ token, user }) => {
                 Logout
               </p>
 
-              <img
-                    src={`https://compo.directus.app/assets/${
-                      user ? user.avatar.id : ''
-                    }?access_token=${token}`}
-                    width='47'
-                    sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
-                    alt=''
-                    className='avatar'
-                  />
+              <img src={profileImage} className='avatar' />
+
+              {/* TODO load in the user avatar on login */}
+              {/* <img
+                src={`https://compo.directus.app/assets/${
+                  user ? user.avatar.id : ''
+                }?access_token=${token}`}
+                width='47'
+                sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
+                alt=''
+                className='avatar'
+              /> */}
             </div>
           </nav>
           <Link href={'/servers'}>
