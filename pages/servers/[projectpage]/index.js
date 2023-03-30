@@ -7,7 +7,7 @@ import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
 import { getUserProjects } from '@/queries/Users';
 
-const ServerProjectsPage = ({ projects }) => {
+const ServerProjectsPage = ({ projects, server }) => {
   const router = useRouter();
   const { projectpage } = router.query;
 
@@ -29,7 +29,7 @@ const ServerProjectsPage = ({ projects }) => {
                     />
                   </div>
                   <div>
-                    <div className='account-name'>Compo Component Server</div>
+                    <div className='account-name'>{server.title}</div>
                     <div className='account-detail'>4 Published Sites</div>
                   </div>
                 </div>
@@ -103,10 +103,12 @@ export async function getServerSideProps(context) {
   const { projects } = mappedProjects.find(
     (project) => project.id === projectpage
   );
+  const server = mappedProjects.find((server) => server.id === projectpage);
 
   return {
     props: {
       projects,
+      server,
       projectpage: projectpage,
     },
   };
