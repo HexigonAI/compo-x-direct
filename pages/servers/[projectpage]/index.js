@@ -2,14 +2,21 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchData } from '../../../helpers/fetchData';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/global/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
 import { getUserProjects } from '@/queries/Users';
+import { createProject } from '@/helpers/createProject';
 
-const ServerProjectsPage = ({ projects, server }) => {
+const ServerProjectsPage = ({ projects, server, token }) => {
+
   const router = useRouter();
   const { projectpage } = router.query;
+
+  const handleCreateProject = (token, projectpage) => {
+    createProject(token, projectpage);
+    alert('you created a project with an id:', + projectpage) 
+  };
 
   return (
     <>
@@ -37,6 +44,7 @@ const ServerProjectsPage = ({ projects, server }) => {
               <div className='page-nav'>
                 <div className='side-wrapper right'>
                   <button
+                    onClick={(e) => handleCreateProject(token, projectpage)}
                     className='button'
                     data-ix='open-modal'
                   >
@@ -98,6 +106,7 @@ export async function getServerSideProps(context) {
   const query = getUserProjects;
 
   const { servers } = await fetchData(token, query);
+
   const mappedProjects = servers.map((project) => project);
   const { projects } = mappedProjects.find(
     (project) => project.id === projectpage
@@ -108,7 +117,8 @@ export async function getServerSideProps(context) {
     props: {
       projects,
       server,
-      projectpage: projectpage,
+      projectpage,
+      token, 
     },
   };
 }

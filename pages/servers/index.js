@@ -4,11 +4,11 @@ import Link from 'next/link';
 
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/global/NavBar';
 import { fetchData } from '../../helpers/fetchData';
 import { fetchUser } from '../../helpers/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
-import InputModal from '@/components/InputModal';
+import InputModal from '@/components/global/InputModal';
 import { createServer } from '@/helpers/createServer';
 
 const newServerProps = {
@@ -48,7 +48,7 @@ const Servers = ({ servers, user, token }) => {
 
   return (
     <>
-      <NavBar />
+      <NavBar token={token} user={user}/>
       {showModal && (
         <>
           <div className='modal-container'>
