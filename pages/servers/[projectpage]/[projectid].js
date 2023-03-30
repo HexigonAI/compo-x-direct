@@ -1,7 +1,6 @@
 import NavBar from '@/components/global/NavBar';
 import { getSession } from 'next-auth/react';
-import { fetchProjectById } from '@/helpers/fetchProjectById';
-
+import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 const SingleProjectPage = ({ project, token }) => {
 
   const renderedProject = () => {

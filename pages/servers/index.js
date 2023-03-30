@@ -6,10 +6,10 @@ import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
 import NavBar from '@/components/global/NavBar';
 import { fetchData } from '../../helpers/fetchData/fetchData';
-import { fetchUser } from '../../helpers/fetchUser';
+import { fetchUser } from '../../helpers/fetchData/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
 import InputModal from '@/components/global/InputModal';
-import { createServer } from '@/helpers/createServer';
+import { createServer } from '@/helpers/setData/createServer';
 
 const newServerProps = {
   title: 'Start a New Server',

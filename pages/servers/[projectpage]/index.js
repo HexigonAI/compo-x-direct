@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { fetchData } from '../../../helpers/fetchData/fetchData';
+import { fetchData } from '@/helpers/fetchData/fetchData';
 import NavBar from '@/components/global/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
