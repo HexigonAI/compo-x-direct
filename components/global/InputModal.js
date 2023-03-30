@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import styles from '../styles/InputModal.module.css';
+import styles from '../../styles/InputModal.module.css';
 
 const InputModal = ({
   isOpen,
