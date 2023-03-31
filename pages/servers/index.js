@@ -10,6 +10,7 @@ import { fetchUser } from '../../helpers/fetchData/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
 import InputModal from '@/components/global/InputModal';
 import { createServer } from '@/helpers/setData/createServer';
+import Head from 'next/head';
 
 const newServerProps = {
   title: 'Start a New Server',
@@ -26,29 +27,38 @@ const modalProps = {
 
 const Servers = ({ servers, user, token }) => {
   const [showModal, setShowModal] = useState(false);
-  const [server, setServer] = useState(servers);
+  const [renderedServers, setRenderedServers] = useState([]);
 
-  useEffect(() => {
-    //detect for a change in the browser and update the browser accordingly
-  }, [server]);
+  // useEffect(() => {
+  //   //not quite working yet, but feel like I'm on the right track.
+  //   console.log(renderedServers)
+  // }, [renderedServers]);
 
   const closeModal = () => {
     setShowModal(false);
   };
 
-  const handleCreateServer = (inputOne, inputTwo) => {
+  const handleCreateServer = async (inputOne, inputTwo) => {
     if (inputOne === '') {
       alert('Please enter a server name');
       return;
     } else {
       createServer(token, inputOne, inputTwo);
+      const response = await fetchData(token, getUserServers);
+      const newServers = response.servers;
+      setRenderedServers(newServers);
       setShowModal(false);
     }
   };
 
   return (
     <>
-      <NavBar token={token} user={user}/>
+      <Head>
+        <title>Compo-X Servers</title>
+        <meta property='og:servers' content='list of servers' key='servers page' />
+      </Head>
+      
+      <NavBar token={token} user={user} />
       {showModal && (
         <>
           <div className='modal-container'>
@@ -70,13 +80,13 @@ const Servers = ({ servers, user, token }) => {
           <div className='center-instance'>
             <div className='server-inside'>
               <div className='top-admin'>
-                <a href='#' className='w-inline-block'>
+                <div className='w-inline-block'>
                   <img
                     src={`https://compo.directus.app/assets/${
                       user ? user.avatar.id : ''
                     }?access_token=${token}`}
-                    width='47'
-                    sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
+                    // width='47'
+                    // sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
                     alt=''
                     className='avatar'
                   />
@@ -86,7 +96,7 @@ const Servers = ({ servers, user, token }) => {
                       {user ? user.first_name : ''}
                     </span>
                   </h3>
-                </a>
+                </div>
               </div>
               <div className='label-4'>Your Servers</div>
 
@@ -106,6 +116,7 @@ const Servers = ({ servers, user, token }) => {
                     />
                   </Link>
                 ))}
+
               <div onClick={(e) => setShowModal(true)}>
                 <RoutingCard
                   title={newServerProps.title}
@@ -138,7 +149,7 @@ export async function getServerSideProps(context) {
   const user = await fetchUser(getCurrentUser, token, {});
 
   return {
-    props: { servers: servers.servers, token, user, revalidate: 1 },
+    props: { servers: servers.servers, token, user },
   };
 }
 

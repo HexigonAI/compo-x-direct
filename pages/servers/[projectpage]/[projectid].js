@@ -1,9 +1,9 @@
 import NavBar from '@/components/global/NavBar';
 import { getSession } from 'next-auth/react';
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
+import Head from 'next/head';
 const SingleProjectPage = ({ project, token }) => {
-
-  const renderedProject = () => {
+  const renderProject = () => {
     if (project && project) {
       return (
         <div>
@@ -12,12 +12,22 @@ const SingleProjectPage = ({ project, token }) => {
         </div>
       );
     }
-  }
+  };
+
+  const renderedProject = renderProject();
 
   return (
     <>
-    <NavBar/>
-      {renderedProject()}
+      <Head>
+        <title>{renderedProject.props.children[0].props.children}</title>
+        <meta
+          property='og:project'
+          content='editing project'
+          key='single project page'
+        />
+      </Head>
+      <NavBar />
+      {renderedProject}
     </>
   );
 };
@@ -35,8 +45,8 @@ export const getServerSideProps = async (context) => {
   }
 
   const token = session.user.accessToken;
-  const {params} = context;
-  const {projectid} = params;
+  const { params } = context;
+  const { projectid } = params;
 
   try {
     const project = await fetchProjectById(token, projectid);

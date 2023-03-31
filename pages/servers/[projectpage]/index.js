@@ -7,19 +7,27 @@ import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
 import { getUserProjects } from '@/queries/Users';
 import { createProject } from '@/helpers/setData/createProject';
+import Head from 'next/head';
 
 const ServerProjectsPage = ({ projects, server, token }) => {
-
   const router = useRouter();
   const { projectpage } = router.query;
 
   const handleCreateProject = (token, projectpage) => {
     createProject(token, projectpage);
-    alert('you created a project with an id:', + projectpage) 
+    alert('you created a project with an id:', +projectpage);
   };
 
   return (
     <>
+      <Head>
+        <title>Compo-X Projects</title>
+        <meta
+          property='og:projects'
+          content='list of projects'
+          key='projects page'
+        />
+      </Head>
       <NavBar />
       <div className='page-header-2 page-header__sticky'>
         <div className='grid-2'>
@@ -118,7 +126,7 @@ export async function getServerSideProps(context) {
       projects,
       server,
       projectpage,
-      token, 
+      token,
     },
   };
 }
