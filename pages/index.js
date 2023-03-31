@@ -4,26 +4,26 @@ import setData from '../helpers/setData';
 import Link from 'next/link';
 
 import { createNewUser } from '@/queries/Users';
+import Head from 'next/head';
 
 const CreateAccountPage = () => {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [emailExists, setEmailExists] = useState(false);
-  const [createSuccessful, setCreateSuccessful] = useState(false)
+  const [createSuccessful, setCreateSuccessful] = useState(false);
 
   const signUpMutation = useMutation((newUser) => {
     setData(createNewUser, { data: newUser }, '/system').then((response) => {
-      console.log(response)
-      setCreateSuccessful(false)
-      setEmailExists(false)
-      if(response.create_users_item == null){
-        setEmailExists(true)
-        setCreateSuccessful(false)
+      console.log(response);
+      setCreateSuccessful(false);
+      setEmailExists(false);
+      if (response.create_users_item == null) {
+        setEmailExists(true);
+        setCreateSuccessful(false);
+      } else {
+        setCreateSuccessful(true);
       }
-        else{
-          setCreateSuccessful(true)
-      }
-    })
+    });
   });
 
   const handleSubmit = (e) => {
@@ -57,6 +57,10 @@ const CreateAccountPage = () => {
 
   return (
     <div>
+      <Head>
+        <title>Create Account</title>
+        <meta property='og:Create Account' content='Create Account page' key='Create Account page' />
+      </Head>
       <div className='account-section-dark'>
         <div className='bg-animation'>
           <div className='preloader'>
@@ -157,7 +161,6 @@ const CreateAccountPage = () => {
                           maxLength='256'
                           data-name='Account Company'
                           placeholder='Enter your company'
-                
                         />
                       </div>
                       <div className='account-icon-wrapper'>
@@ -178,9 +181,7 @@ const CreateAccountPage = () => {
                         </p>
                       ) : null}
                       {emailExists ? (
-                        <p style={{ color: 'red' }}>
-                          Email already in use
-                        </p>
+                        <p style={{ color: 'red' }}>Email already in use</p>
                       ) : null}
 
                       <div className='account-icon-wrapper'>
@@ -231,10 +232,10 @@ const CreateAccountPage = () => {
                     </p>
                   ) : null}
                   {createSuccessful ? (
-                    <p className=" text-lg text-green-600 font-bold flex justify-center">
-                          Account Created
-                        </p>
-                      ) : null}
+                    <p className=' text-lg text-green-600 font-bold flex justify-center'>
+                      Account Created
+                    </p>
+                  ) : null}
                   <div className='account-seperator'>
                     <div className='account-line'></div>
                     <div className='text-block'>OR</div>
@@ -277,7 +278,6 @@ const CreateAccountPage = () => {
                       </div>
                     </div>
                   </div>
-                  
                 </form>
                 <div className='contact-success-message w-form-done'>
                   <div>Thank you! Your submission has been received!</div>
