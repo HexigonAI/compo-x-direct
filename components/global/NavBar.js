@@ -21,14 +21,14 @@ const NavBar = ({ token, user }) => {
         className='navbar w-nav'
       >
         <div className='container-full w-container'>
-          <a href='#' class='dashabord-logo w-nav-brand'>
+          <div className='dashabord-logo w-nav-brand'>
             <img
               src='../../images/Compo---Logo.svg'
               width='90'
               alt=''
-              class='logo'
+              className='logo'
             />
-          </a>
+          </div>
           {/* TODO: if user is logged in, take them to '/servers', else take them to '/' */}
           {/* {token && (
             <Link href={'/servers'}>

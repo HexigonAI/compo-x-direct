@@ -57,7 +57,6 @@ const Servers = ({ servers, user, token }) => {
         <title>Compo-X Servers</title>
         <meta property='og:servers' content='list of servers' key='servers page' />
       </Head>
-      
       <NavBar token={token} user={user} />
       {showModal && (
         <>
@@ -85,8 +84,6 @@ const Servers = ({ servers, user, token }) => {
                     src={`https://compo.directus.app/assets/${
                       user ? user.avatar.id : ''
                     }?access_token=${token}`}
-                    // width='47'
-                    // sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
                     alt=''
                     className='avatar'
                   />
