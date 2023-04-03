@@ -741,9 +741,7 @@ ul {
 
 .account-name {
   font-family: 'League Spartan', sans-serif;
-  font-weight: 550;
-  font-size: 1.25rem;
-  margin-bottom: 3px;
+  font-weight: 700;
 }
 
 .focus-item-account {
@@ -1886,7 +1884,7 @@ ul {
   padding: 64px 64px 32px;
   border: 1px solid #e6e6e6;
   border-radius: 8px;
-  background-color: #f5f3f8;
+  background-color: #fff;
   box-shadow: inset 4px 7px 5px 0 rgba(216, 213, 237, 0.2), 9px 34px 64px -14px rgba(77, 77, 77, 0.12);
 }
 
@@ -3109,7 +3107,7 @@ ul {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 5%;
+  padding-top: 10%;
   padding-bottom: 10%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -4149,3 +4147,419 @@ html.w-mod-js *[data-ix="large-element-sidebar"] {
   font-style: normal;
   font-display: swap;
 }
+
+.sidebar-section {
+  position: fixed;
+  z-index: 22;
+  width: 18%;
+  height: 100%;
+  padding-top: 60px;
+  padding-right: 0px;
+  padding-left: 0px;
+  color: #fff;
+}
+
+.sidebar-section.invert {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(34, 103, 239, 0.09)), to(rgba(125, 225, 241, 0.08)));
+  background-image: linear-gradient(180deg, rgba(34, 103, 239, 0.09), rgba(125, 225, 241, 0.08));
+}
+
+.sidebar-items {
+  padding-top: 40px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.sidebar-items.invert {
+  border-bottom: 1px solid #f5f5f5;
+  font-family: Inter, sans-serif;
+  color: #2c2b2b;
+}
+
+.header-items {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom-width: 1px;
+  border-bottom-color: #403d4f;
+}
+
+.header-items.small {
+  margin-bottom: 0px;
+}
+
+.heading-2 {
+  font-family: Maisonneue, sans-serif;
+  font-weight: 300;
+}
+
+.deploy-button {
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 18px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+  border: 1px solid #3b3940;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.deploy-button.light {
+  border-color: #e9e6f8;
+}
+
+.deploy-button.light.smaller-1 {
+  width: 80%;
+}
+
+.drop-text1 {
+  display: inline-block;
+}
+
+.drop-text1.dark {
+  color: #fff;
+}
+
+.dropdown-list {
+  -webkit-transform: translate(0px, 16px);
+  -ms-transform: translate(0px, 16px);
+  transform: translate(0px, 16px);
+}
+
+.dropdown-list.w--open {
+  min-width: 200px;
+  padding: 12px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e9eef1;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
+}
+
+.dropdown-list.dropdown-list-top {
+  padding-bottom: 0px;
+}
+
+.dropdown-list.dropdown-list-top.dropdown-list-large.w--open {
+  min-width: 320px;
+  margin-top: 10px;
+}
+
+.dropdown-list.dropdown-list-top.dropdown-list-large.small1.w--open {
+  overflow: hidden;
+  max-width: 100%;
+  min-width: 100%;
+  padding-bottom: 12px;
+}
+
+.dropdown-list-footer {
+  margin-top: 12px;
+  margin-bottom: 10px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #e9eef1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.error-message {
+  padding: 20px;
+  border: 1px solid #f64f59;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #f64f59;
+  font-weight: 400;
+  text-align: center;
+}
+
+.text-center {
+  text-align: center;
+}
+.modal-title {
+  margin-bottom: 40px;
+}
+
+.modal-close {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 10px;
+  bottom: auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f6f7f9;
+  background-image: url('../images/icons8-multiply-64-1_1icons8-multiply-64 (1).png');
+  background-position: 50% 50%;
+  background-size: 16px;
+  background-repeat: no-repeat;
+  -webkit-transition: background-color 200ms ease-in-out;
+  transition: background-color 200ms ease-in-out;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background-color: #ebedf0;
+}
+
+.modal-mask {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 901;
+}
+
+.modal {
+  position: fixed;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 900;
+  display: none;
+  overflow: auto;
+  max-height: 100vh;
+  padding: 20px;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  -ms-grid-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  -ms-grid-rows: auto auto;
+  grid-template-rows: auto auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.hint {
+  color: #888ca5;
+  font-size: 12px;
+}
+
+.hint.inline {
+  margin-right: 5px;
+}
+
+.hint.modal-action {
+  color: #4f41ef;
+}
+
+.card-dark {
+  padding: 2.8rem 3rem;
+  border: 1px solid #22262f;
+  border-radius: 8px;
+  background-color: rgba(18, 20, 26, 0.88);
+  box-shadow: inset 1px 1px 12px 0 hsla(0, 0%, 100%, 0.03), 0 4px 32px 0 rgba(0, 0, 0, 0.05);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #cfd5e0;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.account-login-text {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.section-3 {
+  margin-bottom: 20px;
+}
+
+.card-dark {
+  padding: 2.8rem 3rem;
+  border: 1px solid #22262f;
+  border-radius: 8px;
+  background-color: rgba(18, 20, 26, 0.88);
+  box-shadow: inset 1px 1px 12px 0 hsla(0, 0%, 100%, 0.03), 0 4px 32px 0 rgba(0, 0, 0, 0.05);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #cfd5e0;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.card-heading-small {
+  margin-bottom: 20px;
+}
+
+.input {
+  height: 56px;
+  min-height: 56px;
+  padding: 0px 15px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  background-color: hsla(0, 0%, 100%, 0.2);
+  -webkit-transition: border-color 100ms ease-in-out, background-color 100ms ease-in-out;
+  transition: border-color 100ms ease-in-out, background-color 100ms ease-in-out;
+  color: #12161e;
+  line-height: 40px;
+  font-weight: 500;
+}
+
+.input:active {
+  border-color: #808292;
+  background-color: #fff;
+}
+
+.input:focus {
+  border-color: #808292;
+  background-color: #fff;
+}
+
+.input::-webkit-input-placeholder {
+  color: #808292;
+  font-weight: 400;
+}
+
+.input:-ms-input-placeholder {
+  color: #808292;
+  font-weight: 400;
+}
+
+.input::-ms-input-placeholder {
+  color: #808292;
+  font-weight: 400;
+}
+
+.input::placeholder {
+  color: #808292;
+  font-weight: 400;
+}
+
+.input-group-item-left {
+  margin-right: 10px;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.input-group {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 10px;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.main-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  float: right;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.page-padding {
+  padding-right: 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.page-padding {
+  position: relative;
+  padding-top: 40px;
+  padding-right: 2.5rem;
+  padding-left: 2.5rem;
+}
+
+/* Snippet gets rid of top margin on first element in any rich text*/
+.w-richtext>:first-child {
+	margin-top: 0;
+}
+/* Snippet gets rid of bottom margin on last element in any rich text*/
+.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
+    margin-bottom: 0;
+}
+/* Snippet makes all link elements listed below to inherit color from their parent */
+a, 
+.w-tab-link,
+.w-nav-link,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-dropdown-link
+{
+color: inherit;
+}
+/* Snippet prevents all click and hover interaction with an element */
+.clickable-off {
+  pointer-events: none;
+}
+/* Snippet enables all click and hover interaction with an element */
+.clickable-on{
+  pointer-events: auto;
+}
+/* Snippet enables you to add class of div-square which creates and maintains a 1:1 dimension of a div.*/
+.div-square::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+/*Hide focus outline for main content element*/
+    main:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px;
+}
+/* Make sure containers never lose their center alignment*/
+.container-medium, .container-small, .container-large {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+/*Reset selects, buttons, and links styles*/
+.w-input, .w-select, a {
+color: inherit;
+text-decoration: inherit;
+font-size: inherit;
+}
+/*Apply "..." after 3 lines of text */
+.text-style-3lines {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+/* Apply "..." after 2 lines of text */
+.text-style-2lines {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+/* Apply "..." at 100% width */
+.truncate-width { 
+		width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+/* Removes native scrollbar */
+.no-scrollbar {
+    -ms-overflow-style: none; 
+    overflow: -moz-scrollbars-none;  
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none; 
+}
+
