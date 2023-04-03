@@ -28,7 +28,7 @@ const NavBar = ({ token, user }) => {
               alt=''
               className='logo'
             />
-          </a>
+          </div>
           {/* TODO: if user is logged in, take them to '/servers', else take them to '/' */}
           {/* {token && (
             <Link href={'/servers'}>

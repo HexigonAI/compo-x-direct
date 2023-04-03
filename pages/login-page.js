@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { getCsrfToken, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const LoginPage = ({ csrfToken }) => {
   const [error, setError] = useState(false);
@@ -22,11 +23,18 @@ const LoginPage = ({ csrfToken }) => {
     } else {
       router.push('/servers');
     }
-
-  }
+  };
 
   return (
     <div>
+      <Head>
+        <title>Login</title>
+        <meta
+          property='og:login'
+          content='login page'
+          key='login page'
+        />
+      </Head>
       <div className='account-section-dark'>
         <div className='bg-animation'>
           <div className='preloader'>
@@ -119,10 +127,10 @@ const LoginPage = ({ csrfToken }) => {
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          id="email-address"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
+                          id='email-address'
+                          name='email'
+                          type='email'
+                          autoComplete='email'
                           required
                           className='account-text-field w-input'
                           maxLength='256'
@@ -131,10 +139,10 @@ const LoginPage = ({ csrfToken }) => {
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          autoComplete="current-password"
+                          id='password'
+                          name='password'
+                          type='password'
+                          autoComplete='current-password'
                           required
                           className='account-text-field w-input'
                           placeholder='Enter your password'

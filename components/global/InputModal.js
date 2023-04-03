@@ -17,17 +17,10 @@ const InputModal = ({
   const [inputOne, setInputOne] = useState('');
   const [inputTwo, setInputTwo] = useState('');
 
-  const handleCloseModal = (e) => {
-    closeModal();
-  };
-
-  const handleOnSubmit = (e) => {
-    handleSubmit(inputOne, inputTwo);
-  };
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles.modal_overlay} onClick={closeModal}></div>
+      <div className={styles.modal_overlay} onClick={e=> closeModal()}></div>
 
       <div className={styles.modal_wrapper}>
         <div className={styles.modal_container}>
@@ -37,7 +30,7 @@ const InputModal = ({
             <div className={styles.modal_header__heading}>{header}</div>
             <a
               style={{ cursor: 'pointer' }}
-              onClick={(e) => handleCloseModal()}
+              onClick={closeModal}
               className={styles.modal_close}
             ></a>
           </div>
@@ -52,7 +45,7 @@ const InputModal = ({
               >
                 
                 <div className={styles.form_item}>
-                  <label htmlFor='email' className='label'>
+                  <label htmlFor='email' className={styles.modal_header_label}>
                     {labelOne}
                   </label>
                   <div className={styles.text_input_field_wrapper}>
@@ -70,7 +63,7 @@ const InputModal = ({
                 </div>
 
                 <div className={styles.form_item}>
-                  <label htmlFor='email' className='label'>
+                  <label htmlFor='email' className={styles.modal_header_label}>
                     {labelTwo}
                   </label>
                   <div className={styles.text_input_field_wrapper}>
@@ -94,8 +87,8 @@ const InputModal = ({
 
           <div className={styles.modal_footer}>
             <button
-              onClick={(e) => handleOnSubmit(e)}
-              className='button-2 add w-button'
+              onClick={e=> handleSubmit(inputOne, inputTwo)}
+              className={styles.create_button}
             >
               {buttonText}
             </button>
