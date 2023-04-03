@@ -1,8 +1,13 @@
-import NavBar from '@/components/global/NavBar';
-import { getSession } from 'next-auth/react';
-import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import Head from 'next/head';
-const SingleProjectPage = ({ project, token }) => {
+import { getSession } from 'next-auth/react';
+
+import NavBar from '@/components/global/NavBar';
+import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
+import { getCurrentUser } from '@/queries/Users';
+import { fetchUser } from '@/helpers/fetchData/fetchUser';
+
+
+const SingleProjectPage = ({ project, token, user }) => {
   const renderProject = () => {
     if (project && project) {
       return (
@@ -26,7 +31,7 @@ const SingleProjectPage = ({ project, token }) => {
           key='single project page'
         />
       </Head>
-      <NavBar />
+      <NavBar user={user} token={token} />
       {renderedProject}
     </>
   );
@@ -50,11 +55,13 @@ export const getServerSideProps = async (context) => {
 
   try {
     const project = await fetchProjectById(token, projectid);
+    const user = await fetchUser(getCurrentUser, token, {});
 
     return {
       props: {
         project,
         token,
+        user,
       },
     };
   } catch (error) {

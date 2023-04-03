@@ -57,6 +57,7 @@ const Servers = ({ servers, user, token }) => {
         <title>Compo-X Servers</title>
         <meta property='og:servers' content='list of servers' key='servers page' />
       </Head>
+      
       <NavBar token={token} user={user} />
       {showModal && (
         <>
