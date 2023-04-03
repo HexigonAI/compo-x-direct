@@ -21,7 +21,7 @@ const NavBar = ({ token, user }) => {
         className='navbar w-nav'
       >
         <div className='container-full w-container'>
-          <a href='#' className='dashabord-logo w-nav-brand'/>
+          <div href='#' className='dashabord-logo w-nav-brand'>
             <img
               src='../../images/Compo---Logo.svg'
               width='90'
