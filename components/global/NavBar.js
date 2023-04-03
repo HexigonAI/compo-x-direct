@@ -21,7 +21,7 @@ const NavBar = ({ token, user }) => {
         className='navbar w-nav'
       >
         <div className='container-full w-container'>
-          <a href='#' className='dashabord-logo w-nav-brand'>
+          <a href='#' className='dashabord-logo w-nav-brand'/>
             <img
               src='../../images/Compo---Logo.svg'
               width='90'
@@ -82,7 +82,6 @@ const NavBar = ({ token, user }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 export default NavBar;
