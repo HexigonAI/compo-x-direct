@@ -3658,10 +3658,6 @@ html.w-mod-js *[data-ix="large-element-sidebar"] {
     background-color: #000;
   }
 
-  .menu-button {
-    background-color: #714d4d;
-  }
-
   .menu-button.w--open {
     border-radius: 100px;
     background-color: #000;
