@@ -21,17 +21,11 @@ const NavBar = ({ token, user }) => {
         className='navbar w-nav'
       >
         <div className='container-full w-container'>
-
-            <Link href={'/servers'}>
-              <div className='dashabord-logo w-nav-brand'>
-                <img
-                  src={logo}
-                  width='90'
-                  alt=''
-                  className='logo'
-                />
-              </div>
-            </Link>
+          <Link href={'/servers'}>
+            <div className='dashabord-logo w-nav-brand'>
+              <img src={logo} width='90' alt='' className='logo' />
+            </div>
+          </Link>
 
           <div className='site-nav-search'></div>
           <nav role='navigation' className='nav-menu w-nav-menu'>
@@ -43,7 +37,7 @@ const NavBar = ({ token, user }) => {
               >
                 Logout
               </p>
-              
+
               <img
                 src={`https://compo.directus.app/assets/${
                   user ? user.avatar.id : ''
@@ -70,6 +64,7 @@ const NavBar = ({ token, user }) => {
           </div>
         </div>
       </div>
+    </div>
   );
 };
 export default NavBar;
