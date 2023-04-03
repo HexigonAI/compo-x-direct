@@ -82,7 +82,6 @@ const NavBar = ({ token, user }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 export default NavBar;
