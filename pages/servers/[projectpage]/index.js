@@ -5,11 +5,12 @@ import { fetchData } from '@/helpers/fetchData/fetchData';
 import NavBar from '@/components/global/NavBar';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import { getSession } from 'next-auth/react';
-import { getUserProjects } from '@/queries/Users';
+import { getCurrentUser, getUserProjects } from '@/queries/Users';
 import { createProject } from '@/helpers/setData/createProject';
 import Head from 'next/head';
+import { fetchUser } from '@/helpers/fetchData/fetchUser';
 
-const ServerProjectsPage = ({ projects, server, token }) => {
+const ServerProjectsPage = ({ projects, server, token, user }) => {
   const router = useRouter();
   const { projectpage } = router.query;
 
@@ -28,7 +29,7 @@ const ServerProjectsPage = ({ projects, server, token }) => {
           key='projects page'
         />
       </Head>
-      <NavBar />
+      <NavBar user={user} token={token} />
       <div className='page-header-2 page-header__sticky'>
         <div className='grid-2'>
           <div className='col-12'>
@@ -37,11 +38,12 @@ const ServerProjectsPage = ({ projects, server, token }) => {
                 <h2 className='page-header__title-2'>Projects</h2>
                 <div className='flex-server-top'>
                   <div className='avatar-3'>
-                    <img
-                      src='images/compo-logo.svg'
+                    {/* TODO: load in uploaded avatar from user object */}
+                    {/* <img
+                      src='../../images/compo-logo.svg'
                       alt=''
                       className='org-avatar'
-                    />
+                    /> */}
                   </div>
                   <div>
                     <div className='account-name'>{server.title}</div>
@@ -81,12 +83,6 @@ const ServerProjectsPage = ({ projects, server, token }) => {
       </div>
       <div className='page-inside'>
         <div className='open-state'>
-          <img
-            src='images/Grid.svg'
-            loading='lazy'
-            alt=''
-            className='open-state-image'
-          />
           <button className='button-2 add w-button' data-ix='open-modal'>
             Start a New Project
           </button>
@@ -108,25 +104,35 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const { params } = context;
-  const { projectpage } = params;
+  const { projectpage } = context.params;
   const token = session.user.accessToken;
-  const query = getUserProjects;
 
-  const { servers } = await fetchData(token, query);
-
+  const { servers } = await fetchData(token, getUserProjects);
   const mappedProjects = servers.map((project) => project);
-  const { projects } = mappedProjects.find(
-    (project) => project.id === projectpage
-  );
-  const server = mappedProjects.find((server) => server.id === projectpage);
-
+  
+  const getFilteredProjects = (mappedProjects) => {
+    const { projects } =  mappedProjects.find(
+      (project) => project.id === projectpage
+      );
+    return projects;
+  }
+  const getCurrentServer = (mappedProjects) => {
+    const server = mappedProjects.find((server) => server.id === projectpage);
+    return server;
+  }
+  
+  const projects = getFilteredProjects(mappedProjects);
+  const server = getCurrentServer(mappedProjects);
+  const user = await fetchUser(getCurrentUser, token, {});
+  
+  
   return {
     props: {
       projects,
       server,
       projectpage,
       token,
+      user,
     },
   };
 }
