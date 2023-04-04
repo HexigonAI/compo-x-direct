@@ -14,9 +14,9 @@ const ServerProjectsPage = ({ projects, server, token, user }) => {
   const router = useRouter();
   const { projectpage } = router.query;
 
-  const handleCreateProject = (token, projectpage) => {
-    createProject(token, projectpage);
-    alert('you created a project with an id:', +projectpage);
+  const handleCreateProject = async (token, projectpage) => {
+    const newProjectID = await createProject(token, projectpage);
+    router.push(`/servers/${projectpage}/${newProjectID}`);
   };
 
   return (
