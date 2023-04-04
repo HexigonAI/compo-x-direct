@@ -183,12 +183,14 @@ const LoginPage = ({ csrfToken }) => {
                       Wrong email or password
                     </div>
                   )}
-                  <div className='account-seperator'>
+                {/* TODO add Google Auth logic to this HTML which is the login with Google option  */}
+                  
+                  {/* <div className='account-seperator'>
                     <div className='account-line'></div>
                     <div className='text-block'>OR</div>
                     <div className='account-line'></div>
-                  </div>
-                  <div className='w-layout-grid account-social-grid'>
+                  </div> */}
+                  {/* <div className='w-layout-grid account-social-grid'>
                     <div className='account-icon-wrapper'>
                       <a
                         id='w-node-_6f815b0a-4b68-50a5-cd24-17d76333bbc8-5c243ab6'
@@ -224,7 +226,7 @@ const LoginPage = ({ csrfToken }) => {
                         </svg>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </form>
                 <div className='contact-success-message w-form-done'>
                   <div>Thank you! Your submission has been received!</div>
@@ -253,21 +255,30 @@ const LoginPage = ({ csrfToken }) => {
               className='hexigon-ai-logo'
             />
             <div className='account-link-row'>
-              <a href='http://hexigon.ai' className='account-link-side'>
+            <Link href={'http://hexigon.ai'} className='account-link-side'>
                 Go to Hexigon.ai
-              </a>
+              </Link>
               <div className='account-dot'></div>
-              <a href='http://hexigon.ai/support' className='account-link-side'>
+              <Link
+                href={'https://www.hexigon.ai/support'}
+                className='account-link-side'
+              >
                 Compo Support
-              </a>
+              </Link>
               <div className='account-dot'></div>
-              <a href='http://hexigon.ai/terms' className='account-link-side'>
+              <Link
+                href={'https://www.hexigon.ai/terms-and-conditions'}
+                className='account-link-side'
+              >
                 Terms
-              </a>
+              </Link>
               <div className='account-dot'></div>
-              <a href='http://hexigon.ai/privacy' className='account-link-side'>
+              <Link
+                href={'https://www.hexigon.ai/privacy'}
+                className='account-link-side'
+              >
                 Privacy
-              </a>
+              </Link>
             </div>
           </div>
         </div>
