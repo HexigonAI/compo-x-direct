@@ -11,10 +11,16 @@ import NavBar from '@/components/global/NavBar';
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const SingleProjectPage = ({ project, token, user }) => {
+  const router = useRouter();
+  const { projectpage } = router.query;
+
   const [pluginLoaded, setPluginLoaded] = useState(false);
   const [editor, setEditor] = useState(null);
+
   useEffect(() => {
     grapesjs.init({
       container: '#gjs',
@@ -88,6 +94,11 @@ const SingleProjectPage = ({ project, token, user }) => {
       </Head>
       <NavBar user={user} token={token} />
       {renderedProject}
+      <Link
+        href={`/servers/${projectpage}`}
+      >
+        <button className='button'>Back to Projects</button>
+      </Link>
       <div id='gjs'></div>
     </>
   );
