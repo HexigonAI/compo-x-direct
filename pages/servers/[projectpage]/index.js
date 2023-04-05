@@ -83,7 +83,11 @@ const ServerProjectsPage = ({ projects, server, token, user }) => {
       </div>
       <div className='page-inside'>
         <div className='open-state'>
-          <button className='button-2 add w-button' data-ix='open-modal'>
+          <button
+            onClick={(e) => handleCreateProject(token, projectpage)}
+            className='button-2 add w-button'
+            data-ix='open-modal'
+          >
             Start a New Project
           </button>
         </div>
@@ -109,23 +113,22 @@ export async function getServerSideProps(context) {
 
   const { servers } = await fetchData(token, getUserProjects);
   const mappedProjects = servers.map((project) => project);
-  
+
   const getFilteredProjects = (mappedProjects) => {
-    const { projects } =  mappedProjects.find(
+    const { projects } = mappedProjects.find(
       (project) => project.id === projectpage
-      );
+    );
     return projects;
-  }
+  };
   const getCurrentServer = (mappedProjects) => {
     const server = mappedProjects.find((server) => server.id === projectpage);
     return server;
-  }
-  
+  };
+
   const projects = getFilteredProjects(mappedProjects);
   const server = getCurrentServer(mappedProjects);
   const user = await fetchUser(getCurrentUser, token, {});
-  
-  
+
   return {
     props: {
       projects,

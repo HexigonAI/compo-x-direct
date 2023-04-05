@@ -22,7 +22,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [editor, setEditor] = useState(null);
 
   useEffect(() => {
-    grapesjs.init({
+    const editor = grapesjs.init({
       container: '#gjs',
       height: '100vh',
       width: 'auto',
@@ -67,8 +67,9 @@ const SingleProjectPage = ({ project, token, user }) => {
         },
       },
     });
-  }, []);
 
+    console.log(editor.getProjectData());
+  }, []);
   const renderProject = () => {
     if (project && project) {
       return (
@@ -79,7 +80,6 @@ const SingleProjectPage = ({ project, token, user }) => {
       );
     }
   };
-
   const renderedProject = renderProject();
 
   return (
@@ -94,9 +94,7 @@ const SingleProjectPage = ({ project, token, user }) => {
       </Head>
       <NavBar user={user} token={token} />
       {renderedProject}
-      <Link
-        href={`/servers/${projectpage}`}
-      >
+      <Link href={`/servers/${projectpage}`}>
         <button className='button'>Back to Projects</button>
       </Link>
       <div id='gjs'></div>
