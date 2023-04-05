@@ -9,7 +9,7 @@ export const createProject = async (token, id) => {
 
 const query = `
   mutation {
-	create_projects_item(data: { title: "TEST TITLE TEST TITLE", server_id: {id: "${id}"} }) {
+	create_projects_item(data: { title: "New Project", server_id: {id: "${id}"} }) {
 		id
 		title
         server_id{
@@ -23,7 +23,7 @@ const query = `
     id,
   };
 
-  fetch('https://compo.directus.app/graphql/systems', {
+  const response = await fetch('https://compo.directus.app/graphql/systems', {
     method: 'POST',
     headers,
     body: JSON.stringify({
@@ -31,4 +31,8 @@ const query = `
       variables,
     }),
   });
+
+  const json = await response.json();
+  return json.data.create_projects_item.id;
+
 };

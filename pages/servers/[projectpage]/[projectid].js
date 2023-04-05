@@ -1,13 +1,75 @@
 import Head from 'next/head';
 import { getSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import grapesjs from 'grapesjs';
+import 'grapesjs/dist/css/grapes.min.css';
+import gsWebpage from 'grapesjs-preset-webpage';
+import gsNewsLetter from 'grapesjs-preset-newsletter';
+import gsCustome from 'grapesjs-custom-code';
 
 import NavBar from '@/components/global/NavBar';
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
-
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const SingleProjectPage = ({ project, token, user }) => {
+  const router = useRouter();
+  const { projectpage } = router.query;
+
+  const [pluginLoaded, setPluginLoaded] = useState(false);
+  const [editor, setEditor] = useState(null);
+
+  useEffect(() => {
+    const editor = grapesjs.init({
+      container: '#gjs',
+      height: '100vh',
+      width: 'auto',
+      plugins: [gsWebpage, gsCustome, gsNewsLetter],
+      storageManager: {
+        id: 'gjs-',
+        type: 'local',
+        autosave: true,
+        storeComponents: true,
+        storeStyles: true,
+        storeHtml: true,
+        storeCss: true,
+      },
+      deviceManager: {
+        devices: [
+          {
+            id: 'desktop',
+            name: 'Desktop',
+            width: '',
+          },
+          {
+            id: 'tablet',
+            name: 'Tablet',
+            width: '768px',
+            widthMedia: '992px',
+          },
+          {
+            id: 'mobilePortrait',
+            name: 'Mobile portrait',
+            width: '320px',
+            widthMedia: '575px',
+          },
+        ],
+      },
+      pluginsOpts: {
+        gsWebpage: {
+          //  blocksBasicOpts: {
+          //    blocks: ['column1', 'column2', 'column3', 'column3-7', 'text',     'link', 'image', 'video'],
+          //    flexGrid: 1,
+          //  },
+          //  blocks: ['link-block', 'quote', 'text-basic'],
+        },
+      },
+    });
+
+    console.log(editor.getProjectData());
+  }, []);
   const renderProject = () => {
     if (project && project) {
       return (
@@ -18,7 +80,6 @@ const SingleProjectPage = ({ project, token, user }) => {
       );
     }
   };
-
   const renderedProject = renderProject();
 
   return (
@@ -33,6 +94,10 @@ const SingleProjectPage = ({ project, token, user }) => {
       </Head>
       <NavBar user={user} token={token} />
       {renderedProject}
+      <Link href={`/servers/${projectpage}`}>
+        <button className='button'>Back to Projects</button>
+      </Link>
+      <div id='gjs'></div>
     </>
   );
 };
