@@ -1,18 +1,18 @@
 import Head from 'next/head';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import grapesjs from 'grapesjs';
+import grapesjs, { Editor } from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
 import gsWebpage from 'grapesjs-preset-webpage';
 import gsNewsLetter from 'grapesjs-preset-newsletter';
 import gsCustome from 'grapesjs-custom-code';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import NavBar from '@/components/global/NavBar';
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
@@ -21,6 +21,8 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [pluginLoaded, setPluginLoaded] = useState(false);
   const [editor, setEditor] = useState(null);
 
+  const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
+
   useEffect(() => {
     const editor = grapesjs.init({
       container: '#gjs',
@@ -28,13 +30,28 @@ const SingleProjectPage = ({ project, token, user }) => {
       width: 'auto',
       plugins: [gsWebpage, gsCustome, gsNewsLetter],
       storageManager: {
-        id: 'gjs-',
-        type: 'local',
-        autosave: true,
-        storeComponents: true,
-        storeStyles: true,
-        storeHtml: true,
-        storeCss: true,
+        stepsBeforeSave: 3,
+        type: 'remote',
+        options: {
+          remote: {
+            urlLoad: projectEndpoint,
+            urlStore: projectEndpoint,
+            // The `remote` storage uses the POST method when stores data but
+            // the json-server API requires PATCH.
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            method: 'GET',
+            fetchOptions: (opts) =>
+              opts.method === 'POST' ? { method: 'PATCH' } : {},
+            // As the API stores projects in this format `{id: 1, data: projectData }`,
+            // we have to properly update the body before the store and extract the
+            // project data from the response result.
+            onStore: (data) => ({ id: project.id, data }),
+            onLoad: (result) => JSON.parse(result.data.builder_data),
+          },
+        },
       },
       deviceManager: {
         devices: [
@@ -57,19 +74,14 @@ const SingleProjectPage = ({ project, token, user }) => {
           },
         ],
       },
-      pluginsOpts: {
-        gsWebpage: {
-          //  blocksBasicOpts: {
-          //    blocks: ['column1', 'column2', 'column3', 'column3-7', 'text',     'link', 'image', 'video'],
-          //    flexGrid: 1,
-          //  },
-          //  blocks: ['link-block', 'quote', 'text-basic'],
-        },
-      },
     });
-
-    console.log(editor.getProjectData());
+    // console.log(editor.getProjectData());
+    // editor.loadProjectData(result.data.builder_data)
+    // const localData = localStorage.getItem(`gjsProject-${project.id}`);
+    // const localDataParsed = JSON.parse(localData);
+    // console.log(editor.loadProjectData(localDataParsed));
   }, []);
+
   const renderProject = () => {
     if (project && project) {
       return (
