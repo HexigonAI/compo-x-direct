@@ -83,7 +83,8 @@ const Servers = ({ servers, user, token }) => {
                 <div className='w-inline-block'>
                   <img
                     src={`https://compo.directus.app/assets/${
-                      user ? user.avatar.id : ''
+                      user ? '28b315a9-d72c-489e-9d7b-a3d0c2e89877.png'
+                      : ''
                     }?access_token=${token}`}
                     alt=''
                     className='avatar'
