@@ -73,6 +73,7 @@ const CreateAccountPage = ({ csrfToken }) => {
       company: e.target.company.value,
       email: emailRef.current.value,
       password: passwordRef.current.value,
+      date_created: new Date().toISOString(),
       role: '953d6a4f-06e6-4c75-8ab6-5edf7eb01255',
       status: 'active',
       provider: 'default',
