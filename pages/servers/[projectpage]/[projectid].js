@@ -131,22 +131,10 @@ const SingleProjectPage = ({ project, token, user }) => {
         }
       }
 
-  const renderProject = () => {
-    if (project && project) {
-      return (
-        <div>
-          <h1>{project.title}</h1>
-          <h5>{}</h5>
-        </div>
-      );
-    }
-  };
-  const renderedProject = renderProject();
-
   return (
     <>
       <Head>
-        <title>{renderedProject.props.children[0].props.children}</title>
+        <title>{project.title}</title>
         <meta
           property='og:project'
           content='editing project'
@@ -156,7 +144,7 @@ const SingleProjectPage = ({ project, token, user }) => {
       <NavBar user={user} token={token} />
       <div className="  justify-between px-6 flex bg-slate-600 text-white items-center">
         <div className="flex items-center">
-        {renderedProject}
+        <h1>{project.title}</h1>
       <Link href={`/servers/${projectpage}`}>
         <button className="ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Back to Projects</button>
       </Link>
