@@ -129,13 +129,8 @@ const settings = () => {
               <div className="flex w-row">
                 <div className="col-3 w-col w-col-6">
                   <div className="card-dark">
-                    <h4 className="card-heading-small">Personal settings</h4>
+                    <h4 className="card-heading-small">Upload Avatar</h4>
                     <div className="input-group">
-                      <div className="input-group-item-left">
-                        <div className="label-2">Email</div>
-                        <div className="account-login-text">markroster@gmail.com</div>
-                      </div>
-                      <a href="#" className="button-3 button-small button-growth-none modal-action w-button">Change</a>
                       <div className="modal">
                         <div className="modal-mask"></div>
                         <div className="modal-container">
@@ -161,19 +156,11 @@ const settings = () => {
                       </div>
                     </div>
                     <div className="w-form">
-                      <form id="email-form" name="email-form" data-name="Email Form" method="get">
-                        <div className="form-group"><label for="username-2" className="label-2">Username</label>
-                        <input type="text" className="form-text-field w-input" maxlength="256" name="username-2" data-name="Username 2" placeholder="markroster" id="username-2"/>
-                      </div>
-                        <div className="form-group"><label for="name-5" className="label-2">Language</label><select id="field-2" name="field-2" data-name="Field 2" className="input w-select">
-                            <option value="English">English</option>
-                            <option value="Spanish">Spanish</option>
-                          </select></div>
-                        <div className="form-group"><label className="w-checkbox">
-                          <input type="checkbox" id="checkbox-2" name="checkbox-2" data-name="Checkbox 2" className="w-checkbox-input"/>
-                          <span className="hint w-form-label" for="checkbox-2">Subscribe to newsletters</span></label></div>
+                      <form id="upload-file">
                         <div className="button-group">
-                          <input type="submit" value="Save" data-wait="Please wait..." className="button w-button"/>
+                          <input type="text" name="title" />
+		                      <input type="file" name="file" />
+                          <input type="submit" value="Upload" data-wait="Please wait..." className="button w-button"/>
                           </div>
                       </form>
                       <div className="success-message w-form-done">
