@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import Link from 'next/link';
+import Head from 'next/head';
+import Cookies from 'js-cookie';
 
 import RoutingCard from '@/components/dashboard/RoutingCard';
 import ServerCard from '@/components/dashboard/ServerCard';
@@ -10,7 +12,6 @@ import { fetchUser } from '../../helpers/fetchData/fetchUser';
 import { getUserServers, getCurrentUser } from '@/queries/Users';
 import InputModal from '@/components/global/InputModal';
 import { createServer } from '@/helpers/setData/createServer';
-import Head from 'next/head';
 
 const newServerProps = {
   title: 'Start a New Server',
@@ -27,12 +28,18 @@ const modalProps = {
 
 const Servers = ({ servers, user, token }) => {
   const [showModal, setShowModal] = useState(false);
-  const [renderedServers, setRenderedServers] = useState([]);
+  const [renderedServers, setRenderedServers] = useState(servers);
+  const [isFirstTime, setIsFirstTime] = useState(false);
 
-  // useEffect(() => {
-  //   //not quite working yet, but feel like I'm on the right track.
-  //   console.log(renderedServers)
-  // }, [renderedServers]);
+  useEffect(() => {
+    const hasVisitedBefore = Cookies.get('hasVisitedBefore');
+    if (!hasVisitedBefore) {
+      setIsFirstTime(true);
+      Cookies.set('hasVisitedBefore', 'true');
+      alert('This is the first time the user has visited the site');
+    }
+
+  }, [renderedServers]);
 
   const closeModal = () => {
     setShowModal(false);
@@ -42,22 +49,37 @@ const Servers = ({ servers, user, token }) => {
     if (inputOne === '') {
       alert('Please enter a server name');
       return;
-    } else {
-      createServer(token, inputOne, inputTwo);
-      const response = await fetchData(token, getUserServers);
-      const newServers = response.servers;
-      setRenderedServers(newServers);
-      setShowModal(false);
     }
+    createServer(token, inputOne, inputTwo)
+      .then(() => {
+        setTimeout(() => {
+          fetchData(token, getUserServers)
+            .then((response) => {
+              const newServers = response.servers;
+              setRenderedServers(newServers);
+              setShowModal(false);
+            })
+            .catch((error) => {
+              console.error('Error fetching server list:', error);
+            });
+        }, 300);
+      })
+      .catch((error) => {
+        console.error('Error creating server:', error);
+      });
   };
 
   return (
     <>
       <Head>
         <title>Compo-X Servers</title>
-        <meta property='og:servers' content='list of servers' key='servers page' />
+        <meta
+          property='og:servers'
+          content='list of servers'
+          key='servers page'
+        />
       </Head>
-      
+
       <NavBar token={token} user={user} />
       {showModal && (
         <>
@@ -83,8 +105,7 @@ const Servers = ({ servers, user, token }) => {
                 <div className='w-inline-block'>
                   <img
                     src={`https://compo.directus.app/assets/${
-                      user ? '28b315a9-d72c-489e-9d7b-a3d0c2e89877.png'
-                      : ''
+                      user ? '28b315a9-d72c-489e-9d7b-a3d0c2e89877.png' : ''
                     }?access_token=${token}`}
                     alt=''
                     className='avatar'
@@ -99,8 +120,8 @@ const Servers = ({ servers, user, token }) => {
               </div>
               <div className='label-4'>Your Servers</div>
 
-              {servers &&
-                servers.map((server) => (
+              {renderedServers &&
+                renderedServers.map((server) => (
                   <Link
                     href={{
                       pathname: '/servers/[projectpage]',
