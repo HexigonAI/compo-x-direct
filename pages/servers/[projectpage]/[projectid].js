@@ -13,6 +13,8 @@ import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
@@ -34,14 +36,9 @@ const SingleProjectPage = ({ project, token, user }) => {
           remote: {
             urlLoad: projectEndpoint,
             urlStore: projectEndpoint,
-            // The `remote` storage uses the POST method when stores data but
-            // the json-server API requires PATCH.
             fetchOptions: opts => (opts.method === 'POST' ?  { method: 'PATCH' } : {}),
-            // As the API stores projects in this format `{id: 1, data: projectData }`,
-            // we have to properly update the body before the store and extract the
-            // project data from the response result.
             onStore: "",
-            onLoad: (result) => (load() ),
+            onLoad: (result) => (result),
           }
         },
         autoload: true,
@@ -84,14 +81,12 @@ const SingleProjectPage = ({ project, token, user }) => {
       },
     });
     
-     editor.Storage.add('remote', {
+     editor.Storage.add('remote', { 
       async load(options = {}) {
-        // const fetchData = await axios.get('https://compo.directus.app/items/projects/377369dc-1c70-4b96-8a70-027a97fd786b');
-        // const builder_data = fetchData.data.data.builder_data;
-        // const builder_string = builder_data.substring(1, builder_data.length-1);
-        // setTest(JSON.parse(builder_string));
-          },
-        
+        const fetchData = await axios.get(`https://compo.directus.app/items/projects/${project.id}`);
+        const builder_data = fetchData.data.data.builder_data;
+        const builder_string = builder_data.substring(1, builder_data.length-1);
+        return (JSON.parse(builder_string));},
       async store(data) {
         const sentData = JSON.stringify(data)
         try {
@@ -117,13 +112,6 @@ const SingleProjectPage = ({ project, token, user }) => {
     setEditor(editor)
   }, []);
 
-  async function load(options = {}) {
-    const fetchData = await axios.get(`https://compo.directus.app/items/projects/${project.id}`);
-    const builder_data = fetchData.data.data.builder_data;
-    const builder_string = builder_data.substring(1, builder_data.length-1);
-    return (JSON.parse(builder_string));
-      }
-
   async function save() {
     const projectData = editor.getProjectData();
     const sentData = JSON.stringify(projectData)
@@ -135,9 +123,10 @@ const SingleProjectPage = ({ project, token, user }) => {
               'Authorization': `Bearer ${token}`
             }
           })
-          alert("SUCCESS")
+          toast("Your Save was Successful");
         } catch (error) {
           console.error('Error:', error.message);
+          toast("Error, Save was Not Successful");
           throw error;
         }
       }
@@ -172,7 +161,6 @@ const SingleProjectPage = ({ project, token, user }) => {
         <button className="ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Back to Projects</button>
       </Link>
         </div>
-      
       <div className="">
       <button className=" w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
         PDF
@@ -180,10 +168,9 @@ const SingleProjectPage = ({ project, token, user }) => {
       <button onClick={save} className=" w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
         Save
         </button>
-
+        <ToastContainer />
       </div>
       </div>
-      
       <div id='gjs'></div>
     </>
   );
