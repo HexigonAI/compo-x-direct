@@ -1,0 +1,105 @@
+.gjs-one-bg {
+    background-color: #212121 !important;
+}
+
+.gjs-two-color {
+  color: white !important;
+}
+
+.gjs-pn-btn svg {
+  color: white;
+}
+
+.gjs-pn-publish-select-saved {
+  height: 22px;
+}
+
+.gjs-pn-devices-c {
+  left: 11.5em;
+}
+
+.gjs-pn-options {
+  right: 45% !important;
+}
+
+.gjs-pn-publish-select-saved {
+  right: 25%;
+}
+
+.gjs-pn-views {
+  width: 300px !important;
+  font-family: LeagueSpartan;
+}
+
+.gjs-pn-views-container {
+  width: 300px !important;
+}
+
+.gjs-pn-active {
+  background: #24252A;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: white !important;
+  border-radius: 8px;
+}
+
+.gjs-pn-pages-select {
+  left: 3em;
+}
+
+.gjs-blocks-cs {
+  font-family: LeagueSpartan;
+}
+
+.button-view-style {
+  font-size: 12px !important;
+  width: 64px !important;
+  color: white;
+}
+
+.pages-select {
+  background: #24252A;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 13px;
+}
+
+.panel__top {
+    display: flex !important;
+    position: initial;
+}
+
+.panel__basic-actions {
+    position: initial !important;
+}
+
+.footer-blocks {
+  background: linear-gradient(95.71deg, #14F1D0 9.13%, #98D1EE 73.14%);
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  
+}
+
+@font-face {
+  font-family: LeagueSpartan;
+  src: url("../fonts/LeagueSpartan-Regular.ttf");
+}
+
+@font-face {
+  font-family: LeagueSpartanMedium;
+  src: url("../fonts/LeagueSpartan-Medium.ttf")
+}
+
+.font-family-league-spartan {
+  font-family: LeagueSpartan;
+}
+
+.font-family-league-spartan-medium {
+  font-family: LeagueSpartanMedium;
+}
