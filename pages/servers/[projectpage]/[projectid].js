@@ -17,7 +17,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'grapesjs/dist/css/grapes.min.css';
 import 'grapesjs/dist/css/grapes.min.css'
-import 'grapesjs/dist/grapes.min.js'
 
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
