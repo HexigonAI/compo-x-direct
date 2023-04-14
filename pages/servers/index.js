@@ -28,7 +28,7 @@ const modalProps = {
 
 const Servers = ({ servers, user, token }) => {
   const [showModal, setShowModal] = useState(false);
-  const [renderedServers, setRenderedServers] = useState(servers);
+  const [serverList, setServerList] = useState(servers);
   const [isFirstTime, setIsFirstTime] = useState(false);
 
   useEffect(() => {
@@ -39,10 +39,18 @@ const Servers = ({ servers, user, token }) => {
       alert('This is the first time the user has visited the site');
     }
 
-  }, [renderedServers]);
+  }, [serverList]);
 
-  const closeModal = () => {
-    setShowModal(false);
+  const rerenderServerList = async () => {
+    fetchData(token, getUserServers)
+      .then((response) => {
+        const newServers = response.servers;
+        setServerList(newServers);
+        setShowModal(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching server list:', error);
+      });
   };
 
   const handleCreateServer = async (inputOne, inputTwo) => {
@@ -53,15 +61,7 @@ const Servers = ({ servers, user, token }) => {
     createServer(token, inputOne, inputTwo)
       .then(() => {
         setTimeout(() => {
-          fetchData(token, getUserServers)
-            .then((response) => {
-              const newServers = response.servers;
-              setRenderedServers(newServers);
-              setShowModal(false);
-            })
-            .catch((error) => {
-              console.error('Error fetching server list:', error);
-            });
+          rerenderServerList();
         }, 300);
       })
       .catch((error) => {
@@ -85,7 +85,7 @@ const Servers = ({ servers, user, token }) => {
         <>
           <div className='modal-container'>
             <InputModal
-              closeModal={closeModal}
+              closeModal={setShowModal}
               handleSubmit={handleCreateServer}
               isOpen={showModal}
               header={modalProps.header}
@@ -120,8 +120,8 @@ const Servers = ({ servers, user, token }) => {
               </div>
               <div className='label-4'>Your Servers</div>
 
-              {renderedServers &&
-                renderedServers.map((server) => (
+              {serverList &&
+                serverList.map((server) => (
                   <Link
                     href={{
                       pathname: '/servers/[projectpage]',
