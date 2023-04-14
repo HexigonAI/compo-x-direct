@@ -7,25 +7,35 @@ import gsWebpage from 'grapesjs-preset-webpage';
 import gsNewsLetter from 'grapesjs-preset-newsletter';
 import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import NavBar from '@/components/global/NavBar';
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
+
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'grapesjs/dist/css/grapes.min.css';
 import 'grapesjs/dist/css/grapes.min.css'
+import { updateProject } from '@/helpers/setData/updateProject';
+import InlineEdit from '@/components/global/InlineEdit';
+
 
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
-  const [editor, setEditor] = useState("");
+  const [editor, setEditor] = useState('');
+  const [currentTitle, setCurrentTitle] = useState(project.title);
+
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
-  
+
   useEffect(() => {
-    
     const editor = grapesjs.init({
       container: '#gjs',
       height: '100vh',
@@ -38,10 +48,11 @@ const SingleProjectPage = ({ project, token, user }) => {
           remote: {
             urlLoad: projectEndpoint,
             urlStore: projectEndpoint,
-            fetchOptions: opts => (opts.method === 'POST' ?  { method: 'PATCH' } : {}),
-            onStore: "",
-            onLoad: (result) => (result),
-          }
+            fetchOptions: (opts) =>
+              opts.method === 'POST' ? { method: 'PATCH' } : {},
+            onStore: '',
+            onLoad: (result) => result,
+          },
         },
         autoload: true,
         stepsBeforeSave: 3,
@@ -75,14 +86,24 @@ const SingleProjectPage = ({ project, token, user }) => {
       },
       pluginsOpts: {
         gsWebpage: {
-           blocksBasicOpts: {
-             blocks: ['column1', 'column2', 'column3', 'column3-7', 'text', 'link', 'image', 'video'],
-             flexGrid: 1,
-           },
-           blocks: ['link-block', 'quote', 'text-basic'],
+          blocksBasicOpts: {
+            blocks: [
+              'column1',
+              'column2',
+              'column3',
+              'column3-7',
+              'text',
+              'link',
+              'image',
+              'video',
+            ],
+            flexGrid: 1,
+          },
+          blocks: ['link-block', 'quote', 'text-basic'],
         },
       },
     });
+
     editor.Panels.addPanel({
       id: 'icon',
       visible: true,
@@ -228,25 +249,35 @@ const SingleProjectPage = ({ project, token, user }) => {
     
      editor.Storage.add('remote', { 
       async load(options = {}) {
-        const fetchData = await axios.get(`https://compo.directus.app/items/projects/${project.id}`);
+        const fetchData = await axios.get(
+          `https://compo.directus.app/items/projects/${project.id}`
+        );
         const builder_data = fetchData.data.data.builder_data;
-        const builder_string = builder_data.substring(1, builder_data.length-1);
-        return (JSON.parse(builder_string));},
+        const builder_string = builder_data.substring(
+          1,
+          builder_data.length - 1
+        );
+        return JSON.parse(builder_string);
+      },
       async store(data) {
-        const sentData = JSON.stringify(data)
+        const sentData = JSON.stringify(data);
         try {
-          axios.patch(`https://compo.directus.app/items/projects/${project.id}`, {
-            "builder_data": `"${sentData}"`
-          }, {
-            headers: {
-              'Authorization': `Bearer ${token}`
+          axios.patch(
+            `https://compo.directus.app/items/projects/${project.id}`,
+            {
+              builder_data: `"${sentData}"`,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
-          })
+          );
         } catch (error) {
           console.error('Error:', error.message);
           throw error;
         }
-      }
+      },
     });
 
     // Get current project data
@@ -254,44 +285,41 @@ const SingleProjectPage = ({ project, token, user }) => {
     // ...
     // Load project data
     editor.loadProjectData(projectData);
-    setEditor(editor)
+    setEditor(editor);
   }, []);
 
   async function save() {
     const projectData = editor.getProjectData();
-    const sentData = JSON.stringify(projectData)
-        try {
-          axios.patch(`https://compo.directus.app/items/projects/${project.id}`, {
-            "builder_data": `"${sentData}"`
-          }, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          })
-          toast("Your Save was Successful");
-        } catch (error) {
-          console.error('Error:', error.message);
-          toast("Error, Save was Not Successful");
-          throw error;
+    const sentData = JSON.stringify(projectData);
+    try {
+      axios.patch(
+        `https://compo.directus.app/items/projects/${project.id}`,
+        {
+          builder_data: `"${sentData}"`,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
-
-  const renderProject = () => {
-    if (project && project) {
-      return (
-        <div>
-          <h1>{project.title}</h1>
-          <h5>{}</h5>
-        </div>
       );
+      toast('Your Save was Successful');
+    } catch (error) {
+      console.error('Error:', error.message);
+      toast('Error, Save was Not Successful');
+      throw error;
     }
+  }
+
+  const handleUpdateTitle = (newTitle) => {
+    updateProject(token, project.id, newTitle);
+    setCurrentTitle(newTitle);
   };
-  const renderedProject = renderProject();
 
   return (
     <>
       <Head>
-        <title>{renderedProject.props.children[0].props.children}</title>
+        <title>{project.title}</title>
         <meta
           property='og:project'
           content='editing project'
@@ -299,22 +327,27 @@ const SingleProjectPage = ({ project, token, user }) => {
         />
       </Head>
       <NavBar user={user} token={token} />
-      <div className="  justify-between px-6 flex bg-slate-600 text-white items-center">
-        <div className="flex items-center">
-        {renderedProject}
-      <Link href={`/servers/${projectpage}`}>
-        <button className="ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Back to Projects</button>
-      </Link>
+      <div className='justify-between px-6 flex bg-black text-white items-center'>
+        <div className='flex items-center'>
+          <InlineEdit value={currentTitle} setValue={handleUpdateTitle} />
+          <Link href={`/servers/${projectpage}`}>
+            <button className='ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
+              Back to Projects
+            </button>
+          </Link>
         </div>
-      <div className="">
-      <button className=" w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-        PDF
-        </button>
-      <button onClick={save} className=" w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-        Save
-        </button>
-        <ToastContainer />
-      </div>
+        <div className=''>
+          <button className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
+            PDF
+          </button>
+          <button
+            onClick={save}
+            className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
+          >
+            Save
+          </button>
+          <ToastContainer />
+        </div>
       </div>
       <div id='gjs'></div>
     </>
