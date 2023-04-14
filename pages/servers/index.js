@@ -109,12 +109,23 @@ const Servers = ({ servers, user, token }) => {
                     alt=''
                     className='avatar'
                   />
-                  <h3 className='db-header'>
-                    Welcome Back,{' '}
-                    <span className='user_name'>
-                      {user ? user.first_name : ''}
-                    </span>
-                  </h3>
+                  {isFirstTime && (
+                    <h3 className='db-header'>
+                      Welcome,{' '}
+                      <span className='user_name'>
+                        {user ? user.first_name : ''}
+                      </span>
+                    </h3>
+                  )}
+
+                  {!isFirstTime && (
+                    <h3 className='db-header'>
+                      Welcome Back,{' '}
+                      <span className='user_name'>
+                        {user ? user.first_name : ''}
+                      </span>
+                    </h3>
+                  )}
                 </div>
               </div>
               <div className='label-4'>Your Servers</div>
