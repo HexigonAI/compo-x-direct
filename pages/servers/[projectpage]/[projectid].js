@@ -17,15 +17,10 @@ import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
 
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import 'grapesjs/dist/css/grapes.min.css';
-import 'grapesjs/dist/css/grapes.min.css'
+import 'grapesjs/dist/css/grapes.min.css';
 import { updateProject } from '@/helpers/setData/updateProject';
 import InlineEdit from '@/components/global/InlineEdit';
-
 
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
@@ -108,9 +103,9 @@ const SingleProjectPage = ({ project, token, user }) => {
       id: 'icon',
       visible: true,
       buttons: [
-                        {
-                          id: 'visibility',
-                          label: `
+        {
+          id: 'visibility',
+          label: `
                           <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M16.438 27.9726L23.6402 31.0593V21.5432L16.438 18.457V27.9726Z" fill="url(#paint0_linear_373_8636)"/>
                           <path d="M24.1452 14.8346L17.1919 17.8147L24.078 20.7655L31.0313 17.7854L24.1452 14.8346Z" fill="url(#paint1_linear_373_8636)"/>
@@ -160,10 +155,10 @@ const SingleProjectPage = ({ project, token, user }) => {
                           </linearGradient>
                           </defs>
                           </svg>
-                          `
-                        }
-                    ]
-    })
+                          `,
+        },
+      ],
+    });
     editor.Panels.addPanel({
       id: 'pages-select',
       visible: true,
@@ -175,10 +170,10 @@ const SingleProjectPage = ({ project, token, user }) => {
                   <option value="saab">Saab</option>
                   <option value="mercedes">Mercedes</option>
                   <option value="audi">Audi</option>
-                  </select>`
-        }
-      ]
-    })
+                  </select>`,
+        },
+      ],
+    });
 
     editor.Panels.addPanel({
       id: 'publish-select-saved',
@@ -186,7 +181,7 @@ const SingleProjectPage = ({ project, token, user }) => {
       buttons: [
         {
           id: 'text-saved',
-          label: `<span class="font-family-league-spartan" style="font-size: 12px;">Saved: 8:02PM</span>`
+          label: `<span class="font-family-league-spartan" style="font-size: 12px;">Saved: 8:02PM</span>`,
         },
         {
           id: 'visibility',
@@ -195,10 +190,10 @@ const SingleProjectPage = ({ project, token, user }) => {
           <option value="saab">Saab</option>
           <option value="mercedes">Mercedes</option>
           <option value="audi">Audi</option>
-          </select>`
+          </select>`,
         },
-      ]
-    })
+      ],
+    });
 
     editor.Panels.addButton('options', {
       id: 'prompt-btn',
@@ -215,39 +210,39 @@ const SingleProjectPage = ({ project, token, user }) => {
       </clipPath>
       </defs>
       </svg>
-      `
-    })
-    let arrButton = editor.Panels.getPanel("options").attributes.buttons.models;
-    let elementPrompt = arrButton[arrButton.length-1];
-    arrButton.splice(arrButton.length-1, 1);
+      `,
+    });
+    let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
+    let elementPrompt = arrButton[arrButton.length - 1];
+    arrButton.splice(arrButton.length - 1, 1);
     arrButton.splice(0, 0, elementPrompt);
-    editor.Panels.removePanel("options");
+    editor.Panels.removePanel('options');
     editor.Panels.addPanel({
       id: 'options',
       visible: true,
-      buttons: arrButton
-    })
-    let copySettings = editor.Panels.getButton("views",'open-tm');
-          copySettings.attributes.label = "Settings";
-          copySettings.attributes.className = "button-view-style";
-          editor.Panels.removeButton("views",'open-tm');
-          editor.Panels.addButton('views', copySettings);
+      buttons: arrButton,
+    });
+    let copySettings = editor.Panels.getButton('views', 'open-tm');
+    copySettings.attributes.label = 'Settings';
+    copySettings.attributes.className = 'button-view-style';
+    editor.Panels.removeButton('views', 'open-tm');
+    editor.Panels.addButton('views', copySettings);
 
-          let layers = editor.Panels.getButton("views",'open-layers');
-          layers.attributes.label = "Layers";
-          layers.attributes.className = "button-view-style";
-          editor.Panels.removeButton("views",'open-layers');
-          editor.Panels.addButton('views',layers);
-          
-          let design = editor.Panels.getButton("views",'open-sm');
-          design.attributes.className = "button-view-style";
-          design.attributes.label = "Design";
+    let layers = editor.Panels.getButton('views', 'open-layers');
+    layers.attributes.label = 'Layers';
+    layers.attributes.className = 'button-view-style';
+    editor.Panels.removeButton('views', 'open-layers');
+    editor.Panels.addButton('views', layers);
 
-          let blocks = editor.Panels.getButton("views",'open-blocks');
-          blocks.attributes.className = "button-view-style";
-          blocks.attributes.label = "Blocks"
-    
-     editor.Storage.add('remote', { 
+    let design = editor.Panels.getButton('views', 'open-sm');
+    design.attributes.className = 'button-view-style';
+    design.attributes.label = 'Design';
+
+    let blocks = editor.Panels.getButton('views', 'open-blocks');
+    blocks.attributes.className = 'button-view-style';
+    blocks.attributes.label = 'Blocks';
+
+    editor.Storage.add('remote', {
       async load(options = {}) {
         const fetchData = await axios.get(
           `https://compo.directus.app/items/projects/${project.id}`
