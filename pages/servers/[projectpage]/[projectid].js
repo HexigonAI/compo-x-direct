@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import grapesjs from 'grapesjs';
+import grapesjs, { Editor } from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
 import gsWebpage from 'grapesjs-preset-webpage';
 import gsNewsLetter from 'grapesjs-preset-newsletter';

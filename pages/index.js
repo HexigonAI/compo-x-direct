@@ -1,32 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useMutation } from 'react-query';
+import { useRouter } from 'next/router';
+import { getCsrfToken, signIn } from 'next-auth/react';
 import setData from '../helpers/setData';
 import Link from 'next/link';
 
 import { createNewUser } from '@/queries/Users';
 import Head from 'next/head';
 
-const CreateAccountPage = () => {
+const CreateAccountPage = ({ csrfToken }) => {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [emailExists, setEmailExists] = useState(false);
   const [createSuccessful, setCreateSuccessful] = useState(false);
+  const [error, setError] = useState(false);
+
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const router = useRouter();
 
   const signUpMutation = useMutation((newUser) => {
-    setData(createNewUser, { data: newUser }, '/system').then((response) => {
-      console.log(response);
-      setCreateSuccessful(false);
-      setEmailExists(false);
-      if (response.create_users_item == null) {
-        setEmailExists(true);
+    setData(createNewUser, { data: newUser }, '/system')
+      .then((response) => {
+        console.log(response);
         setCreateSuccessful(false);
-      } else {
-        setCreateSuccessful(true);
-      }
-    });
+        setEmailExists(false);
+        if (response.create_users_item == null) {
+          setEmailExists(true);
+          setCreateSuccessful(false);
+        } else {
+          setCreateSuccessful(true);
+
+          const email = newUser.email;
+          const password = newUser.password;
+          signIn('credentials', {
+            redirect: false,
+            email,
+            password,
+            callbackUrl: `/servers`,
+          }).then((res) => {
+            if (res?.error) {
+              setError(true);
+            } else {
+              router.push('/servers');
+            }
+          });
+        }
+      });
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!e.target.email.value || !e.target.email.value.includes('@')) {
@@ -47,12 +71,14 @@ const CreateAccountPage = () => {
       first_name: e.target.name.value.split(' ').slice(0, -1).join(' '),
       last_name: e.target.name.value.split(' ').slice(-1).join(' '),
       company: e.target.company.value,
-      email: e.target.email.value,
-      password: e.target.password.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      date_created: new Date().toISOString(),
       role: '953d6a4f-06e6-4c75-8ab6-5edf7eb01255',
       status: 'active',
       provider: 'default',
     });
+
   };
 
   return (
@@ -169,6 +195,7 @@ const CreateAccountPage = () => {
                       </div>
                       <div className='account-icon-wrapper'>
                         <input
+                          ref={emailRef}
                           id='email-address'
                           name='email'
                           type='email'
@@ -180,16 +207,19 @@ const CreateAccountPage = () => {
                         />
                       </div>
                       {invalidEmail ? (
-                        <p style={{ color: 'red' }}>
+                        <div className='bg-red-600 p-2 text-white rounded'>
                           Please enter a valid email
-                        </p>
+                        </div>
                       ) : null}
                       {emailExists ? (
-                        <p style={{ color: 'red' }}>Email already in use</p>
+                        <div className='bg-red-600 p-2 text-white rounded'>
+                          Email already in use
+                        </div>
                       ) : null}
 
                       <div className='account-icon-wrapper'>
                         <input
+                          ref={passwordRef}
                           className='account-text-field w-input'
                           id='password'
                           name='password'
@@ -231,14 +261,14 @@ const CreateAccountPage = () => {
                     </div>
                   </div>
                   {invalidPassword ? (
-                    <p style={{ color: 'red' }}>
+                    <div className='bg-red-600 p-2 text-white rounded'>
                       Password must be at least 8 characters long
-                    </p>
+                    </div>
                   ) : null}
                   {createSuccessful ? (
-                    <p className=' text-lg text-green-600 font-bold flex justify-center'>
-                      Account Created
-                    </p>
+                    <div className='bg-indigo-500 p-2 text-white rounded'>
+                      Account created! Logging in...
+                    </div>
                   ) : null}
                   {/* TODO add Google Auth logic to this HTML which is the login with Google option  */}
 
@@ -343,5 +373,13 @@ const CreateAccountPage = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  };
+}
 
 export default CreateAccountPage;

@@ -5,6 +5,7 @@ export const getCurrentUser =
             email
             first_name
             last_name
+            date_created
             avatar
                 {
                     id

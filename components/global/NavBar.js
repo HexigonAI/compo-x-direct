@@ -40,7 +40,7 @@ const NavBar = ({ token, user }) => {
 
               <img
                 src={`https://compo.directus.app/assets/${
-                  user ? user.avatar.id : ''
+                  user ? '28b315a9-d72c-489e-9d7b-a3d0c2e89877.png' : ''
                 }?access_token=${token}`}
                 width='47'
                 sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
