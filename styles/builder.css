@@ -48,7 +48,12 @@
 
 .gjs-block{
   background-color: #1f2124 !important;
+  border-radius: 8px;
 }
+.gjs-block:hover{
+  color: #b5d2fd !important;;
+}
+
 .gjs-blocks-cs {
   font-family: LeagueSpartan;
   background: #e6f0ff;
