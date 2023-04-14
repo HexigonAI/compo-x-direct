@@ -42,6 +42,10 @@
   border-radius: 8px;
 }
 
+.gjs-block-category.gjs-open .gjs-title {
+  background-color: #31353b
+}
+
 .gjs-pn-pages-select {
   left: 3em;
 }
