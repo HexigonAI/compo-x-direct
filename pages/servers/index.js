@@ -38,7 +38,6 @@ const Servers = ({ servers, user, token }) => {
       Cookies.set('hasVisitedBefore', 'true');
       alert('This is the first time the user has visited the site');
     }
-
   }, [serverList]);
 
   const rerenderServerList = async () => {
@@ -62,7 +61,7 @@ const Servers = ({ servers, user, token }) => {
       .then(() => {
         setTimeout(() => {
           rerenderServerList();
-        }, 300);
+        }, 500);
       })
       .catch((error) => {
         console.error('Error creating server:', error);
