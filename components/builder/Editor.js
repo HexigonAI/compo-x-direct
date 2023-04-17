@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import grapesjs from 'grapesjs';
 import gsWebpage from 'grapesjs-preset-webpage';
 import gsNewsLetter from 'grapesjs-preset-newsletter';
@@ -9,6 +9,11 @@ import 'grapesjs/dist/css/grapes.min.css';
 import { addButton, icon, pagesSelect, publishSelect } from './Panels';
 
 const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
+  const [pageManager, setPageManager] = useState('');
+  const [arrayOfPages, setArrayOfPages] = useState([]);
+  const [pages, setPages] = useState([]);
+  const [pm, setPm] = useState(null);
+
   useEffect(() => {
     const editor = grapesjs.init({
       container: '#gjs',
@@ -37,6 +42,27 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
         storeCss: true,
       },
       panels: { defaults: null },
+      pageManager: true,
+      //TODO: needs dynamic page id
+      //TODO: need ability to add new page
+      pageManager: {
+        pages: [
+          {
+            id: 'page-1', // id is mandatory
+            frames: [
+              {
+                component: '', // or JSON of components
+                styles: '', // or JSON of styles
+              },
+            ],
+          },
+          {
+            id: 'page-2',
+            component: '<h1>Hello</h1>',
+            styles: '...',
+          },
+        ],
+      },
       deviceManager: {
         devices: [
           {
@@ -78,47 +104,85 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
       },
     });
 
+    const pm = editor.Pages;
+    const arrayOfPages = pm.getAll();
+    setPages(pm.getAll());
+    setPm(editor.Pages);
+    editor.on('page', () => {
+      setPages(pm.getAll());
+    });
+    const pageManager = editor.Pages;
+
+    const selectPage = (pageId) => {
+      return pm.select(pageId);
+    };
+
     const projectData = editor.getProjectData();
 
     editor.loadProjectData(projectData);
     handleSetEditor(editor);
 
     editor.Storage.add('remote', {
-        async load(options = {}) {
-          const fetchData = await axios.get(
-            `https://compo.directus.app/items/projects/${id}`
-          );
-          const builder_data = fetchData.data.data.builder_data;
-          const builder_string = builder_data.substring(
-            1,
-            builder_data.length - 1
-          );
-          return JSON.parse(builder_string);
-        },
-        async store(data) {
-          const sentData = JSON.stringify(data);
-          try {
-            axios.patch(
-              `https://compo.directus.app/items/projects/${id}`,
-              {
-                builder_data: `"${sentData}"`,
+      // Load data from the server
+      async load(options = {}) {
+        const fetchData = await axios.get(
+          `https://compo.directus.app/items/projects/${id}`
+        );
+        const builder_data = fetchData.data.data.builder_data;
+        const builder_string = builder_data.substring(
+          1,
+          builder_data.length - 1
+        );
+        return JSON.parse(builder_string);
+      },
+      // Store data on the server
+      async store(data) {
+        const sentData = JSON.stringify(data);
+        try {
+          axios.patch(
+            `https://compo.directus.app/items/projects/${id}`,
+            {
+              builder_data: `"${sentData}"`,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-          } catch (error) {
-            console.error('Error:', error.message);
-            throw error;
-          }
-        },
-      });
+            }
+          );
+        } catch (error) {
+          console.error('Error:', error.message);
+          throw error;
+        }
+      },
+    });
 
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
+    editor.Panels.addPanel({
+      id: 'pages-select',
+      visible: true,
+      buttons: [
+        {
+          id: 'visibility',
+          label: `
+            <select ${(onchange = (e) => {
+              selectPage(e.target.value);
+            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
+              ${arrayOfPages
+                .map((page) => {
+                  return `<option value=${page.id}> ${
+                    page.get('name') || page.id
+                  } </option>`;
+                })
+                .join('')}
+            </select>
+          `,
+        },
+      ],
+    });
+    
     editor.Panels.addButton('options', addButton);
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
@@ -151,7 +215,6 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
     let blocks = editor.Panels.getButton('views', 'open-blocks');
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
-
   }, []);
 
   return <div id='gjs'></div>;

@@ -1,4 +1,5 @@
 // Description: This file contains the code for the panels that are added to the editor. The panels are added to the editor in the Editor.js file.
+import React from "react";
 
 export const icon = {
   id: 'icon',
@@ -61,45 +62,50 @@ export const icon = {
   ],
 };
 
-export const pagesSelect = {
-    id: 'pages-select',
-    visible: true,
-    buttons: [
-      {
-        id: 'visibility',
-        label: `<select class="pages-select font-family-league-spartan" name="cars" id="cars">
-                <option value="volvo">Pages</option>
-                <option value="saab">Saab</option>
-                <option value="mercedes">Mercedes</option>
-                <option value="audi">Audi</option>
-                </select>`,
-      },
-    ],
-  };
+// export const pagesSelect = {
+//   id: 'pages-select',
+//   visible: true,
+//   buttons: [
+//     {
+//       id: 'visibility',
+//       label: `<select ${(onchange = (e) => {
+//         selectPage(e.target.value);
+//       })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
+//         ${arrayOfPages
+//           .map((page) => {
+//             return `<option value=${page.id}> ${
+//               page.get('name') || page.id
+//             } </option>`;
+//           })
+//           .join('')}
+//       </select>`,
+//     },
+//   ],
+// };
 
-  export const publishSelect = {
-    id: 'publish-select-saved',
-    visible: true,
-    buttons: [
-      {
-        id: 'text-saved',
-        label: `<span class="font-family-league-spartan" style="font-size: 12px;">Saved: 8:02PM</span>`,
-      },
-      {
-        id: 'visibility',
-        label: `<select class="pages-select font-family-league-spartan" name="cars" id="cars">
+export const publishSelect = {
+  id: 'publish-select-saved',
+  visible: true,
+  buttons: [
+    {
+      id: 'text-saved',
+      label: `<span class="font-family-league-spartan" style="font-size: 12px;">Saved: 8:02PM</span>`,
+    },
+    {
+      id: 'visibility',
+      label: `<select class="pages-select font-family-league-spartan" name="cars" id="cars">
         <option value="volvo">Publish</option>
         <option value="saab">Saab</option>
         <option value="mercedes">Mercedes</option>
         <option value="audi">Audi</option>
         </select>`,
-      },
-    ],
-  };
+    },
+  ],
+};
 
-  export const addButton = {
-    id: 'prompt-btn',
-    label: `
+export const addButton = {
+  id: 'prompt-btn',
+  label: `
     <svg width="22" height="22" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_374_7425)">
     <path d="M11.2798 5.84778C11.4194 6.65247 11.559 7.4578 11.6998 8.26249C11.9352 9.60813 12.1494 10.9576 12.4125 12.2981C12.6582 13.5505 13.4745 14.3468 14.6857 14.5932C16.8283 15.03 18.9928 15.3586 21.1586 15.7735C20.8389 15.8353 20.5205 15.9028 20.2002 15.9581C18.4229 16.2656 16.6463 16.5744 14.8677 16.8741C13.5607 17.0941 12.5733 18.0956 12.3443 19.4451C11.9996 21.4764 11.6516 23.5071 11.3029 25.5378C11.2946 25.5867 11.2676 25.633 11.2251 25.7417C10.9697 24.2758 10.7253 22.8748 10.4815 21.4745C10.3458 20.6968 10.2448 19.9108 10.0679 19.1428C9.82157 18.0705 8.95642 17.0426 7.29109 16.7982C5.37039 16.5165 3.46127 16.1505 1.54765 15.8192C1.47625 15.807 1.40678 15.7806 1.2627 15.7407C3.36607 15.3805 5.3929 15.0229 7.42424 14.689C8.95449 14.4375 9.91549 13.4611 10.1663 11.9283C10.4757 10.0327 10.8231 8.14284 11.1537 6.25045C11.1769 6.11665 11.1949 5.98158 11.2155 5.8465C11.2367 5.8465 11.2579 5.8465 11.2798 5.84714V5.84778Z" fill="#F9FAFD"/>
@@ -113,4 +119,4 @@ export const pagesSelect = {
     </defs>
     </svg>
     `,
-  }
+};

@@ -20,6 +20,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
 
+
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
 
@@ -91,7 +92,6 @@ const SingleProjectPage = ({ project, token, user }) => {
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
       />
-
     </>
   );
 };

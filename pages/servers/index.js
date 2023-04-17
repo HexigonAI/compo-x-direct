@@ -36,7 +36,7 @@ const Servers = ({ servers, user, token }) => {
     if (!hasVisitedBefore) {
       setIsFirstTime(true);
       Cookies.set('hasVisitedBefore', 'true');
-      alert('This is the first time the user has visited the site');
+      console.log('This is the first time the user has visited the site');
     }
   }, [serverList]);
 
