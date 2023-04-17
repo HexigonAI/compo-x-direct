@@ -6,7 +6,8 @@ import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
-import { addButton, icon, pagesSelect, publishSelect } from './Panels';
+import { icon, pagesSelect, publishSelect } from './Panels';
+import { promptButton } from './ModalButton';
 
 const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
   const [pageManager, setPageManager] = useState('');
@@ -102,6 +103,7 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
           blocks: ['link-block', 'quote', 'text-basic'],
         },
       },
+      modal: {},
     });
 
     const pm = editor.Pages;
@@ -135,6 +137,8 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
         );
         return JSON.parse(builder_string);
       },
+      //TODO: add webhook logic here.
+
       // Store data on the server
       async store(data) {
         const sentData = JSON.stringify(data);
@@ -181,9 +185,28 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
           `,
         },
       ],
+
     });
-    
-    editor.Panels.addButton('options', addButton);
+    editor.Panels.addButton('options', promptButton);
+
+    const modal = editor.Modal;
+    const modalContent = document.createElement('div');
+    const promptMessage = 'Enter your prompt:';
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.style.width = '100%';
+    inputField.style.color = 'black';
+    inputField.style.fontSize = '2rem';
+
+    editor.Commands.add('prompt-btn-command', {
+      run(editor) {
+        modal.setTitle('Custom Modal');
+        modal.setContent(modalContent);
+        modal.setContent(promptMessage);
+        modal.setContent(inputField);
+        modal.open();
+      },
+    });
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];
@@ -215,6 +238,7 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
     let blocks = editor.Panels.getButton('views', 'open-blocks');
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
+
   }, []);
 
   return <div id='gjs'></div>;
