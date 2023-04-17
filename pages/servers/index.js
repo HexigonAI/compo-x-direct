@@ -36,9 +36,8 @@ const Servers = ({ servers, user, token }) => {
     if (!hasVisitedBefore) {
       setIsFirstTime(true);
       Cookies.set('hasVisitedBefore', 'true');
-      alert('This is the first time the user has visited the site');
+      console.log('This is the first time the user has visited the site');
     }
-
   }, [serverList]);
 
   const rerenderServerList = async () => {
@@ -62,7 +61,7 @@ const Servers = ({ servers, user, token }) => {
       .then(() => {
         setTimeout(() => {
           rerenderServerList();
-        }, 300);
+        }, 500);
       })
       .catch((error) => {
         console.error('Error creating server:', error);
@@ -110,12 +109,23 @@ const Servers = ({ servers, user, token }) => {
                     alt=''
                     className='avatar'
                   />
-                  <h3 className='db-header'>
-                    Welcome Back,{' '}
-                    <span className='user_name'>
-                      {user ? user.first_name : ''}
-                    </span>
-                  </h3>
+                  {isFirstTime && (
+                    <h3 className='db-header'>
+                      Welcome,{' '}
+                      <span className='user_name'>
+                        {user ? user.first_name : ''}
+                      </span>
+                    </h3>
+                  )}
+
+                  {!isFirstTime && (
+                    <h3 className='db-header'>
+                      Welcome Back,{' '}
+                      <span className='user_name'>
+                        {user ? user.first_name : ''}
+                      </span>
+                    </h3>
+                  )}
                 </div>
               </div>
               <div className='label-4'>Your Servers</div>
