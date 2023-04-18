@@ -9,7 +9,13 @@ import 'grapesjs/dist/css/grapes.min.css';
 import { icon, pagesSelect, publishSelect } from './Panels';
 import { promptButton } from './ModalButton';
 
-const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
+const Editor = ({
+  token,
+  id,
+  projectEndpoint,
+  promptData,
+  handleSetEditor,
+}) => {
   const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState([]);
   const [pages, setPages] = useState([]);
@@ -106,19 +112,6 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
       modal: {},
     });
 
-    const pm = editor.Pages;
-    const arrayOfPages = pm.getAll();
-    setPages(pm.getAll());
-    setPm(editor.Pages);
-    editor.on('page', () => {
-      setPages(pm.getAll());
-    });
-    const pageManager = editor.Pages;
-
-    const selectPage = (pageId) => {
-      return pm.select(pageId);
-    };
-
     const projectData = editor.getProjectData();
 
     editor.loadProjectData(projectData);
@@ -137,8 +130,6 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
         );
         return JSON.parse(builder_string);
       },
-      //TODO: add webhook logic here.
-
       // Store data on the server
       async store(data) {
         const sentData = JSON.stringify(data);
@@ -160,6 +151,19 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
         }
       },
     });
+
+    const pm = editor.Pages;
+    const arrayOfPages = pm.getAll();
+    setPages(pm.getAll());
+    setPm(editor.Pages);
+    editor.on('page', () => {
+      setPages(pm.getAll());
+    });
+    const pageManager = editor.Pages;
+
+    const selectPage = (pageId) => {
+      return pm.select(pageId);
+    };
 
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
@@ -185,7 +189,6 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
           `,
         },
       ],
-
     });
     editor.Panels.addButton('options', promptButton);
 
@@ -238,7 +241,6 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
     let blocks = editor.Panels.getButton('views', 'open-blocks');
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
-
   }, []);
 
   return <div id='gjs'></div>;

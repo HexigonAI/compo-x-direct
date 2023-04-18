@@ -20,6 +20,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
+  const [promptData, setPromptData] = useState();
   const [showModal, setShowModal] = useState(false);
 
 
@@ -61,8 +62,12 @@ const SingleProjectPage = ({ project, token, user }) => {
       method: "POST",
       body: promptString,
     });
-    console.log(response)
-  }
+    const data = await response.json();
+    const html = data.html;
+    const css = data.css;
+    setPromptData({ html, css });
+  };
+  console.log(promptData)
 
   return (
     <>
@@ -121,6 +126,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         id={project.id}
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
+        promptData={promptData}
       />
     </>
   );
