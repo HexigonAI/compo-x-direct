@@ -14,11 +14,14 @@ import { fetchUser } from '@/helpers/fetchData/fetchUser';
 import { updateProject } from '@/helpers/setData/updateProject';
 import InlineEdit from '@/components/global/InlineEdit';
 import Editor from '@/components/builder/Editor';
+import InputModal from '@/components/global/InputModal';
 
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
+  const [promptData, setPromptData] = useState();
+  const [showModal, setShowModal] = useState(false);
 
 
   const { projectpage } = router.query;
@@ -52,6 +55,20 @@ const SingleProjectPage = ({ project, token, user }) => {
     setCurrentTitle(newTitle);
   };
 
+  const fetchPromptData = async (e, promptString) => {
+    e.preventDefault();
+    setShowModal(false);
+    const response = await fetch("https://unlockedx.awunda.com/webhook/compox", {
+      method: "POST",
+      body: promptString,
+    });
+    const data = await response.json();
+    const html = data.html;
+    const css = data.css;
+    setPromptData({ html, css });
+  };
+  console.log(promptData)
+
   return (
     <>
       <Head>
@@ -62,6 +79,21 @@ const SingleProjectPage = ({ project, token, user }) => {
           key='single project page'
         />
       </Head>
+      {showModal && (
+        <>
+          <div className='modal-container'>
+            <InputModal
+              closeModal={setShowModal}
+              handleSubmit={fetchPromptData}
+              isOpen={showModal}
+              header={"Enter a Prompt"}
+              labelOne={null}
+              labelTwo={null}
+              buttonText={"Generate Prompt"}
+            />
+          </div>
+        </>
+      )}
       <NavBar user={user} token={token} />
       <div className='justify-between px-6 flex bg-black text-white items-center'>
         <div className='flex items-center'>
@@ -73,6 +105,9 @@ const SingleProjectPage = ({ project, token, user }) => {
           </Link>
         </div>
         <div className=''>
+          <button  onClick={e => setShowModal(true)} className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
+            Prompt
+          </button>
           <button className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
             PDF
           </button>
@@ -91,6 +126,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         id={project.id}
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
+        promptData={promptData}
       />
     </>
   );

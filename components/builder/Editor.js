@@ -6,9 +6,16 @@ import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
-import { addButton, icon, pagesSelect, publishSelect } from './Panels';
+import { icon, pagesSelect, publishSelect } from './Panels';
+import { promptButton } from './ModalButton';
 
-const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
+const Editor = ({
+  token,
+  id,
+  projectEndpoint,
+  promptData,
+  handleSetEditor,
+}) => {
   const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState([]);
   const [pages, setPages] = useState([]);
@@ -102,20 +109,8 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
           blocks: ['link-block', 'quote', 'text-basic'],
         },
       },
+      modal: {},
     });
-
-    const pm = editor.Pages;
-    const arrayOfPages = pm.getAll();
-    setPages(pm.getAll());
-    setPm(editor.Pages);
-    editor.on('page', () => {
-      setPages(pm.getAll());
-    });
-    const pageManager = editor.Pages;
-
-    const selectPage = (pageId) => {
-      return pm.select(pageId);
-    };
 
     const projectData = editor.getProjectData();
 
@@ -157,6 +152,19 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
       },
     });
 
+    const pm = editor.Pages;
+    const arrayOfPages = pm.getAll();
+    setPages(pm.getAll());
+    setPm(editor.Pages);
+    editor.on('page', () => {
+      setPages(pm.getAll());
+    });
+    const pageManager = editor.Pages;
+
+    const selectPage = (pageId) => {
+      return pm.select(pageId);
+    };
+
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
@@ -182,8 +190,26 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
         },
       ],
     });
-    
-    editor.Panels.addButton('options', addButton);
+    editor.Panels.addButton('options', promptButton);
+
+    const modal = editor.Modal;
+    const modalContent = document.createElement('div');
+    const promptMessage = 'Enter your prompt:';
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.style.width = '100%';
+    inputField.style.color = 'black';
+    inputField.style.fontSize = '2rem';
+
+    editor.Commands.add('prompt-btn-command', {
+      run(editor) {
+        modal.setTitle('Custom Modal');
+        modal.setContent(modalContent);
+        modal.setContent(promptMessage);
+        modal.setContent(inputField);
+        modal.open();
+      },
+    });
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];

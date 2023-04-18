@@ -1,5 +1,4 @@
 // Description: This file contains the code for the panels that are added to the editor. The panels are added to the editor in the Editor.js file.
-import React from "react";
 
 export const icon = {
   id: 'icon',
@@ -61,27 +60,6 @@ export const icon = {
     },
   ],
 };
-
-// export const pagesSelect = {
-//   id: 'pages-select',
-//   visible: true,
-//   buttons: [
-//     {
-//       id: 'visibility',
-//       label: `<select ${(onchange = (e) => {
-//         selectPage(e.target.value);
-//       })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-//         ${arrayOfPages
-//           .map((page) => {
-//             return `<option value=${page.id}> ${
-//               page.get('name') || page.id
-//             } </option>`;
-//           })
-//           .join('')}
-//       </select>`,
-//     },
-//   ],
-// };
 
 export const publishSelect = {
   id: 'publish-select-saved',
