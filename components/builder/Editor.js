@@ -108,7 +108,6 @@ const Editor = ({
           blocks: ['link-block', 'quote', 'text-basic'],
         },
       },
-      modal: {},
     });
 
     handleSetEditor(editor);
@@ -161,6 +160,11 @@ const Editor = ({
     const selectPage = (pageId) => {
       return pm.select(pageId);
     };
+    editor.on('rteToolbarPosUpdate', (pos) => {
+      if (pos.top <= pos.canvasTop) {
+        pos.top = pos.elementTop + pos.elementHeight;
+      }
+    });
 
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
