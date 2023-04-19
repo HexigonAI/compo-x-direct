@@ -20,10 +20,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
-  const [promptData, setPromptData] = useState();
   const [showModal, setShowModal] = useState(false);
-
-
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
 
@@ -56,6 +53,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   };
 
   const fetchPromptData = async (e, promptString) => {
+    let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
     e.preventDefault();
     setShowModal(false);
     const response = await fetch("https://unlockedx.awunda.com/webhook/compox", {
@@ -65,9 +63,9 @@ const SingleProjectPage = ({ project, token, user }) => {
     const data = await response.json();
     const html = data.html;
     const css = data.css;
-    setPromptData({ html, css });
+    editor.setComponents(htmlWithCss + html);
+    editor.setStyle(css);
   };
-  console.log(promptData)
 
   return (
     <>
@@ -98,13 +96,13 @@ const SingleProjectPage = ({ project, token, user }) => {
       <div className='justify-between px-6 flex bg-black text-white items-center'>
         <div className='flex items-center'>
           <InlineEdit value={currentTitle} setValue={handleUpdateTitle} />
+        </div>
+        <div className=''>
           <Link href={`/servers/${projectpage}`}>
             <button className='ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
               Back to Projects
             </button>
           </Link>
-        </div>
-        <div className=''>
           <button  onClick={e => setShowModal(true)} className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
             Prompt
           </button>
@@ -126,7 +124,6 @@ const SingleProjectPage = ({ project, token, user }) => {
         id={project.id}
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
-        promptData={promptData}
       />
     </>
   );
