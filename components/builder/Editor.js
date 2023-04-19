@@ -13,7 +13,6 @@ const Editor = ({
   token,
   id,
   projectEndpoint,
-  promptData,
   handleSetEditor,
 }) => {
   const [pageManager, setPageManager] = useState('');
@@ -25,7 +24,7 @@ const Editor = ({
     const editor = grapesjs.init({
       container: '#gjs',
       height: '100vh',
-      width: 'auto',
+      width: '100%',
       plugins: [gsWebpage, gsCustome, gsNewsLetter],
       storageManager: {
         id: 'gjs-',
@@ -41,7 +40,7 @@ const Editor = ({
           },
         },
         autoload: true,
-        stepsBeforeSave: 3,
+        stepsBeforeSave: 1,
         contentTypeJson: true,
         storeComponents: true,
         storeStyles: true,
@@ -112,14 +111,11 @@ const Editor = ({
       modal: {},
     });
 
-    const projectData = editor.getProjectData();
-
-    editor.loadProjectData(projectData);
     handleSetEditor(editor);
 
     editor.Storage.add('remote', {
       // Load data from the server
-      async load(options = {}) {
+      async load() {
         const fetchData = await axios.get(
           `https://compo.directus.app/items/projects/${id}`
         );
@@ -128,7 +124,8 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
-        return JSON.parse(builder_string);
+        const savedProject = JSON.parse(builder_string);
+        return savedProject;
       },
       // Store data on the server
       async store(data) {
@@ -190,26 +187,27 @@ const Editor = ({
         },
       ],
     });
-    editor.Panels.addButton('options', promptButton);
+    
+    //Note: this is the code for the modal button that's built into the editor
+    // editor.Panels.addButton('options', promptButton);
+    // const modal = editor.Modal;
+    // const modalContent = document.createElement('div');
+    // const promptMessage = 'Enter your prompt:';
+    // const inputField = document.createElement('input');
+    // inputField.type = 'text';
+    // inputField.style.width = '100%';
+    // inputField.style.color = 'black';
+    // inputField.style.fontSize = '2rem';
 
-    const modal = editor.Modal;
-    const modalContent = document.createElement('div');
-    const promptMessage = 'Enter your prompt:';
-    const inputField = document.createElement('input');
-    inputField.type = 'text';
-    inputField.style.width = '100%';
-    inputField.style.color = 'black';
-    inputField.style.fontSize = '2rem';
-
-    editor.Commands.add('prompt-btn-command', {
-      run(editor) {
-        modal.setTitle('Custom Modal');
-        modal.setContent(modalContent);
-        modal.setContent(promptMessage);
-        modal.setContent(inputField);
-        modal.open();
-      },
-    });
+    // editor.Commands.add('prompt-btn-command', {
+    //   run(editor) {
+    //     modal.setTitle('Custom Modal');
+    //     modal.setContent(modalContent);
+    //     modal.setContent(promptMessage);
+    //     modal.setContent(inputField);
+    //     modal.open();
+    //   },
+    // });
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];
