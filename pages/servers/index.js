@@ -52,7 +52,8 @@ const Servers = ({ servers, user, token }) => {
       });
   };
 
-  const handleCreateServer = async (inputOne, inputTwo) => {
+  const handleCreateServer = async (e, inputOne, inputTwo) => {
+    e.preventDefault();
     if (inputOne === '') {
       alert('Please enter a server name');
       return;
