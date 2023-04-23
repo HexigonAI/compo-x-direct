@@ -158,7 +158,7 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
     });
 
     editor.Panels.addPanel(icon);
-    editor.Panels.addPanel(pagesSelect);
+    // editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
     editor.Panels.addPanel({
       id: 'pages-select',
