@@ -6,7 +6,7 @@ import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
-import { addButton, icon, pagesSelect, publishSelect } from './Panels';
+import { addButton, icon, publishSelect } from './Panels';
 
 const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
   const [pageManager, setPageManager] = useState('');
