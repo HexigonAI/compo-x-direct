@@ -3,23 +3,23 @@ import Link from 'next/link';
 import { getCsrfToken, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { Directus } from '@directus/sdk';
-import nodemailer from "nodemailer"
+// import nodemailer from "nodemailer"
 
-async function sendVerificationRequest({
-  identifier: email,
-  url,
-  provider: { server, from },
-}) {
-  const { host } = new URL(url)
-  const transport = nodemailer.createTransport(server)
-  await transport.sendMail({
-    to: email,
-    from,
-    subject: `Sign in to ${host}`,
-    text: text({ url, host }),
-    html: html({ url, host, email }),
-  })
-}
+// async function sendVerificationRequest({
+//   identifier: email,
+//   url,
+//   provider: { server, from },
+// }) {
+//   const { host } = new URL(url)
+//   const transport = nodemailer.createTransport(server)
+//   await transport.sendMail({
+//     to: email,
+//     from,
+//     subject: `Sign in to ${host}`,
+//     text: text({ url, host }),
+//     html: html({ url, host, email }),
+//   })
+// }
 
 
 // Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
