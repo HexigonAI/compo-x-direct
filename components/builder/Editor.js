@@ -15,11 +15,21 @@ const Editor = ({
   projectEndpoint,
   promptData,
   handleSetEditor,
+  pm,
+  setPm
 }) => {
   const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState([]);
   const [pages, setPages] = useState([]);
-  const [pm, setPm] = useState(null);
+
+
+  const addPage = () => {
+    const newPage = pm.add({
+      id: 'new-page-id', // without an explicit ID, a random one will be created
+      styles: `.my-class { color: red }`, // or a JSON of styles
+      component: '<div class="my-class">My element</div>', // or a JSON of components
+     });
+  }
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -54,20 +64,7 @@ const Editor = ({
       //TODO: need ability to add new page
       pageManager: {
         pages: [
-          {
-            id: 'page-1', // id is mandatory
-            frames: [
-              {
-                component: '', // or JSON of components
-                styles: '', // or JSON of styles
-              },
-            ],
-          },
-          {
-            id: 'page-2',
-            component: '<h1>Hello</h1>',
-            styles: '...',
-          },
+         
         ],
       },
       deviceManager: {
@@ -153,18 +150,21 @@ const Editor = ({
     });
 
     const pm = editor.Pages;
-    const arrayOfPages = pm.getAll();
+    console.log(pm)
+    const aa = pm.all.models
+    console.log(pm.all.models)
+    console.log(pm.getAll())
+    console.log(pages)
     setPages(pm.getAll());
     setPm(editor.Pages);
     editor.on('page', () => {
       setPages(pm.getAll());
     });
-    const pageManager = editor.Pages;
 
     const selectPage = (pageId) => {
       return pm.select(pageId);
     };
-
+ 
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
@@ -178,8 +178,9 @@ const Editor = ({
             <select ${(onchange = (e) => {
               selectPage(e.target.value);
             })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-              ${arrayOfPages
+              ${pages
                 .map((page) => {
+                  console.log(pages)
                   return `<option value=${page.id}> ${
                     page.get('name') || page.id
                   } </option>`;
