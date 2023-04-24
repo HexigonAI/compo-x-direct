@@ -6,6 +6,7 @@ import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
+
 import { icon, pagesSelect, publishSelect } from './Panels';
 
 const Editor = ({
@@ -17,6 +18,7 @@ const Editor = ({
   pm,
   setPm
 }) => {
+
   const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
@@ -153,7 +155,7 @@ const Editor = ({
     });
   
     editor.Panels.addPanel(icon);
-    editor.Panels.addPanel(pagesSelect);
+    // editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
  
 
