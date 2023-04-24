@@ -22,6 +22,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [promptData, setPromptData] = useState();
   const [showModal, setShowModal] = useState(false);
   const [pm, setPm] = useState(null);
+  const [promptText, setPromptText] = useState('');
 
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
