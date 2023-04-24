@@ -1,15 +1,14 @@
 import React from 'react';
 
-const ServerCard = ({serverTitle, icon, id, description}) => {
+const ServerCard = ({serverTitle, icon, description}) => {
   return (
     <div>
-    {/* TODO add a route prop for respective projectID */}
       <div
         className='account-item w-inline-block'
       >
         <div className='account'>
           <div className='avatar-2 bg-1'>
-            <img src={icon} alt='' className='org-avatar' />
+            <img src={'../images/server.svg'} alt='' className='org-avatar' />
           </div>
           <div className='account-user-datails'>
             <h6 className='mb-0'>
