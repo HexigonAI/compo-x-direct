@@ -144,10 +144,6 @@ const Editor = ({
     });
 
     const pm = editor.Pages;
-    console.log(pm)
-    console.log(pm.getAll())
-    const aa = pm.all.models
-    console.log(aa)
     setPages(pm.getAll());
     setPm(editor.Pages);
     editor.on('page', () => {
@@ -219,32 +215,29 @@ const Editor = ({
     if(stateEditor ){
       if(arrayOfPages){
       const data = arrayOfPages.pages;
-      console.log(data)
-
-
-    stateEditor.Panels.addPanel({
-      id: 'pages-select',
-      visible: true,
-      buttons: [
-        {
-          id: 'visibility',
-          label: `
-            <select ${(onchange = (e) => {
-              selectPage(e.target.value);
-            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-              ${data
-                .map((page) => {
-                  console.log(pages)
-                  return `<option value=${page.id}> ${
-                     page.id
-                  } </option>`;
-                })
-                .join('')}
-            </select> 
-          `,
-        },
-      ],
-    });
+        stateEditor.Panels.addPanel({
+          id: 'pages-select',
+          visible: true,
+          buttons: [
+            {
+              id: 'visibility',
+              label: `
+                <select ${(onchange = (e) => {
+                  selectPage(e.target.value);
+                })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
+                  ${data
+                    .map((page) => {
+                      console.log(pages)
+                      return `<option value=${page.id}> ${
+                        page.id
+                      } </option>`;
+                    })
+                    .join('')}
+                </select> 
+              `,
+            },
+          ],
+        });
   }
 }
   }, [stateEditor, arrayOfPages])
