@@ -19,7 +19,10 @@ const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
-
+  const [promptData, setPromptData] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [pm, setPm] = useState(null);
+  const [promptText, setPromptText] = useState('');
 
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
@@ -40,6 +43,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         }
       );
       toast('Your Save was Successful');
+      console.log(projectData)
     } catch (error) {
       console.error('Error:', error.message);
       toast('Error, Save was Not Successful');
@@ -51,6 +55,61 @@ const SingleProjectPage = ({ project, token, user }) => {
     updateProject(token, project.id, newTitle);
     setCurrentTitle(newTitle);
   };
+
+  const convertCssToJSON = (css) => {
+    const regex = /\.([\w-]+)\s*\{([^}]+)\}/g;
+
+    let cssClasses = [];
+    let match;
+
+    while ((match = regex.exec(css)) !== null) {
+      const className = match[1];
+      const styles = match[2]
+        .trim()
+        .split(';')
+        .filter((style) => style.trim() !== '')
+        .reduce((acc, style) => {
+          const [property, value] = style.trim().split(':');
+          acc[property.trim()] = value.trim();
+          return acc;
+        }, {});
+
+      cssClasses.push({
+        class: className,
+        styles: styles,
+      });
+    }
+    return cssClasses;
+  };
+
+  const fetchPromptData = async (e, promptString) => {
+    let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
+    console.log(htmlWithCss)
+    e.preventDefault();
+    setPromptText('');
+    const response = await fetch(
+      'https://unlockedx.awunda.com/webhook/compox',
+      {
+        method: 'POST',
+        body: promptString,
+      }
+    );
+    const data = await response.json();
+    const html = data.html;
+    const css = data.css;
+    editor.setComponents(htmlWithCss + html);
+    editor.setStyle(css);
+    setPromptData({ html, css });
+  };
+
+  const addPage = () => {
+    const newPage = pm.add({
+      id: 'new-page-id', // without an explicit ID, a random one will be created
+      styles: `.my-class { color: red }`, // or a JSON of styles
+      component: '<div class="my-class">My element</div>', // or a JSON of components
+     });
+     console.log(newPage)
+  }
 
   return (
     <>
@@ -64,15 +123,26 @@ const SingleProjectPage = ({ project, token, user }) => {
       </Head>
       <NavBar user={user} token={token} />
       <div className='justify-between px-6 flex bg-black text-white items-center'>
-        <div className='flex items-center'>
+        <div className=''>
           <InlineEdit value={currentTitle} setValue={handleUpdateTitle} />
+        </div>
+        <div className='w-3/6'>
+          <form onSubmit={(e) => fetchPromptData(e, promptText)}>
+            <input
+              type='text'
+              value={promptText}
+              placeholder='Enter your prompt...'
+              className='w-10/12 h-11 pl-2 text-black text-xl placeholder:italic placeholder:text-indigo-200 border-none rounded-md black focus:border-purple-500 focus:ring-2 focus:ring-purple-500'
+              onChange={(e) => setPromptText(e.target.value)}
+            />
+          </form>
+        </div>
+        <div className=''>
           <Link href={`/servers/${projectpage}`}>
             <button className='ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
               Back to Projects
             </button>
           </Link>
-        </div>
-        <div className=''>
           <button className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
             PDF
           </button>
@@ -81,6 +151,12 @@ const SingleProjectPage = ({ project, token, user }) => {
             className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
           >
             Save
+          </button>
+          <button
+            onClick={addPage}
+            className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
+          >
+            addPage
           </button>
           <ToastContainer />
         </div>
@@ -91,6 +167,9 @@ const SingleProjectPage = ({ project, token, user }) => {
         id={project.id}
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
+        promptData={promptData}
+        pm={pm}
+        setPm={setPm}
       />
     </>
   );

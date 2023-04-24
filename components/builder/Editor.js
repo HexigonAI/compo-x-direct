@@ -6,13 +6,23 @@ import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
-import { addButton, icon, publishSelect } from './Panels';
 
-const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
+import { icon, pagesSelect, publishSelect } from './Panels';
+
+const Editor = ({
+  token,
+  id,
+  projectEndpoint,
+  promptData,
+  handleSetEditor,
+  pm,
+  setPm
+}) => {
+
   const [pageManager, setPageManager] = useState('');
-  const [arrayOfPages, setArrayOfPages] = useState([]);
+  const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
-  const [pm, setPm] = useState(null);
+  const [stateEditor, setEditor] = useState();
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -45,22 +55,10 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
       pageManager: true,
       //TODO: needs dynamic page id
       //TODO: need ability to add new page
+      
       pageManager: {
         pages: [
-          {
-            id: 'page-1', // id is mandatory
-            frames: [
-              {
-                component: '', // or JSON of components
-                styles: '', // or JSON of styles
-              },
-            ],
-          },
-          {
-            id: 'page-2',
-            component: '<h1>Hello</h1>',
-            styles: '...',
-          },
+         
         ],
       },
       deviceManager: {
@@ -68,7 +66,7 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
           {
             id: 'desktop',
             name: 'Desktop',
-            width: '',
+            width: '99%',
           },
           {
             id: 'tablet',
@@ -104,21 +102,8 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
       },
     });
 
-    const pm = editor.Pages;
-    const arrayOfPages = pm.getAll();
-    setPages(pm.getAll());
-    setPm(editor.Pages);
-    editor.on('page', () => {
-      setPages(pm.getAll());
-    });
-    const pageManager = editor.Pages;
-
-    const selectPage = (pageId) => {
-      return pm.select(pageId);
-    };
-
+    setEditor(editor)
     const projectData = editor.getProjectData();
-
     editor.loadProjectData(projectData);
     handleSetEditor(editor);
 
@@ -133,6 +118,7 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
           1,
           builder_data.length - 1
         );
+        setArrayOfPages(JSON.parse(builder_string))
         return JSON.parse(builder_string);
       },
       // Store data on the server
@@ -157,33 +143,40 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
       },
     });
 
+    const pm = editor.Pages;
+    console.log(pm)
+    console.log(pm.getAll())
+    const aa = pm.all.models
+    console.log(aa)
+    setPages(pm.getAll());
+    setPm(editor.Pages);
+    editor.on('page', () => {
+      setPages(pm.getAll());
+    });
+  
     editor.Panels.addPanel(icon);
     // editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
-    editor.Panels.addPanel({
-      id: 'pages-select',
-      visible: true,
-      buttons: [
-        {
-          id: 'visibility',
-          label: `
-            <select ${(onchange = (e) => {
-              selectPage(e.target.value);
-            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-              ${arrayOfPages
-                .map((page) => {
-                  return `<option value=${page.id}> ${
-                    page.get('name') || page.id
-                  } </option>`;
-                })
-                .join('')}
-            </select>
-          `,
-        },
-      ],
+ 
+
+    const modal = editor.Modal;
+    const modalContent = document.createElement('div');
+    const promptMessage = 'Enter your prompt:';
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.style.width = '100%';
+    inputField.style.color = 'black';
+    inputField.style.fontSize = '2rem';
+
+    editor.Commands.add('prompt-btn-command', {
+      run(editor) {
+        modal.setTitle('Custom Modal');
+        modal.setContent(modalContent);
+        modal.setContent(promptMessage);
+        modal.setContent(inputField);
+        modal.open();
+      },
     });
-    
-    editor.Panels.addButton('options', addButton);
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];
@@ -216,6 +209,45 @@ const Editor = ({ token, id, projectEndpoint, handleSetEditor }) => {
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
   }, []);
+
+
+  useEffect(() => { 
+    const selectPage = (pageId) => {
+      return pm.select(pageId);
+    };
+
+    if(stateEditor ){
+      if(arrayOfPages){
+      const data = arrayOfPages.pages;
+      console.log(data)
+
+
+    stateEditor.Panels.addPanel({
+      id: 'pages-select',
+      visible: true,
+      buttons: [
+        {
+          id: 'visibility',
+          label: `
+            <select ${(onchange = (e) => {
+              selectPage(e.target.value);
+            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
+              ${data
+                .map((page) => {
+                  console.log(pages)
+                  return `<option value=${page.id}> ${
+                     page.id
+                  } </option>`;
+                })
+                .join('')}
+            </select> 
+          `,
+        },
+      ],
+    });
+  }
+}
+  }, [stateEditor, arrayOfPages])
 
   return <div id='gjs'></div>;
 };
