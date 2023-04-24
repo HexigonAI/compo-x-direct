@@ -21,6 +21,8 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
   const [showModal, setShowModal] = useState(false);
+  const [pm, setPm] = useState(null);
+
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
 
@@ -40,6 +42,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         }
       );
       toast('Your Save was Successful');
+      console.log(projectData)
     } catch (error) {
       console.error('Error:', error.message);
       toast('Error, Save was Not Successful');
@@ -65,6 +68,17 @@ const SingleProjectPage = ({ project, token, user }) => {
     const css = data.css;
     editor.setComponents(htmlWithCss + html);
     editor.setStyle(css);
+
+  };
+
+  const addPage = () => {
+    const newPage = pm.add({
+      id: 'new-page-id', // without an explicit ID, a random one will be created
+      styles: `.my-class { color: red }`, // or a JSON of styles
+      component: '<div class="my-class">My element</div>', // or a JSON of components
+     });
+     console.log(newPage)
+  }
   };
 
   return (
@@ -115,6 +129,12 @@ const SingleProjectPage = ({ project, token, user }) => {
           >
             Save
           </button>
+          <button
+            onClick={addPage}
+            className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
+          >
+            addPage
+          </button>
           <ToastContainer />
         </div>
       </div>
@@ -124,6 +144,10 @@ const SingleProjectPage = ({ project, token, user }) => {
         id={project.id}
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
+
+        pm={pm}
+        setPm={setPm}
+
       />
     </>
   );
