@@ -7,7 +7,6 @@ import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
 import { icon, pagesSelect, publishSelect } from './Panels';
-import { promptButton } from './ModalButton';
 
 const Editor = ({
   token,
@@ -54,6 +53,7 @@ const Editor = ({
       pageManager: true,
       //TODO: needs dynamic page id
       //TODO: need ability to add new page
+      
       pageManager: {
         pages: [
          
@@ -64,7 +64,7 @@ const Editor = ({
           {
             id: 'desktop',
             name: 'Desktop',
-            width: '',
+            width: '99%',
           },
           {
             id: 'tablet',
@@ -98,7 +98,6 @@ const Editor = ({
           blocks: ['link-block', 'quote', 'text-basic'],
         },
       },
-      modal: {},
     });
 
     setEditor(editor)
