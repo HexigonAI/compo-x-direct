@@ -57,6 +57,18 @@
 .gjs-block:hover{
   color: #b5d2fd !important;;
 }
+.gjs-pn-btn{
+ select{
+  background: #24252A;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 13px;
+ }
+}
 
 .gjs-blocks-cs {
   font-family: LeagueSpartan;

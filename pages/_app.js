@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import '../styles/compox-trim.webflow.css';
 import '../styles/webflow.css';
 import '../styles/normalize.css';
-import '../styles/builder.css';
+import '../styles/builder.scss';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { SessionProvider } from 'next-auth/react';
 

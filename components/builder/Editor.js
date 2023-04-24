@@ -14,11 +14,13 @@ const Editor = ({
   id,
   projectEndpoint,
   handleSetEditor,
+  pm,
+  setPm
 }) => {
   const [pageManager, setPageManager] = useState('');
-  const [arrayOfPages, setArrayOfPages] = useState([]);
+  const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
-  const [pm, setPm] = useState(null);
+  const [stateEditor, setEditor] = useState();
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -53,20 +55,7 @@ const Editor = ({
       //TODO: need ability to add new page
       pageManager: {
         pages: [
-          {
-            id: 'page-1', // id is mandatory
-            frames: [
-              {
-                component: '', // or JSON of components
-                styles: '', // or JSON of styles
-              },
-            ],
-          },
-          {
-            id: 'page-2',
-            component: '<h1>Hello</h1>',
-            styles: '...',
-          },
+         
         ],
       },
       deviceManager: {
@@ -123,7 +112,9 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
+
         const savedProject = JSON.parse(builder_string);
+        setArrayOfPages(savedProject)
         return savedProject;
       },
       // Store data on the server
@@ -149,23 +140,16 @@ const Editor = ({
     });
 
     const pm = editor.Pages;
-    const arrayOfPages = pm.getAll();
+    console.log(pm)
+    console.log(pm.getAll())
+    const aa = pm.all.models
+    console.log(aa)
     setPages(pm.getAll());
     setPm(editor.Pages);
     editor.on('page', () => {
       setPages(pm.getAll());
     });
-    const pageManager = editor.Pages;
-
-    const selectPage = (pageId) => {
-      return pm.select(pageId);
-    };
-    editor.on('rteToolbarPosUpdate', (pos) => {
-      if (pos.top <= pos.canvasTop) {
-        pos.top = pos.elementTop + pos.elementHeight;
-      }
-    });
-
+ 
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
@@ -244,6 +228,45 @@ const Editor = ({
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
   }, []);
+
+
+  useEffect(() => { 
+    const selectPage = (pageId) => {
+      return pm.select(pageId);
+    };
+
+    if(stateEditor ){
+      if(arrayOfPages){
+      const data = arrayOfPages.pages;
+      console.log(data)
+
+
+    stateEditor.Panels.addPanel({
+      id: 'pages-select',
+      visible: true,
+      buttons: [
+        {
+          id: 'visibility',
+          label: `
+            <select ${(onchange = (e) => {
+              selectPage(e.target.value);
+            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
+              ${data
+                .map((page) => {
+                  console.log(pages)
+                  return `<option value=${page.id}> ${
+                     page.id
+                  } </option>`;
+                })
+                .join('')}
+            </select> 
+          `,
+        },
+      ],
+    });
+  }
+}
+  }, [stateEditor, arrayOfPages])
 
   return <div id='gjs'></div>;
 };
