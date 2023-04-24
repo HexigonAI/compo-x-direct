@@ -15,12 +15,13 @@ import { updateProject } from '@/helpers/setData/updateProject';
 import InlineEdit from '@/components/global/InlineEdit';
 import Editor from '@/components/builder/Editor';
 
+const logo = '../../../images/Compo---Logo.svg';
+
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
   const [promptData, setPromptData] = useState();
-  const [showModal, setShowModal] = useState(false);
   const [pm, setPm] = useState(null);
   const [promptText, setPromptText] = useState('');
 
@@ -43,7 +44,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         }
       );
       toast('Your Save was Successful');
-      console.log(projectData)
+      console.log(projectData);
     } catch (error) {
       console.error('Error:', error.message);
       toast('Error, Save was Not Successful');
@@ -84,7 +85,7 @@ const SingleProjectPage = ({ project, token, user }) => {
 
   const fetchPromptData = async (e, promptString) => {
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
-    console.log(htmlWithCss)
+    console.log(htmlWithCss);
     e.preventDefault();
     setPromptText('');
     const response = await fetch(
@@ -107,9 +108,9 @@ const SingleProjectPage = ({ project, token, user }) => {
       id: 'new-page-id', // without an explicit ID, a random one will be created
       styles: `.my-class { color: red }`, // or a JSON of styles
       component: '<div class="my-class">My element</div>', // or a JSON of components
-     });
-     console.log(newPage)
-  }
+    });
+    console.log(newPage);
+  };
 
   return (
     <>
@@ -121,10 +122,15 @@ const SingleProjectPage = ({ project, token, user }) => {
           key='single project page'
         />
       </Head>
-      <NavBar user={user} token={token} />
+      {/* <NavBar user={user} token={token} /> */}
       <div className='justify-between px-6 flex bg-black text-white items-center'>
-        <div className=''>
-          <InlineEdit value={currentTitle} setValue={handleUpdateTitle} />
+      <Link href={'/servers'}>
+        <div className='dashabord-logo w-nav-brand pr-8'>
+          <img src={logo} width='90' alt='' className='logo' />
+        </div>
+      </Link>
+        <div className='text-xs'>
+          <InlineEdit value={currentTitle} setValue={handleUpdateTitle}/>
         </div>
         <div className='w-3/6'>
           <form onSubmit={(e) => fetchPromptData(e, promptText)}>
@@ -143,9 +149,6 @@ const SingleProjectPage = ({ project, token, user }) => {
               Back to Projects
             </button>
           </Link>
-          <button className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
-            PDF
-          </button>
           <button
             onClick={save}
             className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
