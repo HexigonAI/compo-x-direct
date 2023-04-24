@@ -19,17 +19,9 @@ const Editor = ({
   setPm
 }) => {
   const [pageManager, setPageManager] = useState('');
-  const [arrayOfPages, setArrayOfPages] = useState([]);
+  const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
-
-
-  const addPage = () => {
-    const newPage = pm.add({
-      id: 'new-page-id', // without an explicit ID, a random one will be created
-      styles: `.my-class { color: red }`, // or a JSON of styles
-      component: '<div class="my-class">My element</div>', // or a JSON of components
-     });
-  }
+  const [stateEditor, setEditor] = useState();
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -109,8 +101,8 @@ const Editor = ({
       modal: {},
     });
 
+    setEditor(editor)
     const projectData = editor.getProjectData();
-
     editor.loadProjectData(projectData);
     handleSetEditor(editor);
 
@@ -125,6 +117,7 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
+        setArrayOfPages(JSON.parse(builder_string))
         return JSON.parse(builder_string);
       },
       // Store data on the server
@@ -151,46 +144,19 @@ const Editor = ({
 
     const pm = editor.Pages;
     console.log(pm)
-    const aa = pm.all.models
-    console.log(pm.all.models)
     console.log(pm.getAll())
-    console.log(pages)
+    const aa = pm.all.models
+    console.log(aa)
     setPages(pm.getAll());
     setPm(editor.Pages);
     editor.on('page', () => {
       setPages(pm.getAll());
     });
-
-    const selectPage = (pageId) => {
-      return pm.select(pageId);
-    };
  
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
-    editor.Panels.addPanel({
-      id: 'pages-select',
-      visible: true,
-      buttons: [
-        {
-          id: 'visibility',
-          label: `
-            <select ${(onchange = (e) => {
-              selectPage(e.target.value);
-            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-              ${pages
-                .map((page) => {
-                  console.log(pages)
-                  return `<option value=${page.id}> ${
-                    page.get('name') || page.id
-                  } </option>`;
-                })
-                .join('')}
-            </select>
-          `,
-        },
-      ],
-    });
+ 
     editor.Panels.addButton('options', promptButton);
 
     const modal = editor.Modal;
@@ -243,6 +209,45 @@ const Editor = ({
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
   }, []);
+
+
+  useEffect(() => { 
+    const selectPage = (pageId) => {
+      return pm.select(pageId);
+    };
+
+    if(stateEditor ){
+      if(arrayOfPages){
+      const data = arrayOfPages.pages;
+      console.log(data)
+
+
+    stateEditor.Panels.addPanel({
+      id: 'pages-select',
+      visible: true,
+      buttons: [
+        {
+          id: 'visibility',
+          label: `
+            <select ${(onchange = (e) => {
+              selectPage(e.target.value);
+            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
+              ${data
+                .map((page) => {
+                  console.log(pages)
+                  return `<option value=${page.id}> ${
+                     page.id
+                  } </option>`;
+                })
+                .join('')}
+            </select> 
+          `,
+        },
+      ],
+    });
+  }
+}
+  }, [stateEditor, arrayOfPages])
 
   return <div id='gjs'></div>;
 };
