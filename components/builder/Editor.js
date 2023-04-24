@@ -152,7 +152,7 @@ const Editor = ({
     editor.on('page', () => {
       setPages(pm.getAll());
     });
- 
+  
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
