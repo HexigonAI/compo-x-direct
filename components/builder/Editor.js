@@ -156,7 +156,6 @@ const Editor = ({
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
  
-    editor.Panels.addButton('options', promptButton);
 
     const modal = editor.Modal;
     const modalContent = document.createElement('div');
