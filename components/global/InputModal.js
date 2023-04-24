@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 
 import styles from '../../styles/InputModal.module.css';
 
+//NOTE: whatever function that is being passed to this modal needs to receive the event object as the first argument
+
 const InputModal = ({
   isOpen,
   header,
