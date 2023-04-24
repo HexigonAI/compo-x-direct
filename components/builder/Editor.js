@@ -7,7 +7,6 @@ import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
 import { icon, pagesSelect, publishSelect } from './Panels';
-import { promptButton } from './ModalButton';
 
 const Editor = ({
   token,
@@ -53,6 +52,7 @@ const Editor = ({
       pageManager: true,
       //TODO: needs dynamic page id
       //TODO: need ability to add new page
+      
       pageManager: {
         pages: [
          
@@ -63,7 +63,7 @@ const Editor = ({
           {
             id: 'desktop',
             name: 'Desktop',
-            width: '',
+            width: '99%',
           },
           {
             id: 'tablet',
@@ -175,27 +175,6 @@ const Editor = ({
         },
       ],
     });
-    
-    //Note: this is the code for the modal button that's built into the editor
-    // editor.Panels.addButton('options', promptButton);
-    // const modal = editor.Modal;
-    // const modalContent = document.createElement('div');
-    // const promptMessage = 'Enter your prompt:';
-    // const inputField = document.createElement('input');
-    // inputField.type = 'text';
-    // inputField.style.width = '100%';
-    // inputField.style.color = 'black';
-    // inputField.style.fontSize = '2rem';
-
-    // editor.Commands.add('prompt-btn-command', {
-    //   run(editor) {
-    //     modal.setTitle('Custom Modal');
-    //     modal.setContent(modalContent);
-    //     modal.setContent(promptMessage);
-    //     modal.setContent(inputField);
-    //     modal.open();
-    //   },
-    // });
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];

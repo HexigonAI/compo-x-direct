@@ -54,6 +54,32 @@ const SingleProjectPage = ({ project, token, user }) => {
     setCurrentTitle(newTitle);
   };
 
+  const convertCssToJSON = (css) => {
+    const regex = /\.([\w-]+)\s*\{([^}]+)\}/g;
+
+    let cssClasses = [];
+    let match;
+
+    while ((match = regex.exec(css)) !== null) {
+      const className = match[1];
+      const styles = match[2]
+        .trim()
+        .split(';')
+        .filter((style) => style.trim() !== '')
+        .reduce((acc, style) => {
+          const [property, value] = style.trim().split(':');
+          acc[property.trim()] = value.trim();
+          return acc;
+        }, {});
+
+      cssClasses.push({
+        class: className,
+        styles: styles,
+      });
+    }
+    return cssClasses;
+  };
+
   const fetchPromptData = async (e, promptString) => {
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
     e.preventDefault();
