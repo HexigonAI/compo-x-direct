@@ -19,6 +19,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
+  const [promptData, setPromptData] = useState();
   const [showModal, setShowModal] = useState(false);
   const [pm, setPm] = useState(null);
 
@@ -82,6 +83,7 @@ const SingleProjectPage = ({ project, token, user }) => {
 
   const fetchPromptData = async (e, promptString) => {
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
+    console.log(htmlWithCss)
     e.preventDefault();
     setPromptText('');
     const response = await fetch(
@@ -96,7 +98,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     const css = data.css;
     editor.setComponents(htmlWithCss + html);
     editor.setStyle(css);
-
+    setPromptData({ html, css });
   };
 
   const addPage = () => {
@@ -107,8 +109,6 @@ const SingleProjectPage = ({ project, token, user }) => {
      });
      console.log(newPage)
   }
-  
-
 
   return (
     <>
@@ -166,10 +166,9 @@ const SingleProjectPage = ({ project, token, user }) => {
         id={project.id}
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
-
+        promptData={promptData}
         pm={pm}
         setPm={setPm}
-
       />
     </>
   );

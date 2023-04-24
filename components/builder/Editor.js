@@ -12,6 +12,7 @@ const Editor = ({
   token,
   id,
   projectEndpoint,
+  promptData,
   handleSetEditor,
   pm,
   setPm
@@ -25,7 +26,7 @@ const Editor = ({
     const editor = grapesjs.init({
       container: '#gjs',
       height: '100vh',
-      width: '100%',
+      width: 'auto',
       plugins: [gsWebpage, gsCustome, gsNewsLetter],
       storageManager: {
         id: 'gjs-',
@@ -41,7 +42,7 @@ const Editor = ({
           },
         },
         autoload: true,
-        stepsBeforeSave: 1,
+        stepsBeforeSave: 3,
         contentTypeJson: true,
         storeComponents: true,
         storeStyles: true,
@@ -99,11 +100,14 @@ const Editor = ({
       },
     });
 
+    setEditor(editor)
+    const projectData = editor.getProjectData();
+    editor.loadProjectData(projectData);
     handleSetEditor(editor);
 
     editor.Storage.add('remote', {
       // Load data from the server
-      async load() {
+      async load(options = {}) {
         const fetchData = await axios.get(
           `https://compo.directus.app/items/projects/${id}`
         );
@@ -112,10 +116,8 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
-
-        const savedProject = JSON.parse(builder_string);
-        setArrayOfPages(savedProject)
-        return savedProject;
+        setArrayOfPages(JSON.parse(builder_string))
+        return JSON.parse(builder_string);
       },
       // Store data on the server
       async store(data) {
@@ -149,31 +151,30 @@ const Editor = ({
     editor.on('page', () => {
       setPages(pm.getAll());
     });
- 
+  
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
-    editor.Panels.addPanel({
-      id: 'pages-select',
-      visible: true,
-      buttons: [
-        {
-          id: 'visibility',
-          label: `
-            <select ${(onchange = (e) => {
-              selectPage(e.target.value);
-            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-              ${arrayOfPages
-                .map((page) => {
-                  return `<option value=${page.id}> ${
-                    page.get('name') || page.id
-                  } </option>`;
-                })
-                .join('')}
-            </select>
-          `,
-        },
-      ],
+ 
+    editor.Panels.addButton('options', promptButton);
+
+    const modal = editor.Modal;
+    const modalContent = document.createElement('div');
+    const promptMessage = 'Enter your prompt:';
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.style.width = '100%';
+    inputField.style.color = 'black';
+    inputField.style.fontSize = '2rem';
+
+    editor.Commands.add('prompt-btn-command', {
+      run(editor) {
+        modal.setTitle('Custom Modal');
+        modal.setContent(modalContent);
+        modal.setContent(promptMessage);
+        modal.setContent(inputField);
+        modal.open();
+      },
     });
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
