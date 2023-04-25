@@ -6,19 +6,16 @@ import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 
-
 import { icon, pagesSelect, publishSelect } from './Panels';
 
 const Editor = ({
   token,
   id,
   projectEndpoint,
-  promptData,
   handleSetEditor,
   pm,
-  setPm
+  setPm,
 }) => {
-
   const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
@@ -44,7 +41,7 @@ const Editor = ({
           },
         },
         autoload: true,
-        stepsBeforeSave: 3,
+        stepsBeforeSave: 1,
         contentTypeJson: true,
         storeComponents: true,
         storeStyles: true,
@@ -55,11 +52,9 @@ const Editor = ({
       pageManager: true,
       //TODO: needs dynamic page id
       //TODO: need ability to add new page
-      
+
       pageManager: {
-        pages: [
-         
-        ],
+        pages: [],
       },
       deviceManager: {
         devices: [
@@ -102,7 +97,7 @@ const Editor = ({
       },
     });
 
-    setEditor(editor)
+    setEditor(editor);
     const projectData = editor.getProjectData();
     editor.loadProjectData(projectData);
     handleSetEditor(editor);
@@ -118,8 +113,9 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
-        setArrayOfPages(JSON.parse(builder_string))
-        return JSON.parse(builder_string);
+        const savedProject = JSON.parse(builder_string);
+        setArrayOfPages(savedProject);
+        return savedProject;
       },
       // Store data on the server
       async store(data) {
@@ -144,39 +140,18 @@ const Editor = ({
     });
 
     const pm = editor.Pages;
-    console.log(pm)
-    console.log(pm.getAll())
-    const aa = pm.all.models
-    console.log(aa)
+    // console.log(pm)
+    // console.log(pm.getAll())
+    const aa = pm.all.models;
+    // console.log(aa)
     setPages(pm.getAll());
     setPm(editor.Pages);
     editor.on('page', () => {
       setPages(pm.getAll());
     });
-  
+
     editor.Panels.addPanel(icon);
-    // editor.Panels.addPanel(pagesSelect);
     editor.Panels.addPanel(publishSelect);
- 
-
-    const modal = editor.Modal;
-    const modalContent = document.createElement('div');
-    const promptMessage = 'Enter your prompt:';
-    const inputField = document.createElement('input');
-    inputField.type = 'text';
-    inputField.style.width = '100%';
-    inputField.style.color = 'black';
-    inputField.style.fontSize = '2rem';
-
-    editor.Commands.add('prompt-btn-command', {
-      run(editor) {
-        modal.setTitle('Custom Modal');
-        modal.setContent(modalContent);
-        modal.setContent(promptMessage);
-        modal.setContent(inputField);
-        modal.open();
-      },
-    });
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];
@@ -210,44 +185,40 @@ const Editor = ({
     blocks.attributes.label = 'Blocks';
   }, []);
 
-
-  useEffect(() => { 
+  useEffect(() => {
     const selectPage = (pageId) => {
       return pm.select(pageId);
     };
 
-    if(stateEditor ){
-      if(arrayOfPages){
-      const data = arrayOfPages.pages;
-      console.log(data)
+    if (stateEditor) {
+      if (arrayOfPages) {
+        const data = arrayOfPages.pages;
+        // console.log(data)
 
-
-    stateEditor.Panels.addPanel({
-      id: 'pages-select',
-      visible: true,
-      buttons: [
-        {
-          id: 'visibility',
-          label: `
+        stateEditor.Panels.addPanel({
+          id: 'pages-select',
+          visible: true,
+          buttons: [
+            {
+              id: 'visibility',
+              label: `
             <select ${(onchange = (e) => {
               selectPage(e.target.value);
             })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
               ${data
                 .map((page) => {
-                  console.log(pages)
-                  return `<option value=${page.id}> ${
-                     page.id
-                  } </option>`;
+                  // console.log(pages)
+                  return `<option value=${page.id}> ${page.id} </option>`;
                 })
                 .join('')}
             </select> 
           `,
-        },
-      ],
-    });
-  }
-}
-  }, [stateEditor, arrayOfPages])
+            },
+          ],
+        });
+      }
+    }
+  }, [stateEditor, arrayOfPages]);
 
   return <div id='gjs'></div>;
 };
