@@ -17,6 +17,9 @@ import Editor from '@/components/builder/Editor';
 import WelcomeFooter from '@/components/builder/WelcomeFooter';
 import LoadingIcon from '@/components/global/LoadingIcon';
 
+const addIcon = '../../../images/add-icon.svg';
+const backIcon = '../../../images/back-icon.svg';
+const saveIcon = '../../../images/save-icon.svg';
 const logo = '../../../images/Compo---Logo.svg';
 
 const SingleProjectPage = ({ project, token, user }) => {
@@ -146,7 +149,10 @@ const SingleProjectPage = ({ project, token, user }) => {
           <InlineEdit value={currentTitle} setValue={handleUpdateTitle} />
         </div>
         <div className='w-3/6'>
-          <form style={{display:'flex'}} onSubmit={(e) => fetchPromptData(e, promptText)}>
+          <form
+            style={{ display: 'flex' }}
+            onSubmit={(e) => fetchPromptData(e, promptText)}
+          >
             <input
               type='text'
               value={promptText}
@@ -157,24 +163,19 @@ const SingleProjectPage = ({ project, token, user }) => {
             {isLoading && <LoadingIcon />}
           </form>
         </div>
-        <div className=''>
+        <div className='flex'>
           <Link href={`/servers/${projectpage}`}>
-            <button className='ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
-              Back to Projects
-            </button>
+            <img src={backIcon} />
           </Link>
-          <button
-            onClick={save}
-            className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
-          >
-            Save
-          </button>
-          <button
+          <a style={{ cursor: 'pointer', marginLeft: '1rem' }} onClick={save}>
+            <img src={saveIcon} />
+          </a>
+          <a
+            style={{ cursor: 'pointer', marginLeft: '1rem' }}
             onClick={addPage}
-            className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
           >
-            addPage
-          </button>
+            <img src={addIcon} />
+          </a>
           <ToastContainer />
         </div>
       </div>
