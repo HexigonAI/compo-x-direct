@@ -8,6 +8,7 @@ import styles from '../../styles/InputModal.module.css';
 const InputModal = ({
   isOpen,
   header,
+  description,
   labelOne,
   labelTwo,
   buttonText,
@@ -28,6 +29,7 @@ const InputModal = ({
           <div className={styles.modal_header}>
             <div className={styles.modal_header__label}></div>
             <div className={styles.modal_header__heading}>{header}</div>
+            <div className={styles.modal_header__subheading}>{description}</div>
             <a
               style={{ cursor: 'pointer' }}
               onClick={(e) => closeModal()}

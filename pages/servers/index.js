@@ -21,6 +21,7 @@ const newServerProps = {
 
 const modalProps = {
   header: 'Enter Server Information',
+  description: 'Servers are like organizations or teams',
   labelOne: 'Server Name',
   labelTwo: 'Server Description',
   buttonText: 'Create Server',
@@ -89,6 +90,7 @@ const Servers = ({ servers, user, token }) => {
               handleSubmit={handleCreateServer}
               isOpen={showModal}
               header={modalProps.header}
+              description={modalProps.description}
               labelOne={modalProps.labelOne}
               labelTwo={modalProps.labelTwo}
               buttonText={modalProps.buttonText}
