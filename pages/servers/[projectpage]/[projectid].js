@@ -139,7 +139,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         />
       </Head>
       {/* <NavBar user={user} token={token} /> */}
-      <div className='justify-between px-6 flex bg-black text-white items-center'>
+      <div className='justify-start px-6 flex bg-black text-white items-center'>
         <Link href={'/servers'}>
           <div className='dashabord-logo w-nav-brand pr-8'>
             <img src={logo} width='90' alt='' className='logo' />
