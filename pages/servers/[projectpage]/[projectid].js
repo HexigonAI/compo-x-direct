@@ -184,7 +184,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         pm={pm}
         setPm={setPm}
       />
-      {showFooter && <WelcomeFooter handleCloseFooter={setShowFooter} showFooter={showFooter} />}
+      {showFooter && <WelcomeFooter/>}
     </>
   );
 };
