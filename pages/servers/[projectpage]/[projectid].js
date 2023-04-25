@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
@@ -14,7 +15,7 @@ import { updateProject } from '@/helpers/setData/updateProject';
 import InlineEdit from '@/components/global/InlineEdit';
 import Editor from '@/components/builder/Editor';
 import WelcomeFooter from '@/components/builder/WelcomeFooter';
-import Cookies from 'js-cookie';
+import LoadingIcon from '@/components/global/LoadingIcon';
 
 const logo = '../../../images/Compo---Logo.svg';
 
@@ -26,6 +27,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [pm, setPm] = useState(null);
   const [promptText, setPromptText] = useState('');
   const [showFooter, setShowFooter] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const hasVisitedBefore = Cookies.get('hasVisitedBuilderBefore');
@@ -94,6 +96,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   };
 
   const fetchPromptData = async (e, promptString) => {
+    setIsLoading(true);
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
     e.preventDefault();
     setPromptText('');
@@ -110,6 +113,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     setResponseCss(css);
     editor.setComponents(htmlWithCss + html);
     editor.setStyle(responseCss + css);
+    setIsLoading(false);
   };
 
   const addPage = () => {
@@ -133,23 +137,24 @@ const SingleProjectPage = ({ project, token, user }) => {
       </Head>
       {/* <NavBar user={user} token={token} /> */}
       <div className='justify-between px-6 flex bg-black text-white items-center'>
-      <Link href={'/servers'}>
-        <div className='dashabord-logo w-nav-brand pr-8'>
-          <img src={logo} width='90' alt='' className='logo' />
-        </div>
-      </Link>
+        <Link href={'/servers'}>
+          <div className='dashabord-logo w-nav-brand pr-8'>
+            <img src={logo} width='90' alt='' className='logo' />
+          </div>
+        </Link>
         <div className='text-xs'>
-          <InlineEdit value={currentTitle} setValue={handleUpdateTitle}/>
+          <InlineEdit value={currentTitle} setValue={handleUpdateTitle} />
         </div>
         <div className='w-3/6'>
-          <form onSubmit={(e) => fetchPromptData(e, promptText)}>
+          <form style={{display:'flex'}} onSubmit={(e) => fetchPromptData(e, promptText)}>
             <input
               type='text'
               value={promptText}
-              placeholder='Enter your prompt...'
-              className='w-10/12 h-11 pl-2 text-black text-xl placeholder:italic placeholder:text-indigo-200 border-none rounded-md black focus:border-purple-500 focus:ring-2 focus:ring-purple-500'
+              placeholder='enter your prompt...'
+              className='mr-2 w-10/12 h-11 pl-2 text-black text-xl placeholder:italic placeholder:text-indigo-200 border-none rounded-md black '
               onChange={(e) => setPromptText(e.target.value)}
             />
+            {isLoading && <LoadingIcon />}
           </form>
         </div>
         <div className=''>
@@ -182,7 +187,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         pm={pm}
         setPm={setPm}
       />
-      {showFooter && <WelcomeFooter/>}
+      {showFooter && <WelcomeFooter />}
     </>
   );
 };
