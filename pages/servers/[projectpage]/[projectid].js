@@ -1,19 +1,20 @@
 import Head from 'next/head';
 import { getSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import NavBar from '@/components/global/NavBar';
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
 import { updateProject } from '@/helpers/setData/updateProject';
 import InlineEdit from '@/components/global/InlineEdit';
 import Editor from '@/components/builder/Editor';
+import WelcomeFooter from '@/components/builder/WelcomeFooter';
+import Cookies from 'js-cookie';
 
 const logo = '../../../images/Compo---Logo.svg';
 
@@ -24,6 +25,15 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [promptData, setPromptData] = useState();
   const [pm, setPm] = useState(null);
   const [promptText, setPromptText] = useState('');
+  const [showFooter, setShowFooter] = useState(false);
+
+  useEffect(() => {
+    const hasVisitedBefore = Cookies.get('hasVisitedBuilderBefore');
+    if (!hasVisitedBefore) {
+      Cookies.set('hasVisitedBuilderBefore', 'true');
+      setShowFooter(true);
+    }
+  }, []);
 
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
@@ -174,6 +184,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         pm={pm}
         setPm={setPm}
       />
+      {showFooter && <WelcomeFooter handleCloseFooter={setShowFooter} showFooter={showFooter} />}
     </>
   );
 };

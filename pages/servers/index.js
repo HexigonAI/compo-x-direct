@@ -37,9 +37,8 @@ const Servers = ({ servers, user, token }) => {
     if (!hasVisitedBefore) {
       setIsFirstTime(true);
       Cookies.set('hasVisitedBefore', 'true');
-      console.log('This is the first time the user has visited the site');
     }
-  }, [serverList]);
+  }, []);
 
   const rerenderServerList = async () => {
     fetchData(token, getUserServers)
