@@ -31,14 +31,14 @@ const InlineEdit = ({ value, setValue }) => {
         type='text'
         style={{overflow:'hidden'}}
         ref={inputElement}
-        className='bg-transparent text-white w-6/12'
+        className='font-LeagueSpartan bg-transparent text-white w-6/12'
         aria-label='Field name'
         value={editingValue}
         onChange={onChange}
         onKeyDown={onKeyDown}
         onBlur={onBlur}
       />
-        <button onClick={focusInput}> <EditIcon /></button>
+        <button className='mt-2' onClick={focusInput}> <EditIcon /></button>
     </h1>
   );
 };
