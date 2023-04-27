@@ -170,6 +170,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         promptData={promptData}
         pm={pm}
         setPm={setPm}
+        fetchPromptData={fetchPromptData}
       />
     </>
   );
