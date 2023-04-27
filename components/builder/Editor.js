@@ -14,7 +14,6 @@ import modalImage from '../../images/tayler-profile-p-1080.png'
 // import symbols from "@silexlabs/grapesjs-symbols"
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
-import { icon, publishSelect } from './Panels';
 
 const postcss = require('postcss');
 
@@ -23,21 +22,18 @@ const Editor = ({
   id,
   projectEndpoint,
   handleSetResponseCss,
+  handleSave,
   handleSetEditor,
   pm,
   setPm,
   fetchPromptData
 }) => {
-  const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
   const [stateEditor, setEditor] = useState();
   const [refresh, setRefresh] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   useEffect(() => {
     const welcomeShown = localStorage.getItem('welcomeShown');
     if (!welcomeShown) {
@@ -267,28 +263,6 @@ const Editor = ({
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
   }, [refresh]);
-
-
-  async function save() {
-    const projectData = stateEditor.getProjectData();
-    const sentData = JSON.stringify(projectData);
-    try {
-      axios.patch(
-        `https://compo.directus.app/items/projects/${id}`,
-        {
-          builder_data: `"${sentData}"`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.error('Error:', error.message);
-      throw error;
-    }
-  }
  
   const selectPage = (pageId) => {
     if(pageId =="add-page" )
@@ -300,7 +274,7 @@ const Editor = ({
       })
 
       setArrayOfPages(prevState => [...prevState, {id: 'page-'+((arrayOfPages.length) + 1)}]);
-      save()
+      handleSave();
       setRefresh(!refresh);
       
     }

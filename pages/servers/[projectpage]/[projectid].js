@@ -199,6 +199,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         handleSetEditor={setEditor}
         pm={pm}
         setPm={setPm}
+        handleSave={save}
         fetchPromptData={fetchPromptData}
         handleSetResponseCss={setResponseCss}
       />
