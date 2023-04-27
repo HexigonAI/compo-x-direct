@@ -7,10 +7,8 @@ import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 import navPlugin from 'grapesjs-navbar';
 import gjsForms from 'grapesjs-plugin-forms';
-import { icon, pagesSelect, publishSelect } from './Panels';
 import pluginTooltip from 'grapesjs-tooltip';
 import pluginCountdown from 'grapesjs-component-countdown';
-import modalImage from '../../images/tayler-profile-p-1080.png'
 // import symbols from "@silexlabs/grapesjs-symbols"
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
