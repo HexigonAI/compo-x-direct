@@ -56,6 +56,13 @@
   background-color: #1f2124 !important;
   border-radius: 8px;
 }
+
+.gjs-block-label {
+  font-family: LeagueSpartan !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+}
 .gjs-block:hover{
   color: #b5d2fd !important;;
 }
@@ -153,6 +160,22 @@
     background: rgba(255, 255, 255, 0.2);
     height: 50px;
     margin-top: 1em;
+}
+
+.gjs-block__media-extra {
+  margin: auto;
+  width: 50px;
+  background: rgba(51, 89, 99, 0.5);
+  height: 50px;
+  margin-top: 1em;
+}
+
+.gjs-block__media-extra > svg {
+  margin: auto;
+  width: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  height: 50px;
+  // margin-top: 1em;
 }
 
 .gjs-block svg {
