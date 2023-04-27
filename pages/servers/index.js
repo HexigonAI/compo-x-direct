@@ -21,6 +21,7 @@ const newServerProps = {
 
 const modalProps = {
   header: 'Enter Server Information',
+  description: 'Servers are like organizations or teams',
   labelOne: 'Server Name',
   labelTwo: 'Server Description',
   buttonText: 'Create Server',
@@ -36,9 +37,8 @@ const Servers = ({ servers, user, token }) => {
     if (!hasVisitedBefore) {
       setIsFirstTime(true);
       Cookies.set('hasVisitedBefore', 'true');
-      console.log('This is the first time the user has visited the site');
     }
-  }, [serverList]);
+  }, []);
 
   const rerenderServerList = async () => {
     fetchData(token, getUserServers)
@@ -89,6 +89,7 @@ const Servers = ({ servers, user, token }) => {
               handleSubmit={handleCreateServer}
               isOpen={showModal}
               header={modalProps.header}
+              description={modalProps.description}
               labelOne={modalProps.labelOne}
               labelTwo={modalProps.labelTwo}
               buttonText={modalProps.buttonText}
@@ -103,13 +104,15 @@ const Servers = ({ servers, user, token }) => {
             <div className='server-inside'>
               <div className='top-admin'>
                 <div className='w-inline-block'>
+{/*                 This is where we would dynamically load the user's avatar  
                   <img
                     src={`https://compo.directus.app/assets/${
                       user ? '28b315a9-d72c-489e-9d7b-a3d0c2e89877.png' : ''
                     }?access_token=${token}`}
                     alt=''
                     className='avatar'
-                  />
+                  /> */}
+                  <img src='../images/compo-logo-avatar.svg' alt='' className='logo' />
                   {isFirstTime && (
                     <h3 className='db-header'>
                       Welcome,{' '}

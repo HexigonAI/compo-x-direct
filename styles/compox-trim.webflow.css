@@ -109,7 +109,7 @@ ul {
 
 .dashabord-logo {
   width: auto;
-  height: 60px;
+  height: 50px;
   padding-top: 15px;
 }
 
@@ -3107,7 +3107,7 @@ ul {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 10%;
+  padding-top: 1%;
   padding-bottom: 10%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;

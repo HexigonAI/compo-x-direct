@@ -1,28 +1,44 @@
 import Head from 'next/head';
 import { getSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
-import NavBar from '@/components/global/NavBar';
 import { fetchProjectById } from '@/helpers/fetchData/fetchProjectById';
 import { getCurrentUser } from '@/queries/Users';
 import { fetchUser } from '@/helpers/fetchData/fetchUser';
 import { updateProject } from '@/helpers/setData/updateProject';
 import InlineEdit from '@/components/global/InlineEdit';
 import Editor from '@/components/builder/Editor';
+import WelcomeFooter from '@/components/builder/WelcomeFooter';
+import LoadingIcon from '@/components/global/LoadingIcon';
+
+const addIcon = '../../../images/add-icon.svg';
+const backIcon = '../../../images/back-icon.svg';
+const saveIcon = '../../../images/save-icon.svg';
+const logo = '../../../images/Compo---Logo.svg';
 
 const SingleProjectPage = ({ project, token, user }) => {
   const router = useRouter();
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(project.title);
-  const [promptData, setPromptData] = useState();
-  const [showModal, setShowModal] = useState(false);
+  const [responseCss, setResponseCss] = useState();
   const [pm, setPm] = useState(null);
   const [promptText, setPromptText] = useState('');
+  const [showFooter, setShowFooter] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const hasVisitedBefore = Cookies.get('hasVisitedBuilderBefore');
+    if (!hasVisitedBefore) {
+      Cookies.set('hasVisitedBuilderBefore', 'true');
+      setShowFooter(true);
+    }
+  }, []);
 
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
@@ -43,7 +59,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         }
       );
       toast('Your Save was Successful');
-      console.log(projectData)
+      console.log(projectData);
     } catch (error) {
       console.error('Error:', error.message);
       toast('Error, Save was Not Successful');
@@ -83,8 +99,8 @@ const SingleProjectPage = ({ project, token, user }) => {
   };
 
   const fetchPromptData = async (e, promptString) => {
+    setIsLoading(true);
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
-    console.log(htmlWithCss)
     e.preventDefault();
     setPromptText('');
     const response = await fetch(
@@ -97,9 +113,23 @@ const SingleProjectPage = ({ project, token, user }) => {
     const data = await response.json();
     const html = data.html;
     const css = data.css;
-    editor.setComponents(htmlWithCss + html);
-    editor.setStyle(css);
-    setPromptData({ html, css });
+    
+    if(!responseCss.css){
+      setResponseCss({...responseCss, css});
+      editor.setComponents(htmlWithCss + html);
+      editor.setStyle(responseCss + css);
+      setIsLoading(false);
+    } else {
+      setResponseCss(responseCss => ({ ...responseCss, css: responseCss.css + css }));
+      editor.setComponents(htmlWithCss + html);
+      editor.setStyle(responseCss.css + css);
+      setIsLoading(false);
+
+    }
+
+    console.log('this is the responseCss state object:', responseCss);
+    console.log('this is the responseCss.css:', responseCss.css);
+    console.log('this is the responses css:', css);
   };
 
   const addPage = () => {
@@ -107,9 +137,9 @@ const SingleProjectPage = ({ project, token, user }) => {
       id: 'new-page-id', // without an explicit ID, a random one will be created
       styles: `.my-class { color: red }`, // or a JSON of styles
       component: '<div class="my-class">My element</div>', // or a JSON of components
-     });
-     console.log(newPage)
-  }
+    });
+    console.log(newPage);
+  };
 
   return (
     <>
@@ -121,43 +151,43 @@ const SingleProjectPage = ({ project, token, user }) => {
           key='single project page'
         />
       </Head>
-      <NavBar user={user} token={token} />
-      <div className='justify-between px-6 flex bg-black text-white items-center'>
-        <div className=''>
+      <div className='justify-start px-6 flex bg-black text-white items-center'>
+        <Link href={'/servers'}>
+          <div className='dashabord-logo w-nav-brand pr-8'>
+            <img src={logo} width='90' alt='' className='logo' />
+          </div>
+        </Link>
+        <div className='text-xs'>
           <InlineEdit value={currentTitle} setValue={handleUpdateTitle} />
         </div>
         <div className='w-3/6'>
-          <form onSubmit={(e) => fetchPromptData(e, promptText)}>
+          <form
+            style={{ display: 'flex' }}
+            onSubmit={(e) => fetchPromptData(e, promptText)}
+          >
             <input
               type='text'
               value={promptText}
-              placeholder='Enter your prompt...'
-              className='w-10/12 h-11 pl-2 text-black text-xl placeholder:italic placeholder:text-indigo-200 border-none rounded-md black focus:border-purple-500 focus:ring-2 focus:ring-purple-500'
+              placeholder='enter your prompt...'
+              className='font-LeagueSpartan mr-2 w-10/12 h-11 pl-2 text-black text-xl placeholder:text-indigo-200 border-none rounded-md black '
               onChange={(e) => setPromptText(e.target.value)}
             />
+            {isLoading && <LoadingIcon />}
           </form>
         </div>
-        <div className=''>
+        <div className='flex'>
           <Link href={`/servers/${projectpage}`}>
-            <button className='ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
-              Back to Projects
-            </button>
+            <img src={backIcon} />
           </Link>
-          <button className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'>
-            PDF
-          </button>
-          <button
-            onClick={save}
-            className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
-          >
-            Save
-          </button>
-          <button
+          <a style={{ cursor: 'pointer', marginLeft: '1rem' }} onClick={save}>
+            <img src={saveIcon} />
+          </a>
+          <a
+            style={{ cursor: 'pointer', marginLeft: '1rem' }}
             onClick={addPage}
-            className=' w-20 ml-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
           >
-            addPage
-          </button>
+            <img src={addIcon} />
+          </a>
           <ToastContainer />
         </div>
       </div>
@@ -167,11 +197,12 @@ const SingleProjectPage = ({ project, token, user }) => {
         id={project.id}
         projectEndpoint={projectEndpoint}
         handleSetEditor={setEditor}
-        promptData={promptData}
         pm={pm}
         setPm={setPm}
         fetchPromptData={fetchPromptData}
+        handleSetResponseCss={setResponseCss}
       />
+      {showFooter && <WelcomeFooter />}
     </>
   );
 };

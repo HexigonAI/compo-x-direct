@@ -44,6 +44,7 @@ const ServerProjectsPage = ({ projects, server, token, user }) => {
                       alt=''
                       className='org-avatar'
                     /> */}
+                    <img src={'../../images/compo-logo-avatar.svg'} alt='' />
                   </div>
                   <div>
                     <div className='account-name'>{server.title}</div>

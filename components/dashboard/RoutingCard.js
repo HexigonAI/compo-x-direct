@@ -13,7 +13,7 @@ const RoutingCard = ({ icon, title, route, remainingProjects }) => {
           <img src={icon} loading='lazy' width='18' alt='' />
           <div>{title}</div>
         </div>
-        <div className='price-2'>{remainingProjects}</div>
+        {/* <div className='price-2'>{remainingProjects}</div> */}
       </a>
     </>
   );

@@ -14,18 +14,20 @@ import modalImage from '../../images/tayler-profile-p-1080.png'
 // import symbols from "@silexlabs/grapesjs-symbols"
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
+import { icon, publishSelect } from './Panels';
+
+const postcss = require('postcss');
 
 const Editor = ({
   token,
   id,
   projectEndpoint,
-  promptData,
+  handleSetResponseCss,
   handleSetEditor,
   pm,
   setPm,
   fetchPromptData
 }) => {
-
   const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
@@ -61,7 +63,7 @@ const Editor = ({
           },
         },
         autoload: true,
-        stepsBeforeSave: 3,
+        stepsBeforeSave: 1,
         contentTypeJson: true,
         storeComponents: true,
         storeStyles: true,
@@ -71,9 +73,7 @@ const Editor = ({
       panels: { defaults: null },
       pageManager: true,
       pageManager: {
-        pages: [
-          
-        ],
+        pages: [],
       },
       deviceManager: {
         devices: [
@@ -116,7 +116,7 @@ const Editor = ({
       },
     });
 
-    setEditor(editor)
+    setEditor(editor);
     const projectData = editor.getProjectData();
     editor.loadProjectData(projectData);
     handleSetEditor(editor);
@@ -134,7 +134,13 @@ const Editor = ({
         );
         const pages = JSON.parse(builder_string)
         setArrayOfPages(pages.pages)
-        return JSON.parse(builder_string);
+        const savedProject = JSON.parse(builder_string);
+        console.log(
+          'this is the loaded in object from Directus:',
+          savedProject
+        );
+        handleSetResponseCss(savedProject.styles);
+        return savedProject;
       },
       // Store data on the server
       async store(data) {
@@ -164,30 +170,71 @@ const Editor = ({
     editor.on('page', () => {
       setPages(pm.getAll());
     });
-  
-    editor.Panels.addPanel(icon);
-    // editor.Panels.addPanel(pagesSelect);
-    editor.Panels.addPanel(publishSelect);
- 
 
-    const modal = editor.Modal;
-    const modalContent = document.createElement('div');
-    const promptMessage = 'Enter your prompt:';
-    const inputField = document.createElement('input');
-    inputField.type = 'text';
-    inputField.style.width = '100%';
-    inputField.style.color = 'black';
-    inputField.style.fontSize = '2rem';
-
-    editor.Commands.add('prompt-btn-command', {
-      run(editor) {
-        modal.setTitle('Custom Modal');
-        modal.setContent(modalContent);
-        modal.setContent(promptMessage);
-        modal.setContent(inputField);
-        modal.open();
+    const parseCss = (css) => {
+      const result = [];
+      // Parse the CSS using PostCSS
+      const processedCss = postcss().process(css).css;
+      // Convert the processed CSS into an array of rules
+      const rules = processedCss
+        .split('}')
+        .filter((rule) => rule !== '')
+        .map((rule) => rule + '}');
+      // Process each rule and extract the selectors and style declarations
+      rules.forEach((rule) => {
+        const selectors = rule.match(/(.+){/);
+        const style = rule.match(/{(.*)}/);
+        if (selectors && selectors[1] && style && style[1]) {
+          const styleDeclarations = style[1]
+            .trim()
+            .split(';')
+            .reduce((acc, decl) => {
+              const [prop, value] = decl.split(':');
+              if (prop && value) {
+                acc[prop.trim()] = value.trim();
+              }
+              return acc;
+            }, {});
+          // Add the rule to the result array
+          result.push({
+            selectors: [selectors[1].trim()],
+            style: styleDeclarations,
+          });
+        }
+      });
+      return result;
+    };
+    //Add the css import button to the 'options' panel
+    editor.Panels.addButton('options', {
+      id: 'parse-css',
+      className: 'fa fa-book',
+      command: 'parse-css',
+      attributes: {
+        title: 'Parse CSS',
       },
     });
+    //Add the command to the button 'parse-css'
+    editor.Commands.add('parse-css', {
+      run: (editor) => {
+        const css = prompt('Enter CSS');
+        console.log('inputted css is:', css);
+        const rules = parseCss(css);
+        console.log('Parsed CSS:', rules);
+        // Apply the parsed rules to the relevant elements
+        rules.forEach(({ selectors, style }) => {
+          editor.getSelected(selectors);
+          editor.setStyle(style);
+          console.log('this is the class css is talking to: ', selectors);
+          console.log('this is the css being set to the editor: ', style);
+        });
+        // Refresh the canvas to apply the changes
+        editor.runCommand('sw-visibility');
+        editor.stopCommand('sw-visibility');
+      },
+    });
+
+    editor.Panels.addPanel(icon);
+    editor.Panels.addPanel(publishSelect);
 
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];
@@ -220,6 +267,7 @@ const Editor = ({
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
   }, [refresh]);
+
 
   async function save() {
     const projectData = stateEditor.getProjectData();
@@ -271,6 +319,7 @@ const Editor = ({
       });
       if(arrayOfPages){
         const data = arrayOfPages;
+
         stateEditor.Panels.addPanel({
           id: 'pages-select',
           visible: true,
@@ -278,6 +327,7 @@ const Editor = ({
             {
               id: 'visibility',
               label: `
+
                 <select ${(onchange = (e) => { selectPage(e.target.value);
                 })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
                   ${arrayOfPages.map((page) => { return `<option value=${page.id}> ${ page.id} </option> 
@@ -290,7 +340,10 @@ const Editor = ({
         });
       }
     }
+
   }, [stateEditor, arrayOfPages])
+
+
 
   return (
  <div>
