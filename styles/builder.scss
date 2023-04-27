@@ -130,3 +130,31 @@
 .font-family-league-spartan-medium {
   font-family: LeagueSpartanMedium;
 }
+
+.bg-purple-basics {
+  background: rgba(79, 80, 122, 0.5) !important;
+}
+
+.bg-green-extra {
+  background: rgba(51, 89, 99, 0.5) !important;
+}
+
+.gjs-block__media-basic {
+  height: 74px;
+  border-radius: 10px;
+  width: 74px;
+  background: rgba(48, 49, 101, 0.5);
+  margin: auto;
+}
+
+.gjs-block__media-basic > svg {
+    margin: auto;
+    width: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    height: 50px;
+    margin-top: 1em;
+}
+
+.gjs-block svg {
+  fill: none !important;
+}

@@ -173,13 +173,8 @@ const Editor = ({
         modal.open();
       },
     });
-
     let trashIcon = editor.Panels.getButton('options','canvas-clear');
-    trashIcon.attributes.label = `<?xml version="1.0" encoding="UTF-8"?><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M20 9l-1.995 11.346A2 2 0 0116.035 22h-8.07a2 2 0 01-1.97-1.654L4 9M21 6h-5.625M3 6h5.625m0 0V4a2 2 0 012-2h2.75a2 2 0 012 2v2m-6.75 0h6.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>`
-
-    let viewComponent = editor.Panels.getPanel('options');
-
-    console.log("isi",viewComponent);
+    trashIcon.attributes.label = `<?xml version="1.0" encoding="UTF-8"?><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M20 9l-1.995 11.346A2 2 0 0116.035 22h-8.07a2 2 0 01-1.97-1.654L4 9M21 6h-5.625M3 6h5.625m0 0V4a2 2 0 012-2h2.75a2 2 0 012 2v2m-6.75 0h6.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
 
     let viewComponentIcon = editor.Panels.getButton('options',"sw-visibility");
     viewComponentIcon.attributes.label = `<?xml version="1.0" encoding="UTF-8"?><svg width="22px" height="22px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3 21V3.6a.6.6 0 01.6-.6H21" stroke="white" stroke-width="1.5"></path><path d="M17 21h3.4a.6.6 0 00.6-.6V17M21 7v2M21 12v2M7 21h2M12 21h2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3 4a1 1 0 100-2 1 1 0 000 2zM3 22a1 1 0 100-2 1 1 0 000 2zM21 4a1 1 0 100-2 1 1 0 000 2z" fill="#000000" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
@@ -240,6 +235,26 @@ const Editor = ({
 
 
   useEffect(() => { 
+    setTimeout(() => {
+      let elementClass = document.getElementsByClassName("gjs-block gjs-one-bg gjs-four-color-h");
+      let elementBlockMedia = document.getElementsByClassName("gjs-block__media");
+      // let test = elementClass;
+      // console.log("isi ",elementClass[0])
+      elementClass[0].classList.add("bg-purple-basics");
+      elementClass[1].classList.add("bg-purple-basics");
+      elementClass[2].classList.add("bg-purple-basics");
+      elementClass[3].classList.add("bg-green-extra");
+      elementClass[4].classList.add("bg-green-extra");
+      elementClass[5].classList.add("bg-green-extra");
+      elementBlockMedia[0].classList.add("gjs-block__media-basic");
+      elementBlockMedia[1].classList.add("gjs-block__media-basic");
+      elementBlockMedia[2].classList.add("gjs-block__media-basic");
+
+      elementBlockMedia[0].innerHTML = `<?xml version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M14 11.998C14 9.506 11.683 7 8.857 7H7.143C4.303 7 2 9.238 2 11.998c0 2.378 1.71 4.368 4 4.873a5.3 5.3 0 001.143.124" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10 11.998c0 2.491 2.317 4.997 5.143 4.997h1.714c2.84 0 5.143-2.237 5.143-4.997 0-2.379-1.71-4.37-4-4.874A5.304 5.304 0 0016.857 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+      elementBlockMedia[1].innerHTML = `<?xml version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M10 12H5a1 1 0 01-1-1V7.5a1 1 0 011-1h4a1 1 0 011 1V12zm0 0c0 2.5-1 4-4 5.5M20 12h-5a1 1 0 01-1-1V7.5a1 1 0 011-1h4a1 1 0 011 1V12zm0 0c0 2.5-1 4-4 5.5" stroke="white" stroke-width="1.5" stroke-linecap="round"></path></svg>`;
+      elementBlockMedia[2].innerHTML = `<?xml version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M12 8v8m0-8H8m4 0h4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M21 13.5V19a2 2 0 01-2 2H5a2 2 0 01-2-2v-5.5m18-3V5a2 2 0 00-2-2H5a2 2 0 00-2 2v5.5M19.5 13.5v-3h3v3h-3zM1.5 13.5v-3h3v3h-3z" stroke="white" stroke-width="1.5" stroke-linejoin="round"></path></svg>`;
+    },3000)
+
     const selectPage = (pageId) => {
       return pm.select(pageId);
     };
