@@ -113,10 +113,23 @@ const SingleProjectPage = ({ project, token, user }) => {
     const data = await response.json();
     const html = data.html;
     const css = data.css;
-    setResponseCss(css);
-    editor.setComponents(htmlWithCss + html);
-    editor.setStyle(responseCss + css);
-    setIsLoading(false);
+    
+    if(!responseCss.css){
+      setResponseCss({...responseCss, css});
+      editor.setComponents(htmlWithCss + html);
+      editor.setStyle(responseCss + css);
+      setIsLoading(false);
+    } else {
+      setResponseCss(responseCss => ({ ...responseCss, css: responseCss.css + css }));
+      editor.setComponents(htmlWithCss + html);
+      editor.setStyle(responseCss.css + css);
+      setIsLoading(false);
+
+    }
+
+    console.log('this is the responseCss state object:', responseCss);
+    console.log('this is the responseCss.css:', responseCss.css);
+    console.log('this is the responses css:', css);
   };
 
   const addPage = () => {
@@ -138,7 +151,6 @@ const SingleProjectPage = ({ project, token, user }) => {
           key='single project page'
         />
       </Head>
-      {/* <NavBar user={user} token={token} /> */}
       <div className='justify-start px-6 flex bg-black text-white items-center'>
         <Link href={'/servers'}>
           <div className='dashabord-logo w-nav-brand pr-8'>
@@ -157,7 +169,7 @@ const SingleProjectPage = ({ project, token, user }) => {
               type='text'
               value={promptText}
               placeholder='enter your prompt...'
-              className='mr-2 w-10/12 h-11 pl-2 text-black text-xl placeholder:italic placeholder:text-indigo-200 border-none rounded-md black '
+              className='font-LeagueSpartan mr-2 w-10/12 h-11 pl-2 text-black text-xl placeholder:text-indigo-200 border-none rounded-md black '
               onChange={(e) => setPromptText(e.target.value)}
             />
             {isLoading && <LoadingIcon />}
@@ -187,6 +199,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         handleSetEditor={setEditor}
         pm={pm}
         setPm={setPm}
+        handleSetResponseCss={setResponseCss}
       />
       {showFooter && <WelcomeFooter />}
     </>

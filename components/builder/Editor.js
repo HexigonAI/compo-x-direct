@@ -5,13 +5,15 @@ import gsNewsLetter from 'grapesjs-preset-newsletter';
 import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
+import { icon, publishSelect } from './Panels';
 
-import { icon, pagesSelect, publishSelect } from './Panels';
+const postcss = require('postcss');
 
 const Editor = ({
   token,
   id,
   projectEndpoint,
+  handleSetResponseCss,
   handleSetEditor,
   pm,
   setPm,
@@ -50,8 +52,6 @@ const Editor = ({
       },
       panels: { defaults: null },
       pageManager: true,
-      //TODO: needs dynamic page id
-      //TODO: need ability to add new page
 
       pageManager: {
         pages: [],
@@ -114,6 +114,11 @@ const Editor = ({
           builder_data.length - 1
         );
         const savedProject = JSON.parse(builder_string);
+        console.log(
+          'this is the loaded in object from Directus:',
+          savedProject
+        );
+        handleSetResponseCss(savedProject.styles);
         setArrayOfPages(savedProject);
         return savedProject;
       },
@@ -140,14 +145,73 @@ const Editor = ({
     });
 
     const pm = editor.Pages;
-    // console.log(pm)
-    // console.log(pm.getAll())
     const aa = pm.all.models;
-    // console.log(aa)
     setPages(pm.getAll());
     setPm(editor.Pages);
     editor.on('page', () => {
       setPages(pm.getAll());
+    });
+
+    const parseCss = (css) => {
+      const result = [];
+      // Parse the CSS using PostCSS
+      const processedCss = postcss().process(css).css;
+      // Convert the processed CSS into an array of rules
+      const rules = processedCss
+        .split('}')
+        .filter((rule) => rule !== '')
+        .map((rule) => rule + '}');
+      // Process each rule and extract the selectors and style declarations
+      rules.forEach((rule) => {
+        const selectors = rule.match(/(.+){/);
+        const style = rule.match(/{(.*)}/);
+        if (selectors && selectors[1] && style && style[1]) {
+          const styleDeclarations = style[1]
+            .trim()
+            .split(';')
+            .reduce((acc, decl) => {
+              const [prop, value] = decl.split(':');
+              if (prop && value) {
+                acc[prop.trim()] = value.trim();
+              }
+              return acc;
+            }, {});
+          // Add the rule to the result array
+          result.push({
+            selectors: [selectors[1].trim()],
+            style: styleDeclarations,
+          });
+        }
+      });
+      return result;
+    };
+    //Add the css import button to the 'options' panel
+    editor.Panels.addButton('options', {
+      id: 'parse-css',
+      className: 'fa fa-book',
+      command: 'parse-css',
+      attributes: {
+        title: 'Parse CSS',
+      },
+    });
+    //Add the command to the button 'parse-css'
+    editor.Commands.add('parse-css', {
+      run: (editor) => {
+        const css = prompt('Enter CSS');
+        console.log('inputted css is:', css);
+        const rules = parseCss(css);
+        console.log('Parsed CSS:', rules);
+        // Apply the parsed rules to the relevant elements
+        rules.forEach(({ selectors, style }) => {
+          editor.getSelected(selectors);
+          editor.setStyle(style);
+          console.log('this is the class css is talking to: ', selectors);
+          console.log('this is the css being set to the editor: ', style);
+        });
+        // Refresh the canvas to apply the changes
+        editor.runCommand('sw-visibility');
+        editor.stopCommand('sw-visibility');
+      },
     });
 
     editor.Panels.addPanel(icon);
