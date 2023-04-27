@@ -199,6 +199,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         handleSetEditor={setEditor}
         pm={pm}
         setPm={setPm}
+        fetchPromptData={fetchPromptData}
         handleSetResponseCss={setResponseCss}
       />
       {showFooter && <WelcomeFooter />}

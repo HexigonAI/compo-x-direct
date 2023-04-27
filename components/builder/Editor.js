@@ -5,6 +5,15 @@ import gsNewsLetter from 'grapesjs-preset-newsletter';
 import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
+import navPlugin from 'grapesjs-navbar';
+import gjsForms from 'grapesjs-plugin-forms';
+import { icon, pagesSelect, publishSelect } from './Panels';
+import pluginTooltip from 'grapesjs-tooltip';
+import pluginCountdown from 'grapesjs-component-countdown';
+import modalImage from '../../images/tayler-profile-p-1080.png'
+// import symbols from "@silexlabs/grapesjs-symbols"
+import exportPlugin from 'grapesjs-plugin-export';
+import WelcomeModal from '../global/WelcomeModal';
 import { icon, publishSelect } from './Panels';
 
 const postcss = require('postcss');
@@ -17,18 +26,29 @@ const Editor = ({
   handleSetEditor,
   pm,
   setPm,
+  fetchPromptData
 }) => {
   const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
   const [stateEditor, setEditor] = useState();
+  const [refresh, setRefresh] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [show, setShow] = useState(false);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   useEffect(() => {
+    const welcomeShown = localStorage.getItem('welcomeShown');
+    if (!welcomeShown) {
+      setShowWelcome(true);
+      localStorage.setItem('welcomeShown', true);
+    }
     const editor = grapesjs.init({
       container: '#gjs',
       height: '100vh',
       width: 'auto',
-      plugins: [gsWebpage, gsCustome, gsNewsLetter],
+      plugins: [gsWebpage, gsCustome, gsNewsLetter, navPlugin,gjsForms, pluginTooltip, pluginCountdown, exportPlugin ],
       storageManager: {
         id: 'gjs-',
         type: 'remote',
@@ -52,7 +72,6 @@ const Editor = ({
       },
       panels: { defaults: null },
       pageManager: true,
-
       pageManager: {
         pages: [],
       },
@@ -113,13 +132,14 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
+        const pages = JSON.parse(builder_string)
+        setArrayOfPages(pages.pages)
         const savedProject = JSON.parse(builder_string);
         console.log(
           'this is the loaded in object from Directus:',
           savedProject
         );
         handleSetResponseCss(savedProject.styles);
-        setArrayOfPages(savedProject);
         return savedProject;
       },
       // Store data on the server
@@ -145,7 +165,6 @@ const Editor = ({
     });
 
     const pm = editor.Pages;
-    const aa = pm.all.models;
     setPages(pm.getAll());
     setPm(editor.Pages);
     editor.on('page', () => {
@@ -247,17 +266,59 @@ const Editor = ({
     let blocks = editor.Panels.getButton('views', 'open-blocks');
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
-  }, []);
+  }, [refresh]);
 
-  useEffect(() => {
-    const selectPage = (pageId) => {
-      return pm.select(pageId);
-    };
 
-    if (stateEditor) {
-      if (arrayOfPages) {
-        const data = arrayOfPages.pages;
-        // console.log(data)
+  async function save() {
+    const projectData = stateEditor.getProjectData();
+    const sentData = JSON.stringify(projectData);
+    try {
+      axios.patch(
+        `https://compo.directus.app/items/projects/${id}`,
+        {
+          builder_data: `"${sentData}"`,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error('Error:', error.message);
+      throw error;
+    }
+  }
+ 
+  const selectPage = (pageId) => {
+    if(pageId =="add-page" )
+    { 
+      const newPage = pm.add({
+        id: `page-${((arrayOfPages.length) + 1)}`, // without an explicit ID, a random one will be created
+        styles: `.my-class { color: red }`, // or a JSON of styles
+        component: '<div class="my-class">My element</div>', // or a JSON of components
+      })
+
+      setArrayOfPages(prevState => [...prevState, {id: 'page-'+((arrayOfPages.length) + 1)}]);
+      save()
+      setRefresh(!refresh);
+      
+    }
+    return pm.select(pageId);
+  };
+
+  useEffect(() => { 
+    if(stateEditor ){
+      const panelManager = stateEditor.Panels;
+      var newButton = panelManager.addButton('pages-select',{
+        id: 'myNewButton',
+        className: 'someClass',
+        command: 'someCommand',
+        attributes: { title: 'Some title'},
+        active: false,
+      });
+      if(arrayOfPages){
+        const data = arrayOfPages;
 
         stateEditor.Panels.addPanel({
           id: 'pages-select',
@@ -266,25 +327,35 @@ const Editor = ({
             {
               id: 'visibility',
               label: `
-            <select ${(onchange = (e) => {
-              selectPage(e.target.value);
-            })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-              ${data
-                .map((page) => {
-                  // console.log(pages)
-                  return `<option value=${page.id}> ${page.id} </option>`;
-                })
-                .join('')}
-            </select> 
-          `,
+
+                <select ${(onchange = (e) => { selectPage(e.target.value);
+                })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
+                  ${arrayOfPages.map((page) => { return `<option value=${page.id}> ${ page.id} </option> 
+                  <button>--</button>
+                      `;}).join('')}
+                    <option value="add-page" class="add-page-option">Add Page</option>
+                    </select> `,
             },
           ],
         });
       }
     }
-  }, [stateEditor, arrayOfPages]);
 
-  return <div id='gjs'></div>;
-};
+  }, [stateEditor, arrayOfPages])
 
+
+
+  return (
+ <div>
+  {showWelcome ? 
+   <WelcomeModal
+   setShowWelcome={setShowWelcome}
+   fetchPromptData={fetchPromptData}
+   /> : ""}
+      
+ 
+<div id='gjs'> </div>
+
+</div>)
+}
 export default Editor;
