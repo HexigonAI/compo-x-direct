@@ -38,8 +38,9 @@ const SingleProjectPage = ({ project, token, user }) => {
       Cookies.set('hasVisitedBuilderBefore', 'true');
       setShowFooter(true);
     }
+    
   }, []);
-
+  
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
 
@@ -97,7 +98,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     }
     return cssClasses;
   };
-
+ 
   const fetchPromptData = async (e, promptString) => {
     setIsLoading(true);
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
@@ -131,6 +132,27 @@ const SingleProjectPage = ({ project, token, user }) => {
     console.log('this is the responseCss.css:', responseCss.css);
     console.log('this is the responses css:', css);
   };
+  const addSymvol=()=>{
+    var idx = 0
+   
+      editor.Panels.addPanel({
+        id: 'basic-actions',
+        el: '.panel__basic-actions',
+        buttons: [
+          {
+            id: 'alert-button',
+            className: 'btn-alert-button',
+            label: 'Create symbol pink',
+            command(editor) {
+              var label = prompt('Label', 'Symbol ' + ++idx)
+              var icon = prompt('Icon', 'fa-list')
+              editor.runCommand('symbols:add', { label, icon })
+            }
+          },
+        ]
+      })
+
+  }
 
   const addPage = () => {
     const newPage = pm.add({
@@ -150,6 +172,8 @@ const SingleProjectPage = ({ project, token, user }) => {
           content='editing project'
           key='single project page'
         />
+            <script src="https://unpkg.com/grapesjs"></script>
+            <script src="https://unpkg.com/@silexlabs/grapesjs-symbols"></script>
       </Head>
       <div className='justify-start px-6 flex bg-black text-white items-center'>
         <Link href={'/servers'}>
@@ -188,10 +212,11 @@ const SingleProjectPage = ({ project, token, user }) => {
           >
             <img src={addIcon} />
           </a>
+          <button onClick={addSymvol} id='basic-actions' className="panel__basic-actions  w-5 bg-white" > Symbol</button>
+
           <ToastContainer />
         </div>
       </div>
-
       <Editor
         token={token}
         id={project.id}
@@ -201,6 +226,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         setPm={setPm}
         fetchPromptData={fetchPromptData}
         handleSetResponseCss={setResponseCss}
+        save={save}
       />
       {showFooter && <WelcomeFooter />}
     </>

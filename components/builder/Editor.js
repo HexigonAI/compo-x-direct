@@ -10,10 +10,11 @@ import gjsForms from 'grapesjs-plugin-forms';
 import pluginTooltip from 'grapesjs-tooltip';
 import pluginCountdown from 'grapesjs-component-countdown';
 // import symbols from "@silexlabs/grapesjs-symbols"
+// import tabs from "grapesjs-tabs"
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
 import { icon, publishSelect } from './Panels';
-
+ 
 const postcss = require('postcss');
 
 const Editor = ({
@@ -24,19 +25,16 @@ const Editor = ({
   handleSetEditor,
   pm,
   setPm,
-  fetchPromptData
+  fetchPromptData,
+  save
 }) => {
-  const [pageManager, setPageManager] = useState('');
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
   const [stateEditor, setEditor] = useState();
   const [refresh, setRefresh] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   useEffect(() => {
+    
     const welcomeShown = localStorage.getItem('welcomeShown');
     if (!welcomeShown) {
       setShowWelcome(true);
@@ -46,7 +44,7 @@ const Editor = ({
       container: '#gjs',
       height: '100vh',
       width: 'auto',
-      plugins: [gsWebpage, gsCustome, gsNewsLetter, navPlugin,gjsForms, pluginTooltip, pluginCountdown, exportPlugin ],
+      plugins: [gsWebpage, gsCustome, gsNewsLetter, navPlugin,gjsForms, pluginTooltip, pluginCountdown, exportPlugin, '@silexlabs/grapesjs-symbols' ],
       storageManager: {
         id: 'gjs-',
         type: 'remote',
@@ -61,7 +59,7 @@ const Editor = ({
           },
         },
         autoload: true,
-        stepsBeforeSave: 1,
+        stepsBeforeSave: 3,
         contentTypeJson: true,
         storeComponents: true,
         storeStyles: true,
@@ -70,9 +68,13 @@ const Editor = ({
       },
       panels: { defaults: null },
       pageManager: true,
-      pageManager: {
-        pages: [],
-      },
+      pages: [
+        {
+          id: 'page-id',
+          styles: `.my-class { color: red }`, // or a JSON of styles
+          component: '<div class="my-class">My element</div>', // or a JSON of components
+        }
+     ],
       deviceManager: {
         devices: [
           {
@@ -95,6 +97,9 @@ const Editor = ({
         ],
       },
       pluginsOpts: {
+          '@silexlabs/grapesjs-symbols': {
+            appendTo: '.gjs-pn-views-container',
+          },
         gsWebpage: {
           blocksBasicOpts: {
             blocks: [
@@ -112,6 +117,7 @@ const Editor = ({
           blocks: ['link-block', 'quote', 'text-basic'],
         },
       },
+      
     });
 
     setEditor(editor);
@@ -130,9 +136,9 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
-        const pages = JSON.parse(builder_string)
-        setArrayOfPages(pages.pages)
         const savedProject = JSON.parse(builder_string);
+        console.log( [{id: "page-1"}])
+        setArrayOfPages(savedProject.pages ? [{id: "page-1"}]: [{id: "page-1"}])
         console.log(
           'this is the loaded in object from Directus:',
           savedProject
@@ -264,34 +270,13 @@ const Editor = ({
     let blocks = editor.Panels.getButton('views', 'open-blocks');
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
+    window.grapesjs = window.GrapesJS = grapesjs;
   }, [refresh]);
 
-
-  async function save() {
-    const projectData = stateEditor.getProjectData();
-    const sentData = JSON.stringify(projectData);
-    try {
-      axios.patch(
-        `https://compo.directus.app/items/projects/${id}`,
-        {
-          builder_data: `"${sentData}"`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.error('Error:', error.message);
-      throw error;
-    }
-  }
- 
   const selectPage = (pageId) => {
     if(pageId =="add-page" )
     { 
-      const newPage = pm.add({
+      pm.add({
         id: `page-${((arrayOfPages.length) + 1)}`, // without an explicit ID, a random one will be created
         styles: `.my-class { color: red }`, // or a JSON of styles
         component: '<div class="my-class">My element</div>', // or a JSON of components
@@ -307,17 +292,9 @@ const Editor = ({
 
   useEffect(() => { 
     if(stateEditor ){
-      const panelManager = stateEditor.Panels;
-      var newButton = panelManager.addButton('pages-select',{
-        id: 'myNewButton',
-        className: 'someClass',
-        command: 'someCommand',
-        attributes: { title: 'Some title'},
-        active: false,
-      });
+      console.log('test1')
       if(arrayOfPages){
-        const data = arrayOfPages;
-
+        console.log(arrayOfPages)
         stateEditor.Panels.addPanel({
           id: 'pages-select',
           visible: true,
@@ -325,7 +302,6 @@ const Editor = ({
             {
               id: 'visibility',
               label: `
-
                 <select ${(onchange = (e) => { selectPage(e.target.value);
                 })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
                   ${arrayOfPages.map((page) => { return `<option value=${page.id}> ${ page.id} </option> 
@@ -340,8 +316,6 @@ const Editor = ({
     }
 
   }, [stateEditor, arrayOfPages])
-
-
 
   return (
  <div>
