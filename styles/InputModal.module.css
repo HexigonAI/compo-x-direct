@@ -227,6 +227,7 @@
 .text_input:focus {
   border-bottom-color: transparent;
   box-shadow: inset 0 0 0 2px #460ee3;
+  outline:none;
 }
 
 .text_input::-moz-placeholder {

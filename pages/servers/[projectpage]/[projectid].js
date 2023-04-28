@@ -168,8 +168,8 @@ const SingleProjectPage = ({ project, token, user }) => {
             <input
               type='text'
               value={promptText}
-              placeholder='enter your prompt...'
-              className='font-LeagueSpartan mr-2 w-10/12 h-11 pl-2 text-black text-xl placeholder:text-indigo-200 border-none rounded-md black '
+              placeholder='Write something like, "Make a hero section for e-commerce"...'
+              className='ai-prompt-input'
               onChange={(e) => setPromptText(e.target.value)}
             />
             {isLoading && <LoadingIcon />}
