@@ -10,7 +10,7 @@ import gjsForms from 'grapesjs-plugin-forms';
 import { icon, pagesSelect, publishSelect } from './Panels';
 import pluginTooltip from 'grapesjs-tooltip';
 import pluginCountdown from 'grapesjs-component-countdown';
-import modalImage from '../../images/tayler-profile-p-1080.png'
+import modalImage from '../../images/tayler-profile-p-1080.png';
 // import symbols from "@silexlabs/grapesjs-symbols"
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
@@ -26,7 +26,7 @@ const Editor = ({
   handleSetEditor,
   pm,
   setPm,
-  fetchPromptData
+  fetchPromptData,
 }) => {
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
@@ -44,7 +44,16 @@ const Editor = ({
       container: '#gjs',
       height: '100vh',
       width: 'auto',
-      plugins: [gsWebpage, gsCustome, gsNewsLetter, navPlugin,gjsForms, pluginTooltip, pluginCountdown, exportPlugin ],
+      plugins: [
+        gsWebpage,
+        gsCustome,
+        gsNewsLetter,
+        navPlugin,
+        gjsForms,
+        pluginTooltip,
+        pluginCountdown,
+        exportPlugin,
+      ],
       storageManager: {
         id: 'gjs-',
         type: 'remote',
@@ -128,13 +137,12 @@ const Editor = ({
           1,
           builder_data.length - 1
         );
-        const pages = JSON.parse(builder_string)
-        setArrayOfPages(pages.pages)
         const savedProject = JSON.parse(builder_string);
         console.log(
           'this is the loaded in object from Directus:',
           savedProject
         );
+        setArrayOfPages(savedProject.pages);
         handleSetResponseCss(savedProject.styles);
         return savedProject;
       },
@@ -213,9 +221,11 @@ const Editor = ({
     editor.Commands.add('parse-css', {
       run: (editor) => {
         const css = prompt('Enter CSS');
+        if (!css) return;
         console.log('inputted css is:', css);
         const rules = parseCss(css);
         console.log('Parsed CSS:', rules);
+        console.log(editor.getCss());
         // Apply the parsed rules to the relevant elements
         rules.forEach(({ selectors, style }) => {
           editor.getSelected(selectors);
@@ -263,35 +273,36 @@ const Editor = ({
     blocks.attributes.className = 'button-view-style';
     blocks.attributes.label = 'Blocks';
   }, [refresh]);
- 
+
   const selectPage = (pageId) => {
-    if(pageId =="add-page" )
-    { 
+    if (pageId == 'add-page') {
       const newPage = pm.add({
-        id: `page-${((arrayOfPages.length) + 1)}`, // without an explicit ID, a random one will be created
+        id: `page-${arrayOfPages.length + 1}`, // without an explicit ID, a random one will be created
         styles: `.my-class { color: red }`, // or a JSON of styles
         component: '<div class="my-class">My element</div>', // or a JSON of components
-      })
+      });
 
-      setArrayOfPages(prevState => [...prevState, {id: 'page-'+((arrayOfPages.length) + 1)}]);
+      setArrayOfPages((prevState) => [
+        ...prevState,
+        { id: 'page-' + (arrayOfPages.length + 1) },
+      ]);
       handleSave();
       setRefresh(!refresh);
-      
     }
     return pm.select(pageId);
   };
 
-  useEffect(() => { 
-    if(stateEditor ){
+  useEffect(() => {
+    if (stateEditor) {
       const panelManager = stateEditor.Panels;
-      var newButton = panelManager.addButton('pages-select',{
+      var newButton = panelManager.addButton('pages-select', {
         id: 'myNewButton',
         className: 'someClass',
         command: 'someCommand',
-        attributes: { title: 'Some title'},
+        attributes: { title: 'Some title' },
         active: false,
       });
-      if(arrayOfPages){
+      if (arrayOfPages) {
         const data = arrayOfPages;
 
         stateEditor.Panels.addPanel({
@@ -302,11 +313,16 @@ const Editor = ({
               id: 'visibility',
               label: `
 
-                <select ${(onchange = (e) => { selectPage(e.target.value);
+                <select ${(onchange = (e) => {
+                  selectPage(e.target.value);
                 })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-                  ${arrayOfPages.map((page) => { return `<option value=${page.id}> ${ page.id} </option> 
+                  ${arrayOfPages
+                    .map((page) => {
+                      return `<option value=${page.id}> ${page.id} </option> 
                   <button>--</button>
-                      `;}).join('')}
+                      `;
+                    })
+                    .join('')}
                     <option value="add-page" class="add-page-option">Add Page</option>
                     </select> `,
             },
@@ -314,22 +330,21 @@ const Editor = ({
         });
       }
     }
-
-  }, [stateEditor, arrayOfPages])
-
-
+  }, [stateEditor, arrayOfPages]);
 
   return (
- <div>
-  {showWelcome ? 
-   <WelcomeModal
-   setShowWelcome={setShowWelcome}
-   fetchPromptData={fetchPromptData}
-   /> : ""}
-      
- 
-<div id='gjs'> </div>
+    <div>
+      {showWelcome ? (
+        <WelcomeModal
+          setShowWelcome={setShowWelcome}
+          fetchPromptData={fetchPromptData}
+        />
+      ) : (
+        ''
+      )}
 
-</div>)
-}
+      <div id='gjs'> </div>
+    </div>
+  );
+};
 export default Editor;

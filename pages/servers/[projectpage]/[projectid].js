@@ -126,7 +126,7 @@ const SingleProjectPage = ({ project, token, user }) => {
       setIsLoading(false);
 
     }
-
+    console.log('this is the editors CSS object: ', editor.getCss());
     console.log('this is the responseCss state object:', responseCss);
     console.log('this is the responseCss.css:', responseCss.css);
     console.log('this is the responses css:', css);
