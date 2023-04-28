@@ -182,12 +182,6 @@ const SingleProjectPage = ({ project, token, user }) => {
           <a style={{ cursor: 'pointer', marginLeft: '1rem' }} onClick={save}>
             <img src={saveIcon} />
           </a>
-          <a
-            style={{ cursor: 'pointer', marginLeft: '1rem' }}
-            onClick={addPage}
-          >
-            <img src={addIcon} />
-          </a>
           <ToastContainer />
         </div>
       </div>
