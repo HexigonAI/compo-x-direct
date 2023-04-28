@@ -14,7 +14,7 @@ import InputModal from '@/components/global/InputModal';
 import { createServer } from '@/helpers/setData/createServer';
 
 const newServerProps = {
-  title: 'Start a New Server',
+  title: 'Start a New Sandbox',
   remainingProjects: 3,
   icon: 'images/energy-usage-window.svg',
 };
