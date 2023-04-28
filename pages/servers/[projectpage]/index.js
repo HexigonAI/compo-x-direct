@@ -56,7 +56,7 @@ const ServerProjectsPage = ({ projects, server, token, user }) => {
                 <div className='side-wrapper right'>
                   <button
                     onClick={(e) => handleCreateProject(token, projectpage)}
-                    className='button'
+                    className='button-2 add w-button'
                     data-ix='open-modal'
                   >
                     New Project
@@ -81,17 +81,6 @@ const ServerProjectsPage = ({ projects, server, token, user }) => {
               <ProjectCard projectTitle={project.title} id={project.id} />
             </Link>
           ))}
-      </div>
-      <div className='page-inside'>
-        <div className='open-state'>
-          <button
-            onClick={(e) => handleCreateProject(token, projectpage)}
-            className='button-2 add w-button'
-            data-ix='open-modal'
-          >
-            Start a New Project
-          </button>
-        </div>
       </div>
     </>
   );
