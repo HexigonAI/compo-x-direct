@@ -132,27 +132,6 @@ const SingleProjectPage = ({ project, token, user }) => {
     console.log('this is the responseCss.css:', responseCss.css);
     console.log('this is the responses css:', css);
   };
-  const addSymvol=()=>{
-    var idx = 0
-   
-      editor.Panels.addPanel({
-        id: 'basic-actions',
-        el: '.panel__basic-actions',
-        buttons: [
-          {
-            id: 'alert-button',
-            className: 'btn-alert-button',
-            label: 'Create symbol pink',
-            command(editor) {
-              var label = prompt('Label', 'Symbol ' + ++idx)
-              var icon = prompt('Icon', 'fa-list')
-              editor.runCommand('symbols:add', { label, icon })
-            }
-          },
-        ]
-      })
-
-  }
 
   const addPage = () => {
     const newPage = pm.add({
@@ -212,7 +191,7 @@ const SingleProjectPage = ({ project, token, user }) => {
           >
             <img src={addIcon} />
           </a>
-          <button onClick={addSymvol} id='basic-actions' className="panel__basic-actions  w-5 bg-white" > Symbol</button>
+          <button onClick={addSymvol} id='basic-actions' className="panel__basic-actions  w-12  text-black bg-white" > Symbol</button>
 
           <ToastContainer />
         </div>

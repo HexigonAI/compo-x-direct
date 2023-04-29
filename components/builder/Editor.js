@@ -1,19 +1,11 @@
 import { useEffect, useState } from 'react';
 import grapesjs from 'grapesjs';
-import gsWebpage from 'grapesjs-preset-webpage';
 import gsNewsLetter from 'grapesjs-preset-newsletter';
-import gsCustome from 'grapesjs-custom-code';
 import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
-import navPlugin from 'grapesjs-navbar';
-import gjsForms from 'grapesjs-plugin-forms';
-import pluginTooltip from 'grapesjs-tooltip';
-import pluginCountdown from 'grapesjs-component-countdown';
-// import symbols from "@silexlabs/grapesjs-symbols"
-// import tabs from "grapesjs-tabs"
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
-import { icon, publishSelect } from './Panels';
+import { icon, publishSelect, saveBlock } from './Panels';
  
 const postcss = require('postcss');
 
@@ -44,7 +36,7 @@ const Editor = ({
       container: '#gjs',
       height: '100vh',
       width: 'auto',
-      plugins: [gsWebpage, gsCustome, gsNewsLetter, navPlugin,gjsForms, pluginTooltip, pluginCountdown, exportPlugin, '@silexlabs/grapesjs-symbols' ],
+      plugins: [gsNewsLetter, exportPlugin, '@silexlabs/grapesjs-symbols' ],
       storageManager: {
         id: 'gjs-',
         type: 'remote',
@@ -68,13 +60,7 @@ const Editor = ({
       },
       panels: { defaults: null },
       pageManager: true,
-      pages: [
-        {
-          id: 'page-id',
-          styles: `.my-class { color: red }`, // or a JSON of styles
-          component: '<div class="my-class">My element</div>', // or a JSON of components
-        }
-     ],
+      pages: [],
       deviceManager: {
         devices: [
           {
@@ -100,26 +86,10 @@ const Editor = ({
           '@silexlabs/grapesjs-symbols': {
             appendTo: '.gjs-pn-views-container',
           },
-        gsWebpage: {
-          blocksBasicOpts: {
-            blocks: [
-              'column1',
-              'column2',
-              'column3',
-              'column3-7',
-              'text',
-              'link',
-              'image',
-              'video',
-            ],
-            flexGrid: 1,
-          },
-          blocks: ['link-block', 'quote', 'text-basic'],
-        },
+        gsWebpage: {},
       },
-      
     });
-
+  
     setEditor(editor);
     const projectData = editor.getProjectData();
     editor.loadProjectData(projectData);
@@ -137,7 +107,6 @@ const Editor = ({
           builder_data.length - 1
         );
         const savedProject = JSON.parse(builder_string);
-        console.log( [{id: "page-1"}])
         setArrayOfPages(savedProject.pages ? [{id: "page-1"}]: [{id: "page-1"}])
         console.log(
           'this is the loaded in object from Directus:',
@@ -250,27 +219,7 @@ const Editor = ({
       visible: true,
       buttons: arrButton,
     });
-
-    let copySettings = editor.Panels.getButton('views', 'open-tm');
-    copySettings.attributes.label = 'Settings';
-    copySettings.attributes.className = 'button-view-style';
-    editor.Panels.removeButton('views', 'open-tm');
-    editor.Panels.addButton('views', copySettings);
-
-    let layers = editor.Panels.getButton('views', 'open-layers');
-    layers.attributes.label = 'Layers';
-    layers.attributes.className = 'button-view-style';
-    editor.Panels.removeButton('views', 'open-layers');
-    editor.Panels.addButton('views', layers);
-
-    let design = editor.Panels.getButton('views', 'open-sm');
-    design.attributes.className = 'button-view-style';
-    design.attributes.label = 'Design';
-
-    let blocks = editor.Panels.getButton('views', 'open-blocks');
-    blocks.attributes.className = 'button-view-style';
-    blocks.attributes.label = 'Blocks';
-    window.grapesjs = window.GrapesJS = grapesjs;
+   
   }, [refresh]);
 
   const selectPage = (pageId) => {
@@ -281,20 +230,16 @@ const Editor = ({
         styles: `.my-class { color: red }`, // or a JSON of styles
         component: '<div class="my-class">My element</div>', // or a JSON of components
       })
-
       setArrayOfPages(prevState => [...prevState, {id: 'page-'+((arrayOfPages.length) + 1)}]);
       save()
       setRefresh(!refresh);
-      
     }
     return pm.select(pageId);
   };
 
   useEffect(() => { 
     if(stateEditor ){
-      console.log('test1')
       if(arrayOfPages){
-        console.log(arrayOfPages)
         stateEditor.Panels.addPanel({
           id: 'pages-select',
           visible: true,
@@ -319,6 +264,7 @@ const Editor = ({
 
   return (
  <div>
+  
   {showWelcome ? 
    <WelcomeModal
    setShowWelcome={setShowWelcome}
