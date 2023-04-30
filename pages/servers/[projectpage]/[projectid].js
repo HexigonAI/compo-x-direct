@@ -191,8 +191,6 @@ const SingleProjectPage = ({ project, token, user }) => {
           >
             <img src={addIcon} />
           </a>
-          <button onClick={addSymvol} id='basic-actions' className="panel__basic-actions  w-12  text-black bg-white" > Symbol</button>
-
           <ToastContainer />
         </div>
       </div>

@@ -36,7 +36,7 @@ const Editor = ({
       container: '#gjs',
       height: '100vh',
       width: 'auto',
-      plugins: [gsNewsLetter, exportPlugin, '@silexlabs/grapesjs-symbols' ],
+      plugins: [gsNewsLetter, exportPlugin ],
       storageManager: {
         id: 'gjs-',
         type: 'remote',
@@ -83,9 +83,6 @@ const Editor = ({
         ],
       },
       pluginsOpts: {
-          '@silexlabs/grapesjs-symbols': {
-            appendTo: '.gjs-pn-views-container',
-          },
         gsWebpage: {},
       },
     });
