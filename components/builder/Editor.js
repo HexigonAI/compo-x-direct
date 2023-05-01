@@ -5,11 +5,24 @@ import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
-import { icon, publishSelect, saveBlock } from './Panels';
-import ReactDOM from "react-dom";
-import { Allotment } from "allotment";
-import "allotment/dist/style.css";
-import { Content } from "./Content";
+import {
+  icon,
+  publishSelect,
+  saveBlock,
+  trashIconLabel,
+  viewComponentsIconLabel,
+  eyeIconLabel,
+  fullScreenIconLabel,
+  codeIconLabel,
+  downloadIconLabel,
+  imageIconLabel,
+  undoIconLabel,
+  redoIconLabel,
+} from './IconSvgs';
+// import ReactDOM from "react-dom";
+import { Allotment } from 'allotment';
+import 'allotment/dist/style.css';
+import { Content } from './Content';
 const postcss = require('postcss');
 
 const Editor = ({
@@ -22,7 +35,7 @@ const Editor = ({
   pm,
   setPm,
   fetchPromptData,
-  save
+  save,
 }) => {
   const [arrayOfPages, setArrayOfPages] = useState();
   const [pages, setPages] = useState([]);
@@ -31,7 +44,6 @@ const Editor = ({
   const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
-    
     const welcomeShown = localStorage.getItem('welcomeShown');
     if (!welcomeShown) {
       setShowWelcome(true);
@@ -41,7 +53,7 @@ const Editor = ({
       container: '#gjs',
       height: '100vh',
       width: 'auto',
-      plugins: [gsNewsLetter, exportPlugin ],
+      plugins: [gsNewsLetter, exportPlugin],
 
       storageManager: {
         id: 'gjs-',
@@ -64,7 +76,7 @@ const Editor = ({
         storeHtml: true,
         storeCss: true,
       },
-      panels: { defaults: null },
+      panels: { defaults: '' },
       pageManager: true,
       pages: [],
       deviceManager: {
@@ -92,7 +104,7 @@ const Editor = ({
         gsWebpage: {},
       },
     });
-  
+
     setEditor(editor);
     const projectData = editor.getProjectData();
     editor.loadProjectData(projectData);
@@ -254,7 +266,6 @@ const Editor = ({
       visible: true,
       buttons: arrButton,
     });
-   
   }, [refresh]);
 
   const selectPage = (pageId) => {
@@ -275,10 +286,9 @@ const Editor = ({
     return pm.select(pageId);
   };
 
-
-  useEffect(() => { 
-    if(stateEditor ){
-      if(arrayOfPages){
+  useEffect(() => {
+    if (stateEditor) {
+      if (arrayOfPages) {
         stateEditor.Panels.addPanel({
           id: 'pages-select',
           visible: true,
@@ -286,7 +296,8 @@ const Editor = ({
             {
               id: 'visibility',
               label: `
-                <select ${(onchange = (e) => { selectPage(e.target.value);
+                <select ${(onchange = (e) => {
+                  selectPage(e.target.value);
                 })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
                   ${arrayOfPages
                     .map((page) => {
@@ -302,35 +313,30 @@ const Editor = ({
         });
       }
     }
-
-
-  }, [stateEditor, arrayOfPages])
+  }, [stateEditor, arrayOfPages]);
 
   return (
- <div>
-  
-  {showWelcome ? 
-   <WelcomeModal
-   setShowWelcome={setShowWelcome}
-   fetchPromptData={fetchPromptData}
-   /> : ""}
- 
-      
- 
-<div id='gjs'> </div>
+    <div>
+      {showWelcome ? (
+        <WelcomeModal
+          setShowWelcome={setShowWelcome}
+          fetchPromptData={fetchPromptData}
+        />
+      ) : (
+        ''
+      )}
 
+      <div id='gjs'> </div>
 
-<div className='overflow-scroll resize w-full h-72'>
-
-      <Allotment>
-        <Content />
-        <Content />
-        <Content />
-
-      </Allotment>
+      <div className='overflow-scroll resize w-full h-72'>
+        <Allotment>
+          <Content />
+          <Content />
+          <Content />
+        </Allotment>
+      </div>
     </div>
-
-</div>)
-}
+  );
+};
 
 export default Editor;
