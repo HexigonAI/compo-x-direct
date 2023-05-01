@@ -41,14 +41,8 @@ const Editor = ({
   const [pages, setPages] = useState([]);
   const [stateEditor, setEditor] = useState();
   const [refresh, setRefresh] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
-    const welcomeShown = localStorage.getItem('welcomeShown');
-    if (!welcomeShown) {
-      setShowWelcome(true);
-      localStorage.setItem('welcomeShown', true);
-    }
     const editor = grapesjs.init({
       container: '#gjs',
       height: '100vh',
@@ -317,15 +311,6 @@ const Editor = ({
 
   return (
     <div>
-      {showWelcome ? (
-        <WelcomeModal
-          setShowWelcome={setShowWelcome}
-          fetchPromptData={fetchPromptData}
-        />
-      ) : (
-        ''
-      )}
-
       <div id='gjs'> </div>
 
       <div className='overflow-scroll resize w-full h-72'>

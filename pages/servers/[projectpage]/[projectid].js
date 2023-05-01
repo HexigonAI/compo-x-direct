@@ -16,6 +16,7 @@ import InlineEdit from '@/components/global/InlineEdit';
 import Editor from '@/components/builder/Editor';
 import WelcomeFooter from '@/components/builder/WelcomeFooter';
 import LoadingIcon from '@/components/global/LoadingIcon';
+import WelcomeModal from '@/components/global/WelcomeModal';
 
 const addIcon = '../../../images/add-icon.svg';
 const backIcon = '../../../images/back-icon.svg';
@@ -30,6 +31,7 @@ const SingleProjectPage = ({ project, token, user }) => {
   const [pm, setPm] = useState(null);
   const [promptText, setPromptText] = useState('');
   const [showFooter, setShowFooter] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -37,10 +39,10 @@ const SingleProjectPage = ({ project, token, user }) => {
     if (!hasVisitedBefore) {
       Cookies.set('hasVisitedBuilderBefore', 'true');
       setShowFooter(true);
+      setShowWelcome(true);
     }
-    
   }, []);
-  
+
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
 
@@ -98,7 +100,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     }
     return cssClasses;
   };
- 
+
   const fetchPromptData = async (e, promptString) => {
     setIsLoading(true);
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
@@ -115,17 +117,19 @@ const SingleProjectPage = ({ project, token, user }) => {
     const html = data.html;
     const css = data.css;
     console.log(data);
-    if(!responseCss){
-      setResponseCss({...responseCss, css});
+    if (!responseCss) {
+      setResponseCss({ ...responseCss, css });
       editor.setComponents(htmlWithCss + html);
       editor.setStyle(responseCss + css);
       setIsLoading(false);
     } else {
-      setResponseCss(responseCss => ({ ...responseCss, css: responseCss.css + css }));
+      setResponseCss((responseCss) => ({
+        ...responseCss,
+        css: responseCss.css + css,
+      }));
       editor.setComponents(htmlWithCss + html);
       editor.setStyle(responseCss.css + css);
       setIsLoading(false);
-
     }
     console.log('this is the editors CSS object: ', editor.getCss());
     console.log('this is the responseCss state object:', responseCss);
@@ -150,9 +154,10 @@ const SingleProjectPage = ({ project, token, user }) => {
           content='editing project'
           key='single project page'
         />
-            <script src="https://unpkg.com/grapesjs"></script>
-            <script src="https://unpkg.com/@silexlabs/grapesjs-symbols"></script>
+        <script src='https://unpkg.com/grapesjs'></script>
+        <script src='https://unpkg.com/@silexlabs/grapesjs-symbols'></script>
       </Head>
+      {showWelcome && <WelcomeModal />}
       <div className='justify-start px-6 flex bg-black text-white items-center'>
         <Link href={'/servers'}>
           <div className='dashabord-logo w-nav-brand pr-8'>
@@ -197,7 +202,6 @@ const SingleProjectPage = ({ project, token, user }) => {
         handleSave={save}
         fetchPromptData={fetchPromptData}
         handleSetResponseCss={setResponseCss}
-        save={save}
       />
       {showFooter && <WelcomeFooter />}
     </>
