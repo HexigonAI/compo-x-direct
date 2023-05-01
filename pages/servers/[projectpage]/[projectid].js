@@ -114,7 +114,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     const data = await response.json();
     const html = data.html;
     const css = data.css;
-    
+    console.log(data);
     if(!responseCss){
       setResponseCss({...responseCss, css});
       editor.setComponents(htmlWithCss + html);
