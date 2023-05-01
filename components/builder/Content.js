@@ -1,22 +1,18 @@
 import styles from "./Content.module.css";
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-html";
+import "ace-builds/src-noconflict/mode-css";
+import "ace-builds/src-noconflict/theme-monokai";
 
-export const Content = () => (
-  <div className={styles.container}>
-    <div className={styles.card}>
-      <svg
-        className={styles.svg}
-        preserveAspectRatio="none"
-        stroke="currentColor"
-        fill="none"
-        viewBox="0 0 200 200"
-        aria-hidden="true"
-      >
-        <path
-          vectorEffect="non-scaling-stroke"
-          strokeWidth="2"
-          d="M0 0l200 200M0 200L200 0"
-        ></path>
-      </svg>
-    </div>
+export const Content = ({mode, title}) => (
+  <div className={styles.editorContainer  }>
+    <div className={styles.editorTitle}>{title}</div>
+    <AceEditor
+        mode={mode}
+        theme="monokai"
+        name={title}
+        setOptions={{ useWorker: false }}    
+      />
   </div>
 );

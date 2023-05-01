@@ -84,7 +84,7 @@ const Editor = ({
           {
             id: 'desktop',
             name: 'Desktop',
-            width: '99%',
+            width: '100%',
           },
           {
             id: 'tablet',
@@ -330,9 +330,9 @@ const Editor = ({
 
       <div className='overflow-scroll resize w-full h-72'>
         <Allotment>
-          <Content />
-          <Content />
-          <Content />
+          <Content title={'HTML'} mode={'html'}/>
+          <Content title={'CSS'} mode={'css'}/>
+          <Content title={'JS'} mode={'javascript'}/>
         </Allotment>
       </div>
     </div>
