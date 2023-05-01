@@ -6,7 +6,10 @@ import 'grapesjs/dist/css/grapes.min.css';
 import exportPlugin from 'grapesjs-plugin-export';
 import WelcomeModal from '../global/WelcomeModal';
 import { icon, publishSelect, saveBlock } from './Panels';
- 
+import ReactDOM from "react-dom";
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
+import { Content } from "./Content";
 const postcss = require('postcss');
 
 const Editor = ({
@@ -267,9 +270,21 @@ const Editor = ({
    setShowWelcome={setShowWelcome}
    fetchPromptData={fetchPromptData}
    /> : ""}
+ 
       
  
 <div id='gjs'> </div>
+
+
+<div className='overflow-scroll resize w-full h-72'>
+
+      <Allotment>
+        <Content />
+        <Content />
+        <Content />
+
+      </Allotment>
+    </div>
 
 </div>)
 }
