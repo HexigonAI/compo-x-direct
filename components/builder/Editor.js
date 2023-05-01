@@ -17,6 +17,7 @@ const Editor = ({
   id,
   projectEndpoint,
   handleSetResponseCss,
+  handleSave,
   handleSetEditor,
   pm,
   setPm,
@@ -28,6 +29,7 @@ const Editor = ({
   const [stateEditor, setEditor] = useState();
   const [refresh, setRefresh] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+
   useEffect(() => {
     
     const welcomeShown = localStorage.getItem('welcomeShown');
@@ -40,6 +42,7 @@ const Editor = ({
       height: '100vh',
       width: 'auto',
       plugins: [gsNewsLetter, exportPlugin ],
+
       storageManager: {
         id: 'gjs-',
         type: 'remote',
@@ -190,9 +193,11 @@ const Editor = ({
     editor.Commands.add('parse-css', {
       run: (editor) => {
         const css = prompt('Enter CSS');
+        if (!css) return;
         console.log('inputted css is:', css);
         const rules = parseCss(css);
         console.log('Parsed CSS:', rules);
+        console.log(editor.getCss());
         // Apply the parsed rules to the relevant elements
         rules.forEach(({ selectors, style }) => {
           editor.getSelected(selectors);
@@ -209,6 +214,36 @@ const Editor = ({
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(publishSelect);
 
+    let trashIcon = editor.Panels.getButton('options', 'canvas-clear');
+    trashIcon.attributes.label = trashIconLabel;
+
+    let viewComponentIcon = editor.Panels.getButton('options', 'sw-visibility');
+    viewComponentIcon.attributes.label = viewComponentsIconLabel;
+
+    let eyeIcon = editor.Panels.getButton('options', 'preview');
+    eyeIcon.attributes.label = eyeIconLabel;
+
+    let fullScreenIcon = editor.Panels.getButton('options', 'fullscreen');
+    fullScreenIcon.attributes.label = fullScreenIconLabel;
+
+    let codeIcon = editor.Panels.getButton('options', 'export-template');
+    codeIcon.attributes.label = codeIconLabel;
+
+    let downloadIcon = editor.Panels.getButton(
+      'options',
+      'gjs-open-import-template'
+    );
+    downloadIcon.attributes.label = downloadIconLabel;
+
+    let imageIcon = editor.Panels.getButton('options', 'gjs-toggle-images');
+    imageIcon.attributes.label = imageIconLabel;
+
+    let undoIcon = editor.Panels.getButton('options', 'undo');
+    undoIcon.attributes.label = undoIconLabel;
+
+    let redoIcon = editor.Panels.getButton('options', 'redo');
+    redoIcon.attributes.label = redoIconLabel;
+
     let arrButton = editor.Panels.getPanel('options').attributes.buttons.models;
     let elementPrompt = arrButton[arrButton.length - 1];
     arrButton.splice(arrButton.length - 1, 1);
@@ -223,19 +258,23 @@ const Editor = ({
   }, [refresh]);
 
   const selectPage = (pageId) => {
-    if(pageId =="add-page" )
-    { 
-      pm.add({
-        id: `page-${((arrayOfPages.length) + 1)}`, // without an explicit ID, a random one will be created
+    if (pageId == 'add-page') {
+      const newPage = pm.add({
+        id: `page-${arrayOfPages.length + 1}`, // without an explicit ID, a random one will be created
         styles: `.my-class { color: red }`, // or a JSON of styles
         component: '<div class="my-class">My element</div>', // or a JSON of components
-      })
-      setArrayOfPages(prevState => [...prevState, {id: 'page-'+((arrayOfPages.length) + 1)}]);
-      save()
+      });
+
+      setArrayOfPages((prevState) => [
+        ...prevState,
+        { id: 'page-' + (arrayOfPages.length + 1) },
+      ]);
+      handleSave();
       setRefresh(!refresh);
     }
     return pm.select(pageId);
   };
+
 
   useEffect(() => { 
     if(stateEditor ){
@@ -249,9 +288,13 @@ const Editor = ({
               label: `
                 <select ${(onchange = (e) => { selectPage(e.target.value);
                 })} class=" bg-transparent pages-select font-family-league-spartan" name="pages" id="pages">
-                  ${arrayOfPages.map((page) => { return `<option value=${page.id}> ${ page.id} </option> 
+                  ${arrayOfPages
+                    .map((page) => {
+                      return `<option value=${page.id}> ${page.id} </option> 
                   <button>--</button>
-                      `;}).join('')}
+                      `;
+                    })
+                    .join('')}
                     <option value="add-page" class="add-page-option">Add Page</option>
                     </select> `,
             },
@@ -259,6 +302,7 @@ const Editor = ({
         });
       }
     }
+
 
   }, [stateEditor, arrayOfPages])
 
@@ -288,4 +332,5 @@ const Editor = ({
 
 </div>)
 }
+
 export default Editor;

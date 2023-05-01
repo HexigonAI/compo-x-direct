@@ -14,7 +14,7 @@ import InputModal from '@/components/global/InputModal';
 import { createServer } from '@/helpers/setData/createServer';
 
 const newServerProps = {
-  title: 'Start a New Server',
+  title: 'Start a New Sandbox',
   remainingProjects: 3,
   icon: 'images/energy-usage-window.svg',
 };
@@ -72,7 +72,7 @@ const Servers = ({ servers, user, token }) => {
   return (
     <>
       <Head>
-        <title>Compo-X Servers</title>
+        <title>Sandboxes</title>
         <meta
           property='og:servers'
           content='list of servers'
@@ -132,7 +132,7 @@ const Servers = ({ servers, user, token }) => {
                   )}
                 </div>
               </div>
-              <div className='label-4'>Your Servers</div>
+              <div className='label-4'>Your Sandboxes</div>
 
               {serverList &&
                 serverList.map((server) => (

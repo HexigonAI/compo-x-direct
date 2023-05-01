@@ -27,6 +27,8 @@
 
 .gjs-pn-btn svg {
   color: white;
+  fill: none !important;
+  background-color: #232429;
 }
 
 .gjs-pn-publish-select-saved {
@@ -72,6 +74,13 @@
 .gjs-block{
   background-color: #1f2124 !important;
   border-radius: 8px;
+}
+
+.gjs-block-label {
+  font-family: LeagueSpartan !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
 }
 .gjs-block:hover{
   color: #b5d2fd !important;;
@@ -147,4 +156,48 @@
 
 .font-family-league-spartan-medium {
   font-family: LeagueSpartanMedium;
+}
+
+.bg-purple-basics {
+  background: rgba(79, 80, 122, 0.5) !important;
+}
+
+.bg-green-extra {
+  background: rgba(51, 89, 99, 0.5) !important;
+}
+
+.gjs-block__media-basic {
+  height: 74px;
+  border-radius: 10px;
+  width: 74px;
+  background: rgba(48, 49, 101, 0.5);
+  margin: auto;
+}
+
+.gjs-block__media-basic > svg {
+    margin: auto;
+    width: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    height: 50px;
+    margin-top: 1em;
+}
+
+.gjs-block__media-extra {
+  margin: auto;
+  width: 50px;
+  background: rgba(51, 89, 99, 0.5);
+  height: 50px;
+  margin-top: 1em;
+}
+
+.gjs-block__media-extra > svg {
+  margin: auto;
+  width: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  height: 50px;
+  // margin-top: 1em;
+}
+
+.gjs-block svg {
+  fill: none !important;
 }

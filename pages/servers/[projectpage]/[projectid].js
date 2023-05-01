@@ -127,7 +127,7 @@ const SingleProjectPage = ({ project, token, user }) => {
       setIsLoading(false);
 
     }
-
+    console.log('this is the editors CSS object: ', editor.getCss());
     console.log('this is the responseCss state object:', responseCss);
     console.log('this is the responses css:', css);
   };
@@ -170,8 +170,8 @@ const SingleProjectPage = ({ project, token, user }) => {
             <input
               type='text'
               value={promptText}
-              placeholder='enter your prompt...'
-              className='font-LeagueSpartan mr-2 w-10/12 h-11 pl-2 text-black text-xl placeholder:text-indigo-200 border-none rounded-md black '
+              placeholder='Write something like, "Make a hero section for e-commerce"...'
+              className='ai-prompt-input'
               onChange={(e) => setPromptText(e.target.value)}
             />
             {isLoading && <LoadingIcon />}
@@ -184,12 +184,6 @@ const SingleProjectPage = ({ project, token, user }) => {
           <a style={{ cursor: 'pointer', marginLeft: '1rem' }} onClick={save}>
             <img src={saveIcon} />
           </a>
-          <a
-            style={{ cursor: 'pointer', marginLeft: '1rem' }}
-            onClick={addPage}
-          >
-            <img src={addIcon} />
-          </a>
           <ToastContainer />
         </div>
       </div>
@@ -200,6 +194,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         handleSetEditor={setEditor}
         pm={pm}
         setPm={setPm}
+        handleSave={save}
         fetchPromptData={fetchPromptData}
         handleSetResponseCss={setResponseCss}
         save={save}

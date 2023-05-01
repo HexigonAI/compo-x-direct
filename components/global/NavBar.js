@@ -56,7 +56,7 @@ const NavBar = ({ token, user }) => {
                 className='nav-link last w-nav-link'
                 style={{ cursor: 'pointer' }}
               >
-                Servers
+                Sandboxes
               </p>
             </nav>
           </Link>
