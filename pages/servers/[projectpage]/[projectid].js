@@ -38,8 +38,9 @@ const SingleProjectPage = ({ project, token, user }) => {
       Cookies.set('hasVisitedBuilderBefore', 'true');
       setShowFooter(true);
     }
+    
   }, []);
-
+  
   const { projectpage } = router.query;
   const projectEndpoint = `https://compo.directus.app/items/projects/${project.id}`;
 
@@ -97,7 +98,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     }
     return cssClasses;
   };
-
+ 
   const fetchPromptData = async (e, promptString) => {
     setIsLoading(true);
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
@@ -114,7 +115,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     const html = data.html;
     const css = data.css;
     
-    if(!responseCss.css){
+    if(!responseCss){
       setResponseCss({...responseCss, css});
       editor.setComponents(htmlWithCss + html);
       editor.setStyle(responseCss + css);
@@ -128,7 +129,6 @@ const SingleProjectPage = ({ project, token, user }) => {
     }
     console.log('this is the editors CSS object: ', editor.getCss());
     console.log('this is the responseCss state object:', responseCss);
-    console.log('this is the responseCss.css:', responseCss.css);
     console.log('this is the responses css:', css);
   };
 
@@ -150,6 +150,8 @@ const SingleProjectPage = ({ project, token, user }) => {
           content='editing project'
           key='single project page'
         />
+            <script src="https://unpkg.com/grapesjs"></script>
+            <script src="https://unpkg.com/@silexlabs/grapesjs-symbols"></script>
       </Head>
       <div className='justify-start px-6 flex bg-black text-white items-center'>
         <Link href={'/servers'}>
@@ -185,7 +187,6 @@ const SingleProjectPage = ({ project, token, user }) => {
           <ToastContainer />
         </div>
       </div>
-
       <Editor
         token={token}
         id={project.id}
@@ -196,6 +197,7 @@ const SingleProjectPage = ({ project, token, user }) => {
         handleSave={save}
         fetchPromptData={fetchPromptData}
         handleSetResponseCss={setResponseCss}
+        save={save}
       />
       {showFooter && <WelcomeFooter />}
     </>
