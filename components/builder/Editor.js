@@ -107,11 +107,11 @@ const Editor = ({
           builder_data.length - 1
         );
         const savedProject = JSON.parse(builder_string);
-        setArrayOfPages(savedProject.pages ? [{id: "page-1"}]: [{id: "page-1"}])
         console.log(
           'this is the loaded in object from Directus:',
           savedProject
         );
+        setArrayOfPages(savedProject.pages);
         handleSetResponseCss(savedProject.styles);
         return savedProject;
       },

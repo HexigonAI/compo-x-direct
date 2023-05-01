@@ -115,7 +115,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     const html = data.html;
     const css = data.css;
     
-    if(!responseCss.css){
+    if(!responseCss){
       setResponseCss({...responseCss, css});
       editor.setComponents(htmlWithCss + html);
       editor.setStyle(responseCss + css);
@@ -129,7 +129,6 @@ const SingleProjectPage = ({ project, token, user }) => {
     }
 
     console.log('this is the responseCss state object:', responseCss);
-    console.log('this is the responseCss.css:', responseCss.css);
     console.log('this is the responses css:', css);
   };
 
