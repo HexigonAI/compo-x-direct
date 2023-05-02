@@ -157,7 +157,8 @@ const SingleProjectPage = ({ project, token, user }) => {
         <script src='https://unpkg.com/grapesjs'></script>
         <script src='https://unpkg.com/@silexlabs/grapesjs-symbols'></script>
       </Head>
-      {showWelcome && <WelcomeModal />}
+      {showWelcome && <WelcomeModal fetchPromptData={fetchPromptData} setShowWelcome={setShowWelcome
+      }/>}
       <div className='justify-start px-6 flex bg-black text-white items-center'>
         <Link href={'/servers'}>
           <div className='dashabord-logo w-nav-brand pr-8'>
