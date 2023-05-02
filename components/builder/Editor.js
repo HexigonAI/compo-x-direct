@@ -45,6 +45,9 @@ const Editor = ({
   const [pages, setPages] = useState([]);
   const [stateEditor, setEditor] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [htmlContent, setHtmlContent] = useState();
+  const [cssContent, setCssContent] = useState();
+  const [jsContent, setJsContent] = useState();
 
   useEffect(() => {
     const editor = grapesjs.init({
