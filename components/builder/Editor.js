@@ -23,6 +23,10 @@ import {
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
 import { Content } from './Content';
+import prettier from "prettier/standalone";
+import htmlParser from "prettier/parser-html";
+import cssParser from "prettier/parser-postcss";
+import babelParser from "prettier/parser-babel";
 const postcss = require('postcss');
 
 const Editor = ({
@@ -78,7 +82,7 @@ const Editor = ({
           {
             id: 'desktop',
             name: 'Desktop',
-            width: '99%',
+            width: '100%',
           },
           {
             id: 'tablet',
@@ -216,7 +220,7 @@ const Editor = ({
         editor.stopCommand('sw-visibility');
       },
     });
-
+    // editor.on('update', () =>  console.log("test"));
     editor.Panels.addPanel(icon);
     editor.Panels.addPanel(publishSelect);
 
@@ -280,8 +284,32 @@ const Editor = ({
     return pm.select(pageId);
   };
 
+  const format = (htmlString, type) => {
+    const formattedHtml = prettier.format(htmlString, {
+      parser: type,
+      plugins: [htmlParser, cssParser],
+    });
+    return formattedHtml;
+  }
+  
+
   useEffect(() => {
+
     if (stateEditor) {
+      stateEditor.on('update', () =>  {
+        const htmlContent = stateEditor.getHtml();
+        const cssContent = stateEditor.getCss();
+        setHtmlContent(format(htmlContent, "html"))
+        setCssContent(format(cssContent, "css"))
+      });
+
+      const htmlContent = stateEditor.getHtml();
+      const cssContent = stateEditor.getCss();
+      // const jsContent = stateEditor.getJs();
+     
+      setHtmlContent(format(htmlContent, "html"))
+      setCssContent(format(cssContent, "css"))
+      // setJsContent(format(jsContent, 'babel'))
       if (arrayOfPages) {
         stateEditor.Panels.addPanel({
           id: 'pages-select',
@@ -302,10 +330,7 @@ const Editor = ({
                     .join('')}
                     <option value="add-page" class="add-page-option">Add Page</option>
                     </select> `,
-            },
-          ],
-        });
-      }
+            }]});}
     }
   }, [stateEditor, arrayOfPages]);
 
@@ -315,9 +340,9 @@ const Editor = ({
 
       <div className='overflow-scroll resize w-full h-72'>
         <Allotment>
-          <Content />
-          <Content />
-          <Content />
+          <Content title={'HTML'} mode={'html'} Content={htmlContent} Editor={stateEditor}/>
+          <Content title={'CSS'} mode={'css'} Content={cssContent} Editor={stateEditor}/>
+          <Content title={'JS'} mode={'javascript'} Content={htmlContent} Editor={stateEditor}/>
         </Allotment>
       </div>
     </div>

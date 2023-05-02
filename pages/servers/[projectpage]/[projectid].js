@@ -136,14 +136,6 @@ const SingleProjectPage = ({ project, token, user }) => {
     console.log('this is the responses css:', css);
   };
 
-  const addPage = () => {
-    const newPage = pm.add({
-      id: 'new-page-id', // without an explicit ID, a random one will be created
-      styles: `.my-class { color: red }`, // or a JSON of styles
-      component: '<div class="my-class">My element</div>', // or a JSON of components
-    });
-    console.log(newPage);
-  };
 
   return (
     <>
