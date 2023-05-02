@@ -20,11 +20,11 @@ const newServerProps = {
 };
 
 const modalProps = {
-  header: 'Enter Server Information',
-  description: 'Servers are like organizations or teams',
-  labelOne: 'Server Name',
-  labelTwo: 'Server Description',
-  buttonText: 'Create Server',
+  header: 'Enter Sandbox Information',
+  description: 'your sandbox will be a folder for your projects and components',
+  labelOne: 'Sandbox Name',
+  labelTwo: 'Sandbox Description',
+  buttonText: 'Create Sandbox',
 };
 
 const Servers = ({ servers, user, token }) => {

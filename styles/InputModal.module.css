@@ -1,7 +1,7 @@
 .modal_wrapper {
   position: fixed;
   top: 50%;
-  left: 39%;
+  left: 31%;
   transform: translate(-50%, -50%);
   background-color: rgb(212, 212, 245);
   z-index: 1;
@@ -10,25 +10,25 @@
   transition: all 0.5s ease;
 }
 
-@media (max-width: 1002px) {
+@media (max-width: 1338px) {
   .modal_wrapper {
     top: 50%;
     left: 36%;
     transform: translate(-50%, -50%);
     background-color: rgb(212, 212, 245);
     z-index: 1;
-    max-width: 150px;
+    max-width: 280px;
   }
 }
 
-@media (max-width: 572px) {
+@media (max-width: 992px) {
   .modal_wrapper {
     top: 50%;
     left: 30%;
     transform: translate(-50%, -50%);
     background-color: rgb(212, 212, 245);
     z-index: 1;
-    max-width: 120px;
+    max-width: 200px;
   }
 }
 
