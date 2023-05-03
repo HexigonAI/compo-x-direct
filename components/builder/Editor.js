@@ -22,11 +22,11 @@ import {
 // import ReactDOM from "react-dom";
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
-import { Content } from './Content';
 import prettier from "prettier/standalone";
 import htmlParser from "prettier/parser-html";
 import cssParser from "prettier/parser-postcss";
 import babelParser from "prettier/parser-babel";
+import { CodeView } from './CodeView';
 const postcss = require('postcss');
 
 const Editor = ({
@@ -337,15 +337,24 @@ const Editor = ({
     }
   }, [stateEditor, arrayOfPages]);
 
+  const handleHtmlChange = (val) => {
+    return stateEditor.setComponents(val);
+  };
+
+  const handleCssChange = (val) => {
+    //Figure out how to get the editor 
+    return stateEditor.setStyle(val);
+  };
+
+
   return (
     <div>
       <div id='gjs'> </div>
 
       <div className='overflow-scroll resize w-full h-72'>
         <Allotment>
-          <Content title={'HTML'} mode={'html'} Content={htmlContent} Editor={stateEditor}/>
-          <Content title={'CSS'} mode={'css'} Content={cssContent} Editor={stateEditor}/>
-          <Content title={'JS'} mode={'javascript'} Content={htmlContent} Editor={stateEditor}/>
+          <CodeView title={'HTML'} mode={'html'} Content={htmlContent} handleOnChange={handleHtmlChange} Editor={stateEditor}/>
+          <CodeView title={'CSS'} mode={'css'} Content={cssContent} handleOnChange={handleCssChange} Editor={stateEditor}/>
         </Allotment>
       </div>
     </div>
