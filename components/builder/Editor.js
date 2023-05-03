@@ -342,7 +342,7 @@ const Editor = ({
   };
 
   const handleCssChange = (val) => {
-    //Figure out how to get the editor 
+    //Figure out how to get the css from the canvas, edit the code view, and then update the canvas with the new css, and be able to keep updating the canvas without losing the css.
     return stateEditor.setStyle(val);
   };
 
@@ -351,7 +351,7 @@ const Editor = ({
     <div>
       <div id='gjs'> </div>
 
-      <div className='overflow-scroll resize w-full h-72'>
+      <div className='w-full h-80'>
         <Allotment>
           <CodeView title={'HTML'} mode={'html'} Content={htmlContent} handleOnChange={handleHtmlChange} Editor={stateEditor}/>
           <CodeView title={'CSS'} mode={'css'} Content={cssContent} handleOnChange={handleCssChange} Editor={stateEditor}/>
