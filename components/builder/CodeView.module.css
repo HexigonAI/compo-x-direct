@@ -13,6 +13,8 @@
   padding: 10px;
   font-family: Tahoma;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
 }
 
 .editorContainer {

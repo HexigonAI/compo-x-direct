@@ -16,11 +16,21 @@ const Ace = dynamic(
   }
 );
 
-export const CodeView = ({ mode, title, Content, handleOnChange, Editor }) => {
+export const CodeView = ({
+  mode,
+  title,
+  Content,
+  handleOnChange,
+  handleOnClick,
+  buttonText,
+  Editor,
+}) => {
   return (
     <div className={styles.editorContainer}>
-      {/* {console.log(stateEditor)} */}
-      <div className={styles.editorTitle}>{title}</div>
+      <div className={styles.editorTitle}>
+        {title}
+        <button onClick={handleOnClick}>{buttonText}</button>
+      </div>
       <Ace
         mode={mode}
         theme='monokai'
