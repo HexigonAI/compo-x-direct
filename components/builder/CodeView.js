@@ -1,4 +1,4 @@
-import styles from './Content.module.css';
+import styles from './CodeView.module.css';
 import dynamic from 'next/dynamic';
 import { useDebounce } from '../../helpers/util';
 
