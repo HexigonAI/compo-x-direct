@@ -303,6 +303,7 @@ const Editor = ({
         const htmlContent = stateEditor.getHtml();
         const cssContent = stateEditor.getCss();
         setHtmlContent(format(htmlContent, "html"))
+        //this line allows for upstream changes, but not downstream changes
         setCssContent(format(cssContent, "css"))
       });
 
@@ -342,10 +343,12 @@ const Editor = ({
   };
 
   const handleCssChange = (val) => {
-    //Figure out how to get the css from the canvas, edit the code view, and then update the canvas with the new css, and be able to keep updating the canvas without losing the css.
-    return stateEditor.setStyle(val);
+    return setCssContent(val);
   };
-
+  
+  const handleCssSave = () => {
+    return stateEditor.setStyle(cssContent);
+  };
 
   return (
     <div>
@@ -354,7 +357,7 @@ const Editor = ({
       <div className='w-full h-80'>
         <Allotment>
           <CodeView title={'HTML'} mode={'html'} Content={htmlContent} handleOnChange={handleHtmlChange} Editor={stateEditor}/>
-          <CodeView title={'CSS'} mode={'css'} Content={cssContent} handleOnChange={handleCssChange} Editor={stateEditor}/>
+          <CodeView title={'CSS'} mode={'css'} Content={cssContent} handleOnClick={handleCssSave} buttonText={'Run'} handleOnChange={handleCssChange} Editor={stateEditor}/>
         </Allotment>
       </div>
     </div>
