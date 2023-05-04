@@ -1,6 +1,5 @@
-import styles from './CodeView.module.css';
+import styles from './../../styles/CodeView.module.css';
 import dynamic from 'next/dynamic';
-import { useDebounce } from '../../helpers/util';
 
 const Ace = dynamic(
   async () => {
@@ -25,6 +24,7 @@ export const CodeView = ({
   buttonText,
   Editor,
 }) => {
+
   return (
     <div className={styles.editorContainer}>
       <div className={styles.editorTitle}>
