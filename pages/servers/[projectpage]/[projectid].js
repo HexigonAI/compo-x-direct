@@ -75,32 +75,6 @@ const SingleProjectPage = ({ project, token, user }) => {
     setCurrentTitle(newTitle);
   };
 
-  const convertCssToJSON = (css) => {
-    const regex = /\.([\w-]+)\s*\{([^}]+)\}/g;
-
-    let cssClasses = [];
-    let match;
-
-    while ((match = regex.exec(css)) !== null) {
-      const className = match[1];
-      const styles = match[2]
-        .trim()
-        .split(';')
-        .filter((style) => style.trim() !== '')
-        .reduce((acc, style) => {
-          const [property, value] = style.trim().split(':');
-          acc[property.trim()] = value.trim();
-          return acc;
-        }, {});
-
-      cssClasses.push({
-        class: className,
-        styles: styles,
-      });
-    }
-    return cssClasses;
-  };
-
   const fetchPromptData = async (e, promptString) => {
     setIsLoading(true);
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
@@ -116,7 +90,7 @@ const SingleProjectPage = ({ project, token, user }) => {
     const data = await response.json();
     const html = data.html;
     const css = data.css;
-    console.log(data);
+    //TODO: handle the use case of prompting the API for a new response. I think that the API shuold be used to generate a fleshed out component and the user can adjust it from there manually. But we'll keep this code here for now.
     if (!responseCss) {
       setResponseCss({ ...responseCss, css });
       editor.setComponents(htmlWithCss + html);
@@ -131,11 +105,10 @@ const SingleProjectPage = ({ project, token, user }) => {
       editor.setStyle(responseCss.css + css);
       setIsLoading(false);
     }
-    console.log('this is the editors CSS object: ', editor.getCss());
-    console.log('this is the responseCss state object:', responseCss);
-    console.log('this is the responses css:', css);
+    // console.log('this is the editors CSS object: ', editor.getCss());
+    // console.log('this is the responseCss state object:', responseCss);
+    // console.log('this is the responses css:', css);
   };
-
 
   return (
     <>
@@ -149,8 +122,12 @@ const SingleProjectPage = ({ project, token, user }) => {
         <script src='https://unpkg.com/grapesjs'></script>
         <script src='https://unpkg.com/@silexlabs/grapesjs-symbols'></script>
       </Head>
-      {showWelcome && <WelcomeModal fetchPromptData={fetchPromptData} setShowWelcome={setShowWelcome
-      }/>}
+      {showWelcome && (
+        <WelcomeModal
+          fetchPromptData={fetchPromptData}
+          setShowWelcome={setShowWelcome}
+        />
+      )}
       <div className='justify-start px-6 flex bg-black text-white items-center'>
         <Link href={'/servers'}>
           <div className='dashabord-logo w-nav-brand pr-8'>
