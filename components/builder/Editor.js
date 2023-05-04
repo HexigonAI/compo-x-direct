@@ -128,16 +128,7 @@ const Editor = ({
     });
 
     getIcons(editor);
-    
   }, []);
-
-  const format = (htmlString, type) => {
-    const formattedHtml = prettier.format(htmlString, {
-      parser: type,
-      plugins: [htmlParser, cssParser],
-    });
-    return formattedHtml;
-  };
 
   useEffect(() => {
     function removeDefaultCSS(cssString) {
@@ -162,9 +153,16 @@ const Editor = ({
       setCssContent(format(cssStringWithoutDefault, 'css'));
       // const jsContent = stateEditor.getJs();
       // setJsContent(format(jsContent, 'babel'))
-
     }
   }, [stateEditor, arrayOfPages]);
+
+  const format = (htmlString, type) => {
+    const formattedHtml = prettier.format(htmlString, {
+      parser: type,
+      plugins: [htmlParser, cssParser],
+    });
+    return formattedHtml;
+  };
 
   const handleHtmlChange = (val) => {
     return stateEditor.setComponents(val);
