@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const logo = '../../images/Compo---Logo.svg';
 
-const NavBar = ({ token, user }) => {
+const NavBar = () => {
   const handleLogout = () => {
     signOut();
   };
@@ -37,20 +37,9 @@ const NavBar = ({ token, user }) => {
               >
                 Logout
               </p>
-              {/* This is where we would dynamically load in the user avatar */}
-              {/* <img
-                src={`https://compo.directus.app/assets/${
-                  user ? '28b315a9-d72c-489e-9d7b-a3d0c2e89877.png' : ''
-                }?access_token=${token}`}
-                width='47'
-                sizes='(max-width: 479px) 20vw, (max-width: 767px) 59.993812561035156px, (max-width: 1279px) 53.99907302856445px, (max-width: 1439px) 4vw, 53.99907302856445px'
-                alt=''
-                className='avatar'
-              /> */}
               <img src={'../images/user-avatar.svg'}></img>
             </div>
           </nav>
-          <Link href={'/servers'}>
             <nav role='navigation' className='nav-menu w-nav-menu'>
               <p
                 className='nav-link last w-nav-link'
@@ -59,7 +48,6 @@ const NavBar = ({ token, user }) => {
                 Sandboxes
               </p>
             </nav>
-          </Link>
           <div className='menu-button w-nav-button'>
             <div className='w-icon-nav-menu'></div>
           </div>

@@ -12,18 +12,19 @@ import cssParser from 'prettier/parser-postcss';
 import { CodeView } from './CodeView';
 import getIcons from './EditorIcons';
 
-const Editor = ({
-  token,
-  id,
-  projectEndpoint,
-  handleSetResponseCss,
-  handleSetEditor,
-}) => {
+const Editor = (
+  {
+    // token,
+    // id,
+    // projectEndpoint,
+    // handleSetResponseCss,
+    handleSetEditor,
+  }
+) => {
   const [arrayOfPages, setArrayOfPages] = useState();
   const [stateEditor, setEditor] = useState();
   const [htmlContent, setHtmlContent] = useState();
   const [cssContent, setCssContent] = useState();
-  const [jsContent, setJsContent] = useState();
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -33,20 +34,12 @@ const Editor = ({
       plugins: [gsNewsLetter, exportPlugin],
 
       storageManager: {
-        id: 'gjs-',
-        type: 'remote',
+        type: 'local',
         options: {
-          remote: {
-            urlLoad: projectEndpoint,
-            urlStore: projectEndpoint,
-            fetchOptions: (opts) =>
-              opts.method === 'POST' ? { method: 'PATCH' } : {},
-            onStore: '',
-            onLoad: (result) => result,
-          },
+          local: { key: `gjsProject-1234` },
         },
         autoload: true,
-        stepsBeforeSave: 3,
+        stepsBeforeSave: 1,
         contentTypeJson: true,
         storeComponents: true,
         storeStyles: true,
@@ -85,47 +78,47 @@ const Editor = ({
     setEditor(editor);
     handleSetEditor(editor);
 
-    editor.Storage.add('remote', {
-      // Load data from the server
-      async load(options = {}) {
-        const fetchData = await axios.get(
-          `https://compo.directus.app/items/projects/${id}`
-        );
-        const builder_data = fetchData.data.data.builder_data;
-        const builder_string = builder_data.substring(
-          1,
-          builder_data.length - 1
-        );
-        const savedProject = JSON.parse(builder_string);
-        console.log(
-          'this is the loaded in object from Directus:',
-          savedProject
-        );
-        setArrayOfPages(savedProject.pages);
-        handleSetResponseCss(savedProject.styles);
-        return savedProject;
-      },
-      // Store data on the server
-      async store(data) {
-        const sentData = JSON.stringify(data);
-        try {
-          axios.patch(
-            `https://compo.directus.app/items/projects/${id}`,
-            {
-              builder_data: `"${sentData}"`,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-        } catch (error) {
-          console.error('Error:', error.message);
-          throw error;
-        }
-      },
-    });
+    // editor.Storage.add('remote', {
+    //   // Load data from the server
+    //   async load(options = {}) {
+    //     const fetchData = await axios.get(
+    //       `https://compo.directus.app/items/projects/${id}`
+    //     );
+    //     const builder_data = fetchData.data.data.builder_data;
+    //     const builder_string = builder_data.substring(
+    //       1,
+    //       builder_data.length - 1
+    //     );
+    //     const savedProject = JSON.parse(builder_string);
+    //     console.log(
+    //       'this is the loaded in object from Directus:',
+    //       savedProject
+    //     );
+    //     setArrayOfPages(savedProject.pages);
+    //     handleSetResponseCss(savedProject.styles);
+    //     return savedProject;
+    //   },
+    //   // Store data on the server
+    //   async store(data) {
+    //     const sentData = JSON.stringify(data);
+    //     try {
+    //       axios.patch(
+    //         `https://compo.directus.app/items/projects/${id}`,
+    //         {
+    //           builder_data: `"${sentData}"`,
+    //         },
+    //         {
+    //           headers: {
+    //             Authorization: `Bearer ${token}`,
+    //           },
+    //         }
+    //       );
+    //     } catch (error) {
+    //       console.error('Error:', error.message);
+    //       throw error;
+    //     }
+    //   },
+    // });
 
     getIcons(editor);
   }, []);
@@ -180,7 +173,7 @@ const Editor = ({
     <div>
       <div id='gjs'> </div>
 
-      <div className='w-full h-80'>
+      <div className='w-full' style={{height:'33vh'}}>
         <Allotment>
           <CodeView
             title={'HTML'}

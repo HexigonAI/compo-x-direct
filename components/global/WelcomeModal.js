@@ -12,7 +12,7 @@ export const WelcomeModal = ({
     <div className="flex min-h-full justify-center p-4 text-center items-center">
   
       <div className=" bg-[#31353C] relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all w-[26rem]">
-            <img src='../../images/tayler-profile-p-500.png' className=" z-20 h-72 object-cover w-full"/>
+            {/* <img src='../../images/tayler-profile-p-500.png' className=" z-20 h-72 object-cover w-full"/> */}
 
         <div className=" px-4 pb-4 pt-2 ">
           <div className="sm:flex sm:items-start">

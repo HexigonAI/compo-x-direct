@@ -6,7 +6,7 @@ export const fetchUser = async (query, token, { variables = {} }) => {
       Authorization: `Bearer ${token}`,
     };
   
-    const res = await fetch(graphQLAPI, {
+    const res = await fetch('https://compo.directus.app/graphql/system', {
       method: 'POST',
       headers,
       body: JSON.stringify({
