@@ -1,2 +1,2 @@
 # compo-x-direct
-Public AI Builder
+Public AI Builder.
