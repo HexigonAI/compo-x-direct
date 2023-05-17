@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import grapesjs from 'grapesjs';
 import gsNewsLetter from 'grapesjs-preset-newsletter';
-import axios from 'axios';
 import 'grapesjs/dist/css/grapes.min.css';
 import exportPlugin from 'grapesjs-plugin-export';
 import { Allotment } from 'allotment';
@@ -12,15 +11,7 @@ import cssParser from 'prettier/parser-postcss';
 import { CodeView } from './CodeView';
 import getIcons from './EditorIcons';
 
-const Editor = (
-  {
-    // token,
-    // id,
-    // projectEndpoint,
-    // handleSetResponseCss,
-    handleSetEditor,
-  }
-) => {
+const Editor = ({ handleSetEditor }) => {
   const [arrayOfPages, setArrayOfPages] = useState();
   const [stateEditor, setEditor] = useState();
   const [htmlContent, setHtmlContent] = useState();
@@ -78,48 +69,6 @@ const Editor = (
     setEditor(editor);
     handleSetEditor(editor);
 
-    // editor.Storage.add('remote', {
-    //   // Load data from the server
-    //   async load(options = {}) {
-    //     const fetchData = await axios.get(
-    //       `https://compo.directus.app/items/projects/${id}`
-    //     );
-    //     const builder_data = fetchData.data.data.builder_data;
-    //     const builder_string = builder_data.substring(
-    //       1,
-    //       builder_data.length - 1
-    //     );
-    //     const savedProject = JSON.parse(builder_string);
-    //     console.log(
-    //       'this is the loaded in object from Directus:',
-    //       savedProject
-    //     );
-    //     setArrayOfPages(savedProject.pages);
-    //     handleSetResponseCss(savedProject.styles);
-    //     return savedProject;
-    //   },
-    //   // Store data on the server
-    //   async store(data) {
-    //     const sentData = JSON.stringify(data);
-    //     try {
-    //       axios.patch(
-    //         `https://compo.directus.app/items/projects/${id}`,
-    //         {
-    //           builder_data: `"${sentData}"`,
-    //         },
-    //         {
-    //           headers: {
-    //             Authorization: `Bearer ${token}`,
-    //           },
-    //         }
-    //       );
-    //     } catch (error) {
-    //       console.error('Error:', error.message);
-    //       throw error;
-    //     }
-    //   },
-    // });
-
     getIcons(editor);
   }, []);
 
@@ -173,7 +122,7 @@ const Editor = (
     <div>
       <div id='gjs'> </div>
 
-      <div className='w-full' style={{height:'33vh'}}>
+      <div className='w-full' style={{ height: '33vh' }}>
         <Allotment>
           <CodeView
             title={'HTML'}
