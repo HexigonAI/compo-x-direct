@@ -1,7 +1,6 @@
+import { Configuration, OpenAIApi } from 'openai';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-
-import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
@@ -18,12 +17,12 @@ const logo = '../../../images/Compo---Logo.svg';
 const SingleProjectPage = () => {
   const [editor, setEditor] = useState('');
   const [currentTitle, setCurrentTitle] = useState('Untitled');
-  const [responseCss, setResponseCss] = useState();
-  const [pm, setPm] = useState(null);
   const [promptText, setPromptText] = useState('');
   const [showFooter, setShowFooter] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const apikey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
   useEffect(() => {
     const hasVisitedBefore = Cookies.get('hasVisitedBuilderBefore');
@@ -38,36 +37,34 @@ const SingleProjectPage = () => {
     setCurrentTitle(newTitle);
   };
 
-  const fetchPromptData = async (e, promptString) => {
+  async function fetchOpenAI(promptText, params = {}) {
+    const DEFAULT_PARAMS = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: `${promptText}` }],
+      temperature: 0,
+    };
+    const params_ = { ...DEFAULT_PARAMS, ...params };
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + apikey,
+      },
+      body: JSON.stringify(params_),
+    });
+    const json = await response.json();
+    const htmlJson = json.choices[0].message.content;
+    return htmlJson;
+  }
+
+  const fetchPromptData = async (e, promptText) => {
     setIsLoading(true);
     let htmlWithCss = editor.runCommand('gjs-get-inlined-html');
     e.preventDefault();
+    const htmlResponse = await fetchOpenAI(promptText);
+    editor.setComponents(htmlResponse);
     setPromptText('');
-    const response = await fetch(
-      'https://unlockedx.awunda.com/webhook/compox',
-      {
-        method: 'POST',
-        body: promptString,
-      }
-    );
-    const data = await response.json();
-    const html = data.html;
-    const css = data.css;
-    //TODO: handle the use case of prompting the API for a new response. I think that the API shuold be used to generate a fleshed out component and the user can adjust it from there manually. But we'll keep this code here for now.
-    if (!responseCss) {
-      setResponseCss({ ...responseCss, css });
-      editor.setComponents(htmlWithCss + html);
-      editor.setStyle(responseCss + css);
-      setIsLoading(false);
-    } else {
-      setResponseCss((responseCss) => ({
-        ...responseCss,
-        css: responseCss.css + css,
-      }));
-      editor.setComponents(htmlWithCss + html);
-      editor.setStyle(responseCss.css + css);
-      setIsLoading(false);
-    }
+    setIsLoading(false);
   };
 
   function handleSave() {
