@@ -1,4 +1,4 @@
-##Welcome to Compo-X-Direct!
+## Welcome to Compo-X-Direct!
 
 ## Getting Started
 
