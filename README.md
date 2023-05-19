@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-To pull and develope from here:
+To pull and develop from here:
 
 
   - fork from main
