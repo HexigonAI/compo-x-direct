@@ -4,14 +4,14 @@
 
 To pull and develope from here:
 
-```
-fork from main
-# install dependencies
-npm install
-# create an .env.local file
-# here create a variable called NEXT_PUBLIC_OPENAI_API_KEY and set it equal to your API key from openai
-from here you should be able to run npm run dev and start up a local server and start prompting the AI to generate components 
-```
+
+  - fork from main
+  - install dependencies
+``` npm install ```
+  - create an .env.local file
+  - here create a variable called ``` NEXT_PUBLIC_OPENAI_API_KEY ``` and set it equal to your API key from openai
+  - from here you should be able to run ``` npm run dev ``` and start up a local server and start prompting the AI to generate components 
+
 
 ## Learn More
 
